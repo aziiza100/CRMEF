@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pedagogique',
-  imports: [],
+  imports: [RouterLink],
   standalone: true,
   templateUrl: './pedagogique.html',
   styleUrl: './pedagogique.css',

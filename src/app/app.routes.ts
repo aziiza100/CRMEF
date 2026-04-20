@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
+import { Navbar } from './component/shared/navbar/navbar';
+import { Layout } from './component/shared/layout/layout';
 // import {Home} from './component/home/home'
 
 export const routes: Routes = [
     // { path: 'home', component: Home }
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-
+ {
+    path: '',
+    component: Layout,
+    children: [
   {
     path: 'home',
     loadComponent: () =>
@@ -103,7 +108,8 @@ export const routes: Routes = [
     path: 'contact',
     loadComponent: () =>
       import('./component/pages/contact/contact').then(m => m.Contact)
-  },
+  }]}
+  ,
   {
     path: 'espace-pedagogique',
     loadComponent: () =>
@@ -120,4 +126,4 @@ export const routes: Routes = [
       import('./component/pages/etudiants/etudiants').then(m => m.Etudiants)
   }
 ];
- 
+  
