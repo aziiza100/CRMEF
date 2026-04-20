@@ -1,0 +1,107 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0d47a1;
+  padding: 15px 30px;
+  color: white;
+  
+
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color:chocolate;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+/* cacher dropdown */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  list-style: none;
+  padding: 10px 0;
+  min-width: 180px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu li {
+  padding: 8px 15px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+/* affichage au hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* effet hover */
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* sub dropdown */
+.dropdown-sub {
+  position: relative;
+}
+
+.dropdown-sub-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background: white;
+  list-style: none;
+  min-width: 220px;
+}
+
+/* affichage sub menu */
+.dropdown-sub:hover .dropdown-sub-menu {
+  display: block;
+}
+
+/* style */
+.dropdown-menu li,
+.dropdown-sub-menu li {
+  padding: 8px 15px;
+}
+
+.dropdown-menu li:hover,
+.dropdown-sub-menu li:hover {
+  background-color: #f0f0f0;
+}

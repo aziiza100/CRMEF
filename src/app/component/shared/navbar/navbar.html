@@ -1,0 +1,108 @@
+<nav class="navbar">
+  <div class="logo">CRMEF</div>
+
+  <ul class="nav-links">
+    <li class="dropdown">
+
+      <a routerLink="/home">Accueil ▾</a>
+      <ul class="dropdown-menu">
+        <li><a routerLink="/home/presentation-crmef">presentation-crmef</a></li>
+        <li><a routerLink="/home/message-directeur">message-directeur</a></li>
+        <li><a routerLink="/home/actualites">Actualités</a></li>
+        <li><a routerLink="/home/banniere-dynamique">banniere-dynamique</a></li>
+      </ul>
+    </li> 
+    <li class="dropdown">
+      <a routerLink="">Présentation du centre ▾</a>
+     <ul class="dropdown-menu">
+        <li><a routerLink="/presentation/Historique">Historique</a></li>
+        <li><a routerLink="/presentation/Missions-objectifs">Missions et objectifs</a></li>
+        <li><a routerLink="/presentation/Organigramme">Organigramme</a></li>
+        <li><a routerLink="/presentation/Partenaires">Partenaires</a></li>
+      </ul>
+    </li>
+  <li class="dropdown">
+  <a routerLink="/formations">Formations ▾</a>
+
+  <ul class="dropdown-menu">
+
+    <!-- Primaire -->
+    <li class="dropdown-sub">
+      <a [routerLink]="'/formations'" [queryParams]="{ type: 'primaire' }">Primaire ▸</a>
+      <ul class="dropdown-sub-menu">
+        <li>
+          <a [routerLink]="'formations/DescriptionProgrammes'">
+             Description
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Modules-contenus'">
+             Modules
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Conditions-Accès'" >
+             Conditions
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Secondaire -->
+    <li class="dropdown-sub">
+      <a [routerLink]="'/formations'" [queryParams]="{ type: 'secondaire' }">Secondaire ▸</a>
+       <ul class="dropdown-sub-menu">
+        <li>
+          <a [routerLink]="'formations/DescriptionProgrammes'">
+             Description
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Modules-contenus'">
+             Modules
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Conditions-Accès'" >
+             Conditions
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Qualifiant -->
+    <li class="dropdown-sub">
+      <a [routerLink]="'/formations'" [queryParams]="{ type: 'qualifiant' }">Qualifiant ▸</a>
+       <ul class="dropdown-sub-menu">
+        <li>
+          <a [routerLink]="'formations/DescriptionProgrammes'">
+             Description
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Modules-contenus'">
+             Modules
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Conditions-Accès'" >
+             Conditions
+          </a>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+    <li class="dropdown"><a routerLink="">Espace ▾</a>
+      <ul class="dropdown-menu">
+          <li><a routerLink="/espace-pedagogique">pédagogique</a></li>
+          <li><a routerLink="/espace-enseignant">Enseignants</a></li>
+          <li><a routerLink="/espace-etudiant">Étudiants</a></li>
+      </ul>
+    </li>
+  
+    <li><a routerLink="/contact">Contact</a></li>
+  </ul> 
+</nav> 
+
