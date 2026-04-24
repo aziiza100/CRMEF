@@ -1,0 +1,56 @@
+{
+  "header": {
+    "ministry": "Royaume du Maroc - Ministère de l'Éducation Nationale",
+    "title": "Centre Régional des Métiers de l'Éducation et de la Formation"
+  },
+
+  "nav": {
+    "home": "Accueil",
+    "presentation": "Présentation",
+    "formations": "Formations",
+    "actualites": "Actualités",
+    "pedagogique": "Pédagogique",
+    "enseignants": "Enseignants",
+    "etudiants": "Étudiants",
+    "contact": "Contact"
+  },
+
+  "hero": {
+    "eyebrow": "CRMEF Marrakech-Safi",
+    "title": "Un portail institutionnel moderne inspiré de Marrakech",
+    "desc": "Version bilingue moderne avec navigation et structure prête pour backend.",
+    "btn1": "Voir les formations",
+    "btn2": "Contact"
+  },
+
+  "quickAccess": {
+    "title": "Accès rapide",
+    "formations": {
+      "title": "Formations",
+      "desc": "Filières, modules et conditions d’accès."
+    },
+    "actualites": {
+      "title": "Actualités",
+      "desc": "Annonces officielles et événements."
+    },
+    "ressources": {
+      "title": "Ressources",
+      "desc": "Cours, documents et emploi du temps."
+    },
+    "espaces": {
+      "title": "Espaces",
+      "desc": "Étudiants, enseignants et administration."
+    }
+  },
+
+  "footer": {
+    "title": "CRMEF Marrakech-Safi",
+    "desc": "Portail institutionnel statique.",
+    "centre": "Centre",
+    "espaces": "Espaces",
+    "contact": "Contact",
+    "email": "contact@crmef.ma",
+    "location": "Marrakech - Maroc",
+    "copyright": "© 2026 CRMEF Marrakech-Safi"
+  }
+}

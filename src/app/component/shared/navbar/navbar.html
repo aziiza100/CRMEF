@@ -1,10 +1,9 @@
 <nav class="navbar">
-  <div class="logo">CRMEF</div>
 
   <ul class="nav-links">
     <li class="dropdown">
 
-      <a routerLink="/home">Accueil ▾</a>
+      <a routerLink="/home">{{ 'nav.home' | translate }}</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/home/presentation-crmef">presentation-crmef</a></li>
         <li><a routerLink="/home/message-directeur">message-directeur</a></li>
@@ -13,22 +12,44 @@
       </ul>
     </li> 
     <li class="dropdown">
-      <a routerLink="">Présentation du centre ▾</a>
-     <ul class="dropdown-menu">
+      <a routerLink="">{{ 'nav.presentation' | translate }}</a>
+     <!-- <ul class="dropdown-menu">
         <li><a routerLink="/presentation/Historique">Historique</a></li>
         <li><a routerLink="/presentation/Missions-objectifs">Missions et objectifs</a></li>
         <li><a routerLink="/presentation/Organigramme">Organigramme</a></li>
         <li><a routerLink="/presentation/Partenaires">Partenaires</a></li>
-      </ul>
+      </ul> -->
     </li>
   <li class="dropdown">
-  <a routerLink="/formations">Formations ▾</a>
+  <a routerLink="/formations">{{ 'nav.formations' | translate }}</a>
 
-  <ul class="dropdown-menu">
+  <!-- <ul class="dropdown-menu"> -->
 
-    <!-- Primaire -->
+    <!-- Primaire
     <li class="dropdown-sub">
       <a [routerLink]="'/formations'" [queryParams]="{ type: 'primaire' }">Primaire ▸</a>
+      <ul class="dropdown-sub-menu"> 
+        <li>
+          <a [routerLink]="'formations/DescriptionProgrammes'">
+             Description
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Modules-contenus'">
+             Modules
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="'formations/Conditions-Accès'" >
+             Conditions
+          </a>
+        </li>
+      </ul>
+    </li> -->
+
+    <!-- Secondaire 
+    <li class="dropdown-sub">
+      <a [routerLink]="'/formations'" [queryParams]="{ type: 'secondaire' }">Secondaire ▸</a>
       <ul class="dropdown-sub-menu">
         <li>
           <a [routerLink]="'formations/DescriptionProgrammes'">
@@ -45,32 +66,10 @@
              Conditions
           </a>
         </li>
-      </ul>
-    </li>
+      </ul> 
+   </li> -->
 
-    <!-- Secondaire -->
-    <li class="dropdown-sub">
-      <a [routerLink]="'/formations'" [queryParams]="{ type: 'secondaire' }">Secondaire ▸</a>
-       <ul class="dropdown-sub-menu">
-        <li>
-          <a [routerLink]="'formations/DescriptionProgrammes'">
-             Description
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="'formations/Modules-contenus'">
-             Modules
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="'formations/Conditions-Accès'" >
-             Conditions
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- Qualifiant -->
+    <!-- Qualifiant 
     <li class="dropdown-sub">
       <a [routerLink]="'/formations'" [queryParams]="{ type: 'qualifiant' }">Qualifiant ▸</a>
        <ul class="dropdown-sub-menu">
@@ -92,17 +91,28 @@
       </ul>
     </li>
 
-  </ul>
+  </ul> -->
 </li>
-    <li class="dropdown"><a routerLink="">Espace ▾</a>
-      <ul class="dropdown-menu">
-          <li><a routerLink="/espace-pedagogique">pédagogique</a></li>
-          <li><a routerLink="/espace-enseignant">Enseignants</a></li>
-          <li><a routerLink="/espace-etudiant">Étudiants</a></li>
-      </ul> 
-    </li>
+    <li><a routerLink="/home/actualites">{{ 'nav.actualites' | translate }}</a></li>
+    <li><a routerLink="/espace-pedagogique">{{ 'nav.pedagogique' | translate }}</a></li>
+    <li><a routerLink="/espace-enseignant">{{ 'nav.enseignants' | translate }}</a></li>
+    <li><a routerLink="/espace-etudiant">{{ 'nav.etudiants' | translate }}</a></li>
+
+
   
-    <li><a routerLink="/contact">Contact</a></li>
+    <li><a routerLink="/contact">{{ 'nav.contact' | translate }}</a></li>
+ 
   </ul> 
+  <div class="btn">
+     
+      <button (click)="changeLang('fr')" [disabled]="currentLang === 'fr'">
+        FR
+      </button>
+
+      <button (click)="changeLang('ar')" [disabled]="currentLang === 'ar'">
+        AR
+      </button>
+  
+  </div>
 </nav> 
 

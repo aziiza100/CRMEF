@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="130" viewBox="0 0 520 130">
+<rect width="520" height="130" fill="white"/>
+<circle cx="70" cy="65" r="42" fill="#b96b2b" opacity=".18"/>
+<path d="M47 42h46v46H47z" fill="none" stroke="#1f5d75" stroke-width="8"/>
+<path d="M70 25l47 80H23z" fill="none" stroke="#b96b2b" stroke-width="7"/>
+<text x="140" y="50" font-family="Arial" font-size="26" fill="#173b5a" font-weight="700">المركز الجهوي لمهن التربية والتكوين</text>
+<text x="140" y="86" font-family="Arial" font-size="20" fill="#b96b2b">مراكش آسفي</text>
+</svg>
