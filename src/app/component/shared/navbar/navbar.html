@@ -1,15 +1,14 @@
-<nav class="navbar">
-
-  <ul class="nav-links">
-    <li class="dropdown">
+<nav id="navmenu" class="navmenu">
+  <ul>
+    <li class="active"> 
 
       <a routerLink="/home">{{ 'nav.home' | translate }}</a>
-      <ul class="dropdown-menu">
+      <!-- <ul class="dropdown-menu">
         <li><a routerLink="/home/presentation-crmef">presentation-crmef</a></li>
         <li><a routerLink="/home/message-directeur">message-directeur</a></li>
         <li><a routerLink="/home/actualites">Actualités</a></li>
         <li><a routerLink="/home/banniere-dynamique">banniere-dynamique</a></li>
-      </ul>
+      </ul> -->
     </li> 
     <li class="dropdown">
       <a routerLink="">{{ 'nav.presentation' | translate }}</a>
@@ -103,16 +102,6 @@
     <li><a routerLink="/contact">{{ 'nav.contact' | translate }}</a></li>
  
   </ul> 
-  <div class="btn">
-     
-      <button (click)="changeLang('fr')" [disabled]="currentLang === 'fr'">
-        FR
-      </button>
-
-      <button (click)="changeLang('ar')" [disabled]="currentLang === 'ar'">
-        AR
-      </button>
-  
-  </div>
-</nav> 
+ 
+</nav>  
 

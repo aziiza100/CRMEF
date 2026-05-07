@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Navbar } from '../navbar/navbar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Header } from '../header/header';
+import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterLink, Navbar , RouterOutlet, TranslateModule],
-  templateUrl: './layout.html',
+  imports: [RouterOutlet, TranslateModule , Header, Navbar],
+  templateUrl: './layout.html', 
   styleUrl: './layout.css',
 })
 export class Layout {
@@ -18,7 +19,7 @@ export class Layout {
 
   const savedLang = localStorage.getItem('lang');
 
-  // ⚠️ validation مهم
+
   this.currentLang = savedLang === 'ar' ? 'ar' : 'fr';
 
   this.translate.use(this.currentLang);
