@@ -1,8 +1,7 @@
 <nav id="navmenu" class="navmenu">
   <ul>
-    <li class="active"> 
-
-      <a routerLink="/home">{{ 'nav.home' | translate }}</a>
+    <li >
+      <a routerLink="/home" routerLinkActive="active"  >{{ 'nav.home' | translate }}</a>
       <!-- <ul class="dropdown-menu">
         <li><a routerLink="/home/presentation-crmef">presentation-crmef</a></li>
         <li><a routerLink="/home/message-directeur">message-directeur</a></li>
@@ -10,8 +9,8 @@
         <li><a routerLink="/home/banniere-dynamique">banniere-dynamique</a></li>
       </ul> -->
     </li> 
-    <li class="dropdown">
-      <a routerLink="">{{ 'nav.presentation' | translate }}</a>
+    <li class="dropdown"> 
+      <a routerLink="/presentation" routerLinkActive="active">{{ 'nav.presentation' | translate }}</a>
      <!-- <ul class="dropdown-menu">
         <li><a routerLink="/presentation/Historique">Historique</a></li>
         <li><a routerLink="/presentation/Missions-objectifs">Missions et objectifs</a></li>
@@ -20,7 +19,7 @@
       </ul> -->
     </li>
   <li class="dropdown">
-  <a routerLink="/formations">{{ 'nav.formations' | translate }}</a>
+  <a routerLink="/formations" routerLinkActive="active">{{ 'nav.formations' | translate }}</a>
 
   <!-- <ul class="dropdown-menu"> -->
 
@@ -92,14 +91,14 @@
 
   </ul> -->
 </li>
-    <li><a routerLink="/home/actualites">{{ 'nav.actualites' | translate }}</a></li>
-    <li><a routerLink="/espace-pedagogique">{{ 'nav.pedagogique' | translate }}</a></li>
-    <li><a routerLink="/espace-enseignant">{{ 'nav.enseignants' | translate }}</a></li>
-    <li><a routerLink="/espace-etudiant">{{ 'nav.etudiants' | translate }}</a></li>
+    <li><a routerLink="/home/actualites" routerLinkActive="active">{{ 'nav.actualites' | translate }}</a></li>
+    <li><a routerLink="/espace-pedagogique" routerLinkActive="active">{{ 'nav.pedagogique' | translate }}</a></li>
+    <li><a routerLink="/espace-enseignant" routerLinkActive="active">{{ 'nav.enseignants' | translate }}</a></li>
+    <li><a routerLink="/espace-etudiant" routerLinkActive="active">{{ 'nav.etudiants' | translate }}</a></li>
 
 
   
-    <li><a routerLink="/contact">{{ 'nav.contact' | translate }}</a></li>
+    <li><a routerLink="/contact" routerLinkActive="active">{{ 'nav.contact' | translate }}</a></li>
  
   </ul> 
  

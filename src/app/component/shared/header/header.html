@@ -1,5 +1,6 @@
-<header id="header" class="header d-flex align-items-center sticky-top">
+<header class="top-wrapper" >
   
+  <section id="header" class="header d-flex align-items-center sticky-top">
      <div class="container-fluid container-xl position-relative ">
 
       <a routerLink="/home" class="logo d-flex align-items-center me-auto">
@@ -12,21 +13,25 @@
   
   <!-- </div> -->
     </div>
-   <div class="lang-switcher d-flex align-items-center gap-2">
+    <div class="lang-switcher d-flex align-items-center gap-2">
 
-  <button
-    class="lang-btn"
-    [class.active-lang]="currentLang === 'fr'"
-    (click)="changeLang('fr')">
-    FR
-  </button>
+      <button
+        class="lang-btn"
+        [class.active-lang]="currentLang === 'fr'"
+        (click)="changeLang('fr')">
+        FR
+      </button>
 
-  <button
-    class="lang-btn"
-    [class.active-lang]="currentLang === 'ar'"
-    (click)="changeLang('ar')">
-    AR
-  </button>
+      <button
+        class="lang-btn"
+        [class.active-lang]="currentLang === 'ar'"
+        (click)="changeLang('ar')">
+        AR
+      </button>
 
-</div>
+    </div> 
+  </section>
+   
+    <app-navbar></app-navbar> 
+
 </header>

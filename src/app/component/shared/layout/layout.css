@@ -65,7 +65,7 @@ body {
   background-color: var(--background-color);
   font-family: var(--default-font);
 }
-
+ 
 a {
   color: var(--accent-color);
   text-decoration: none;
@@ -288,7 +288,7 @@ h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /* Navmenu - Desktop */
-@media (min-width: 1200px) {
+/* @media (min-width: 1200px) {
   .navmenu {
     padding: 0;
   }
@@ -395,6 +395,7 @@ h6 {
 }
 
 /* Navmenu - Mobile */
+/*
 @media (max-width: 1199px) {
   .mobile-nav-toggle {
     color: var(--nav-color);
@@ -453,8 +454,8 @@ h6 {
     border-radius: 50%;
     transition: 0.3s;
     background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
-  }
-
+  } */
+/* 
   .navmenu a i:hover,
   .navmenu a:focus i:hover {
     background-color: var(--accent-color);
@@ -518,7 +519,7 @@ h6 {
   .mobile-nav-active .navmenu>ul {
     display: block;
   }
-}
+} */
 
 /*--------------------------------------------------------------
 # Global Footer
@@ -688,7 +689,7 @@ h6 {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  overflow: hidden;
+  overflow: hidden; 
   background: var(--background-color);
   transition: all 0.6s ease-out;
 }
@@ -871,6 +872,7 @@ section,
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
+/* 
 .hero {
   width: 100%;
   min-height: 80vh;
@@ -943,12 +945,12 @@ section,
   .hero p {
     font-size: 18px;
   }
-}
+} */
 
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
-.about .content h3 {
+/*.about .content h3 {
   font-size: 2rem;
   font-weight: 700;
 }
@@ -1001,7 +1003,7 @@ section,
 
 .about .content .read-more:hover i {
   margin-left: 10px;
-}
+} */
 
 /*--------------------------------------------------------------
 # Counts Section

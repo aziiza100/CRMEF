@@ -1,0 +1,129 @@
+
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  padding: 60px 0;
+  scroll-margin-top: 900px;
+  overflow: clip;
+}
+
+@media (max-width: 1199px) {
+
+  section,
+  .section {
+    scroll-margin-top: 66px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Section hero
+--------------------------------------------------------------*/
+.hero {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: url("/assets/images/hero-crmef.avif") center center / cover no-repeat;
+
+  overflow: hidden;
+}
+
+/* Overlay */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  z-index: 1;
+}
+
+/* Content */
+.hero .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.hero h2 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 22px;
+  opacity: 0.85;
+}
+
+.hero .btn-get-started {
+  display: inline-block;
+  margin-top: 25px;
+  margin-left: 25px;
+  padding: 10px 30px;
+
+  border-radius: 50px;
+  border: 2px solid white;
+
+  color: white;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.hero .btn-get-started:hover {
+  background: #5fcf80;
+  border-color: #5fcf80;
+}
+
+/*--------------------------------------------------------------
+# Section about
+--------------------------------------------------------------*/
+.about .content .read-more {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  font-family: var(--heading-font);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 1px;
+  padding: 10px 24px 12px 24px;
+  border-radius: 50px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.about .content .read-more i {
+  font-size: 18px;
+  margin-left: 5px;
+  line-height: 0;
+  transition: 0.3s;
+}
+
+.about .content .read-more:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+  padding-right: 19px;
+}
+
+.about .content .read-more:hover i {
+  margin-left: 10px;
+}
+
+.read-more {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 999;
+}
+.img-fluid{
+    height: 100%;
+}
+

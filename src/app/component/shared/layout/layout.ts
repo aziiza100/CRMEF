@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Header } from '../header/header';
 import { Navbar } from '../navbar/navbar';
 
+
 @Component({
   selector: 'app-layout',
   imports: [RouterOutlet, TranslateModule , Header, Navbar],

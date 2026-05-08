@@ -40,4 +40,5 @@ export class Navbar {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
   
+  
 }

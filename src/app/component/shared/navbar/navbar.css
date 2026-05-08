@@ -5,7 +5,10 @@
 /* Navmenu - Desktop */
 @media (min-width: 1200px) {
   .navmenu {
+    z-index: 9999;
     padding: 0;
+    margin-left: 20px;
+    margin-right: 20px;
   }
 
   .navmenu ul {
@@ -109,11 +112,12 @@
   }
 }
 
+
 /* Navmenu - Mobile */
 @media (max-width: 1199px) {
   .mobile-nav-toggle {
     color: var(--nav-color);
-    font-size: 28px;
+    font-size: 28px; 
     line-height: 0;
     margin-right: 10px;
     cursor: pointer;
@@ -126,6 +130,19 @@
   }
 
   .navmenu ul {
+    position: fixed;
+    top: 90px;  
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: none; 
+    overflow-y: auto;
+    background: var(--nav-mobile-background-color);
+    z-index: 9999;
+  }
+
+  /* .navmenu ul {
     display: none;
     list-style: none;
     position: absolute;
@@ -139,7 +156,7 @@
     overflow-y: auto;
     transition: 0.3s;
     z-index: 9998;
-  }
+  } */
 
   .navmenu a,
   .navmenu a:focus {
@@ -229,8 +246,12 @@
     background: rgba(33, 37, 41, 0.8);
     transition: 0.3s;
   }
+/* khass nzido menu pour mobile + state isMenuOpen = false;
 
-  .mobile-nav-active .navmenu>ul {
+toggleMenu() {
+  this.isMenuOpen = !this.isMenuOpen;
+} */
+  .mobile-nav-active .navmenu>ul { 
     display: block;
   }
 }
