@@ -4,20 +4,24 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { CustomLoader } from './core/custom-loader';
 import { provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 
 export const appConfig = {
   providers: [
     provideHttpClient(),
      provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled'
+      })
+    ),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
         useClass: CustomLoader,
         deps: [HttpClient]
-      } 
+      }  
     })
   ]
 };

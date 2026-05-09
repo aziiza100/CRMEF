@@ -29,5 +29,5 @@ export class Home implements OnInit, AfterViewInit {
 
     new PureCounter();
   }
-
+ 
 }

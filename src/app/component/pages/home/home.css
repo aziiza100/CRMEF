@@ -80,7 +80,7 @@ section,
 }
 
 .hero .btn-get-started:hover {
-  background: #005E76;
+  background: var(--accent-color);
   border-color: #005E76;
 }
 

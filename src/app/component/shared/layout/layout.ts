@@ -1,4 +1,4 @@
-import { Component, OnInit , ChangeDetectorRef, HostListener} from '@angular/core';
+import { Component, HostListener} from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Header } from '../header/header';
@@ -12,10 +12,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './layout.html', 
   styleUrl: './layout.css',
 })
-export class Layout implements OnInit {
+export class Layout  {
   currentLang: 'fr' | 'ar' = 'fr';
 
- constructor(private translate: TranslateService, private cdr: ChangeDetectorRef) {
+ constructor(private translate: TranslateService) {
 
   this.translate.setDefaultLang('fr');
 
@@ -33,22 +33,9 @@ export class Layout implements OnInit {
 }
 
   
-  isLoading = true;
-
+  
  
-  ngOnInit(): void {
-
-    setTimeout(() => {
-      this.isLoading = false;
-
-      console.log('LOADING OFF');
-
-      this.cdr.detectChanges(); 
-
-    }, 1000);
-
-  }
-
+ 
   changeLang(lang: 'fr' | 'ar') {
     console.log('CHANGE TO:', lang);
     this.currentLang = lang;
@@ -64,8 +51,8 @@ export class Layout implements OnInit {
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.showScrollTop = window.scrollY > 100;
-  }
-  
+  } 
+   
 
   scrollToTop(event: Event): void {
     event.preventDefault();
