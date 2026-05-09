@@ -1,7 +1,9 @@
 {
   "header": {
     "ministry": "Royaume du Maroc - Ministère de l'Éducation Nationale",
-    "title": "Centre Régional des Métiers de l'Éducation et de la Formation"
+    "title": "Centre Régional des Métiers de l'Éducation et de la Formation",
+    "button1" : "Découvrir les formations",
+    "button2" : "Contacter le centre"
   },
  
   "nav": {
@@ -17,9 +19,9 @@
 
   "hero": {
     "eyebrow": "CRMEF Marrakech-Safi",
-    "title": "Un portail institutionnel moderne inspiré de Marrakech",
+    "title": "Une plateforme institutionnelle moderne pour présenter le centre, ses formations, ses actualités et ses espaces numériques.",
     "desc": "Version bilingue moderne avec navigation et structure prête pour backend.",
-    "btn1": "Voir les formations",
+    "btn1": "Voir les formations", 
     "btn2": "Contact"
   },
 
@@ -41,6 +43,24 @@
       "title": "Espaces",
       "desc": "Étudiants, enseignants et administration."
     }
+  },
+
+   "presentation":{
+    "titre" : "Centre Régional des Métiers de l'Éducation et de la Formation - Marrakech",
+    "descr" : "Le CRMEF de Marrakech est un établissement public chargé de la formation initiale et continue des enseignants et des cadres du système éducatif au Maroc.",
+    "phrases": {
+      "p1": "Assurer la formation des futurs enseignants dans différentes disciplines.",
+      "p2": "Développer les compétences pédagogiques et professionnelles des formateurs.",
+      "p3": "Accompagner les enseignants à travers des formations continues et des ateliers de perfectionnement.",
+      "p4": "Contribuer à l’amélioration de la qualité de l’éducation au niveau régional et national."
+    },
+    "button":"Voir plus"
+  },
+   "stats": {
+    "1": "Espaces utilisateurs",
+    "2": "nombres des Enseignants",
+    "3": "Nombres des Etudiants",
+    "4": "Accès aux ressources"
   },
 
   "footer": {

@@ -26,7 +26,6 @@ export class Header {
 
   document.documentElement.dir =
     this.currentLang === 'ar' ? 'rtl' : 'ltr';
-    console.log(this.translate.currentLang);
     
 }
 

@@ -14,16 +14,16 @@
     <section class="hero section dark-background">
 
     <div class="container">
-        <h2>CRMEF <br> Marrakech-Safi</h2>
+        <h2>{{ 'hero.eyebrow' | translate }}</h2>
 
-        <p>
-        Une plateforme institutionnelle moderne pour présenter le centre, ses formations, ses actualités et ses espaces numériques.  
+        <p> 
+        {{ 'hero.title' | translate }}
        </p>
         <a routerLink="/formations" class="btn-get-started">
-        Découvrir les formations
+          {{ 'header.button1' | translate }}
         </a>
          <a routerLink="/contact" class="btn-get-started">
-        Contacter le centre
+          {{ 'header.button2' | translate }}
         </a>
     </div>
 
@@ -36,30 +36,37 @@
                 <img src="assets/images/crmef3.jpg" class="img-fluid" alt="CRMEF Marrakech">
             </div>
             <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-                <h3>Centre Régional des Métiers de l'Éducation et de la Formation - Marrakech</h3>
+                <h3>
+                            {{ 'presentation.titre' | translate }}
+                </h3>
                 <p class="fst-italic">
-                Le CRMEF de Marrakech est un établissement public chargé de la formation initiale et continue des enseignants
-                et des cadres du système éducatif au Maroc.</p>
+                          {{ 'presentation.descr' | translate }}
+                </p>
                 <ul>
                 <li><i class="bi bi-check-circle"></i> 
-                    <span>Assurer la formation des futurs enseignants dans différentes disciplines.</span>
+                    <span>{{ 'presentation.phrases.p1' | translate }}</span>
                 </li>
 
                 <li><i class="bi bi-check-circle"></i> 
-                    <span>Développer les compétences pédagogiques et professionnelles des formateurs.</span>
+                    <span>{{ 'presentation.phrases.p2' | translate }}</span>
                 </li>
 
                 <li><i class="bi bi-check-circle"></i> 
-                    <span>Accompagner les enseignants à travers des formations continues et des ateliers de perfectionnement.</span>
+                    <span>{{ 'presentation.phrases.p3' | translate }}</span>
                 </li>
 
                 <li><i class="bi bi-check-circle"></i> 
-                    <span>Contribuer à l’amélioration de la qualité de l’éducation au niveau régional et national.</span>
+                    <span>{{ 'presentation.phrases.p4' | translate }}</span>
                 </li>
                 </ul>
 
                 <a routerLink="/presentation" class="read-more">
-                <span>Voir plus</span><i class="bi bi-arrow-right"></i>
+                <span>{{ 'presentation.button' | translate }}</span>
+                @if (translate.currentLang == "fr") {
+                  <i class="bi bi-arrow-right"></i>
+                }@else{
+                  <i class="bi bi-arrow-left"></i>
+                }
                 </a>
                 
 
@@ -77,18 +84,24 @@
       <div class="container" data-aos="fade-up" data-aos-delay="100">
  
         <div class="row gy-4">
-
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="00" data-purecounter-end="08" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Rubriques principales</p>
+              <span data-purecounter-start="00" data-purecounter-end="03" data-purecounter-duration="1" class="purecounter"></span>
+              <p>{{'stats.1'|translate}}</p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
+              <div class="stats-item text-center w-100 h-100">
+                <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter last"></span>
+                <p>{{'stats.2'|translate}}</p>
+              </div>
+          </div><!-- End Stats Item -->
+ 
+          <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="00" data-purecounter-end="03" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Espaces utilisateurs</p>
+              <span data-purecounter-start="00" data-purecounter-end="800" data-purecounter-duration="1" class="purecounter"></span>
+              <p>{{'stats.3'|translate}}</p>
             </div>
           </div><!-- End Stats Item -->
 
@@ -115,17 +128,10 @@
 
                 </div>
 
-                <p>Accès aux ressources</p>
+                <p>{{'stats.4'|translate}}</p>
 
             </div>
         </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter last"></span>
-              <p>Version statique</p>
-            </div>
-          </div><!-- End Stats Item -->
 
         </div>
 

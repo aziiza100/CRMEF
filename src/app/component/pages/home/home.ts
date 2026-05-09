@@ -5,18 +5,20 @@ import { MessageDirecteur } from './composants/message-directeur/message-directe
 import { PresentationCRMEF } from './composants/presentation-crmef/presentation-crmef';
 import AOS from 'aos';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 // import 'aos/dist/aos.css';
 declare var PureCounter: any;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Actualites, BanniereDynamique, MessageDirecteur, PresentationCRMEF, RouterLink],
+  imports: [Actualites, BanniereDynamique, MessageDirecteur, PresentationCRMEF, RouterLink, TranslateModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements OnInit, AfterViewInit {
 
+   constructor(public translate: TranslateService){}
   ngOnInit(): void {
     AOS.init({
       duration: 800,

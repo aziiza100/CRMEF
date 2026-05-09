@@ -158,9 +158,9 @@ section,
   font-size: 15px;
   font-weight: 600;
 }
-.last::after {
+/* .last::after {
   content: "%";
-}
+} */
 
 
 
