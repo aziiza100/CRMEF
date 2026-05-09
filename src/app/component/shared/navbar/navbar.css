@@ -5,11 +5,15 @@
 /* Navmenu - Desktop */
 @media (min-width: 1200px) {
   .navmenu {
+    /* background-color: #006077; */
+    background-color: #49707D;
     z-index: 9999;
-    padding: 0;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+  /* box-shadow: 0 7px 20px rgba(0,0,0,.12); */
+
+  } 
 
   .navmenu ul {
     margin: 0;
@@ -25,11 +29,12 @@
 
   .navmenu a,
   .navmenu a:focus {
-    color: var(--nav-color);
+    color: #fff;
+    /* color: var(--nav-color); */
     padding: 18px 15px;
     font-size: 16px;
     font-family: var(--nav-font);
-    font-weight: 400;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
