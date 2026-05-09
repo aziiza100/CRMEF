@@ -10,7 +10,24 @@
 <body class="index-page">
     <app-header></app-header>
     <router-outlet></router-outlet> 
-
+    <app-footer></app-footer>
+     <!-- Scroll Top -->
+      @if (showScrollTop) {
+        <a
+            class="scroll-top d-flex align-items-center justify-content-center active"
+            (click)="scrollToTop($event)"
+        >
+            <i class="bi bi-arrow-up-short"></i>
+        </a>
+        }
+  <!-- Preloader -->
+@if (isLoading) {
+    
+  <div id="preloader">
+    <!-- <p>LOADING: {{ isLoading }}</p> -->
+  </div>
+  
+}
 </body>
 </html>
  

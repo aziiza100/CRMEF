@@ -6,7 +6,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 50px 0;
   scroll-margin-top: 900px;
   overflow: clip;
 }
@@ -80,8 +80,8 @@ section,
 }
 
 .hero .btn-get-started:hover {
-  background: #5fcf80;
-  border-color: #5fcf80;
+  background: #005E76;
+  border-color: #005E76;
 }
 
 /*--------------------------------------------------------------
@@ -265,6 +265,7 @@ section,
   color: var(--contrast-color);
   background: var(--accent-color);
   padding: 30px;
+  margin-bottom: 0;
 }
 
 .why-us .why-box h3 {
@@ -334,3 +335,4 @@ section,
   color: var(--contrast-color);
   background: var(--accent-color);
 }
+

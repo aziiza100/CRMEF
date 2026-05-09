@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit , ChangeDetectorRef, HostListener} from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Header } from '../header/header';
 import { Navbar } from '../navbar/navbar';
-
+import { Footer } from "../footer/footer";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, TranslateModule , Header, Navbar],
+  imports: [CommonModule , RouterOutlet, TranslateModule, Header, Navbar, Footer],
   templateUrl: './layout.html', 
   styleUrl: './layout.css',
 })
-export class Layout {
+export class Layout implements OnInit {
   currentLang: 'fr' | 'ar' = 'fr';
 
- constructor(private translate: TranslateService) {
+ constructor(private translate: TranslateService, private cdr: ChangeDetectorRef) {
 
   this.translate.setDefaultLang('fr');
 
@@ -31,6 +32,23 @@ export class Layout {
     
 }
 
+  
+  isLoading = true;
+
+ 
+  ngOnInit(): void {
+
+    setTimeout(() => {
+      this.isLoading = false;
+
+      console.log('LOADING OFF');
+
+      this.cdr.detectChanges(); 
+
+    }, 1000);
+
+  }
+
   changeLang(lang: 'fr' | 'ar') {
     console.log('CHANGE TO:', lang);
     this.currentLang = lang;
@@ -40,4 +58,18 @@ export class Layout {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
   
+  
+  showScrollTop = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.showScrollTop = window.scrollY > 100;
+  }
+  
+
+  scrollToTop(event: Event): void {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 }

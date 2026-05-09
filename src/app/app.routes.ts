@@ -81,7 +81,7 @@ export const routes: Routes = [
       import('./component/pages/formation/composants/conditions-acces/conditions-acces').then(m => m.ConditionsAcces)
   },
   {
-    path: 'home/actualites',
+    path: 'actualites',
     loadComponent: () =>
       import('./component/pages/home/composants/actualites/actualites').then(m => m.Actualites)
   },
