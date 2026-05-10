@@ -54,8 +54,24 @@
       "p3": "Accompagner les enseignants à travers des formations continues et des ateliers de perfectionnement.",
       "p4": "Contribuer à l’amélioration de la qualité de l’éducation au niveau régional et national."
     },
-    "button":"Voir plus"
-  },
+    "button":"Voir plus",
+    "par":"Centre Régional des Métiers de l’Éducation et de la Formation de Marrakech-Safi est considéré comme l’un des établissements éducatifs les plus importants au Maroc. Il a été créé dans le cadre de la réforme du système de l’éducation et de la formation afin d’assurer la qualification des cadres pédagogiques et administratifs ainsi que le développement de leurs compétences professionnelles. Sa création s’inscrit dans une politique nationale visant l’amélioration de la qualité de l’enseignement et le renforcement de la formation initiale et continue des professionnels de l’éducation. Depuis sa création, le centre contribue à la formation de plusieurs générations d’enseignants et de cadres éducatifs dans différentes spécialités, tout en accompagnant les évolutions pédagogiques et technologiques à travers des programmes de formation modernes et des partenariats éducatifs aux niveaux régional et national.",
+    "Missions-objectifs":{
+      "titre":"Missions et objectifs",
+      "m1":"Assurer la formation initiale des futurs enseignants et cadres éducatifs.",
+      "m2":"Développer les compétences pédagogiques, professionnelles et numériques des formateurs et des enseignants.",
+      "m3":"Organiser des formations continues et des ateliers de perfectionnement au profit des professionnels de l’éducation.",
+      "m4":"Accompagner les réformes du système éducatif et promouvoir l’innovation pédagogique.",
+      "m5":"Contribuer à l’amélioration de la qualité de l’enseignement au niveau régional et national.",
+      "m6":"Encourager la recherche pédagogique et l’échange des expériences dans le domaine de l’éducation et de la formation."
+    },
+    "partenariats":{
+      "p1":"Ministère de l'Éducation Nationale, du Préscolaire et des Sports",
+      "p2":"Les Académies Régionales de l’Éducation et de la Formation (AREF)",
+      "p3":"Les directions provinciales de l’éducation",
+      "p4":"Les centres de recherche pédagogique et scientifique"
+    }
+   },
    "stats": {
     "1": "Espaces utilisateurs",
     "2": "nombres des Enseignants",
@@ -65,12 +81,28 @@
 
   "footer": {
     "title": "CRMEF Marrakech-Safi",
-    "desc": "Portail institutionnel statique.",
-    "centre": "Centre",
-    "espaces": "Espaces",
-    "contact": "Contact",
-    "email": "contact@crmef.ma",
-    "location": "Marrakech - Maroc",
+    "location": "JXXQ+4P6, Boulevard Al Mouzdalifa Marrakech 40000",
+    "ville": "Marrakech 40000",
+    "tel":"Téléphone",
+    "email": "Email",
+    "Accès-rapide": {
+      "l1":"Home",
+      "l2":"Présentation",
+      "l3":"Formation",
+      "l4":"Actualités",
+      "l5":"contact"
+    },
+    "espaces": {
+      "e1": "Pédagogique",
+      "e2": "Enseignants.",
+      "e3": "Étudiants"
+
+    },
+    "connexion": {
+      "titre":"Se connecter",
+      "descr":"Vous pouvez désormais accéder à votre espace personnel et consulter les ressources disponibles sur la plateforme.",
+      "button":"se connecter"
+    },
     "copyright": "© 2026 CRMEF Marrakech-Safi"
   }
 }

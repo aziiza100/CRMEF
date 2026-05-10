@@ -27,9 +27,7 @@ export class Layout  {
   this.translate.use(this.currentLang);
 
   document.documentElement.dir =
-    this.currentLang === 'ar' ? 'rtl' : 'ltr';
-    console.log(this.translate.currentLang);
-    
+    this.currentLang === 'ar' ? 'rtl' : 'ltr';    
 }
 
   

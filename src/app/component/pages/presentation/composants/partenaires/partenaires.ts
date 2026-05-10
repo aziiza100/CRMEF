@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-partenaires',
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './partenaires.html',
   styleUrl: './partenaires.css',
 })
-export class Partenaires {}
+export class Partenaires {
+  constructor(public translate: TranslateService){}
+}

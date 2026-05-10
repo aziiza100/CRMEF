@@ -4,13 +4,13 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">CRMEF Marrakech-Safi</span> 
+            <span class="sitename">{{"footer.title" | translate}} </span> 
           </a>
           <div class="footer-contact pt-3">
-            <p>JXXQ+4P6, Boulevard Al Mouzdalifa</p>
-            <p>Marrakech 40000</p>
-            <p class="mt-3"><strong>Téléphone :</strong> <span>05 24 29 01 92</span></p>
-            <p><strong>Email:</strong> <span>crmefmarrkechsafi@gmail.com</span></p>
+            <p>{{"footer.location" | translate}}</p>
+            <p>{{"footer.ville" | translate}}</p>
+            <p class="mt-3"><strong>{{"footer.tel" | translate}}</strong> <span>05 24 29 01 92</span></p>
+            <p><strong>{{"footer.email" | translate}}</strong> <span>crmefmarrkechsafi@gmail.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
            
@@ -20,30 +20,30 @@
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Accès rapide</h4>
+          <h4>{{"footer.Accès-rapide" | translate}}</h4>
           <ul>
-            <li><a routerLink="home">Home</a></li>
-            <li><a routerLink="presentation">Présentation</a></li>
-            <li><a routerLink="formations">Formation</a></li>
-            <li><a routerLink="actualites">Actualités</a></li>
-            <li><a routerLink="contact">contact</a></li>
+            <li><a routerLink="home">{{"footer.Accès-rapide.l1" | translate}}</a></li>
+            <li><a routerLink="presentation">{{"footer.Accès-rapide.l2" | translate}}</a></li>
+            <li><a routerLink="formations">{{"footer.Accès-rapide.l3" | translate}}</a></li>
+            <li><a routerLink="actualites">{{"footer.Accès-rapide.l4" | translate}}</a></li>
+            <li><a routerLink="contact">{{"footer.Accès-rapide.l5" | translate}}</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Espaces</h4>
+          <h4>{{"footer.espaces" | translate}}</h4>
           <ul>
-            <li><a routerLink="espace-pedagogique">pedagogique</a></li>
-            <li><a routerLink="espace-enseignant">Enseignant</a></li>
-            <li><a routerLink="espace-etudiant">Etudiant</a></li>
+            <li><a routerLink="espace-pedagogique">{{"footer.espaces.e1" | translate}}</a></li>
+            <li><a routerLink="espace-enseignant">{{"footer.espaces.e2" | translate}}</a></li>
+            <li><a routerLink="espace-etudiant">{{"footer.espaces.e3" | translate}}</a></li>
           </ul>
         </div>
 
         <div class="col-lg-4 col-md-12 footer-newsletter">
-          <h4>Se connecter</h4>
-          <p>Vous pouvez désormais accéder à votre espace personnel et consulter les ressources disponibles sur la plateforme.</p>
+          <h4>{{"footer.connexion.titre" | translate}}</h4>
+          <p>{{"footer.connexion.descr" | translate}}</p>
           <form action="forms/newsletter.php" method="post" class="php-email-form">
-            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
+            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="{{'footer.connexion.button' | translate}}"></div>
             <div class="loading">Loading</div>
             <div class="error-message"></div>
             <div class="sent-message">Your subscription request has been sent. Thank you!</div>
