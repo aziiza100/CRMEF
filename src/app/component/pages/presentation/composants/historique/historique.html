@@ -1,24 +1,27 @@
-  <!-- presentation Section -->
-    <section id="about-us" class="section about-us">
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-            <img src="assets/images/crmef3.jpg" class="img-fluid" alt="">
-          </div>
-
-          <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-            <h3>{{"presentation.titre" | translate}}</h3>
-            <p class="fst-italic">
-                {{"presentation.par" | translate}}
-            </p>
-            
-          </div>
-
-        </div>
-
+<section class="presentation-block historique-block" id="historique">
+  <div class="container">
+    <div class="section-card historique-card" data-aos="fade-up">
+      <div class="block-header">
+        <h3>{{ 'presentation.historique.title' | translate }}</h3>
+        <p>{{ 'presentation.historique.subtitle' | translate }}</p>
       </div>
 
-    </section><!-- /presentation Section -->
+      <div class="row gy-4 align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1">
+          <div class="historique-text">
+            <p>{{ 'presentation.par' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+          <div class="img-wrap historique-img-wrap">
+            <img
+              src="assets/images/crmef3.jpg"
+              class="img-fluid"
+              [alt]="'presentation.titre' | translate"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

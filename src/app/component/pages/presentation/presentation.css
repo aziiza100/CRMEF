@@ -1,7 +1,3 @@
-
-/*--------------------------------------------------------------
-# Global Page Titles & Breadcrumbs
---------------------------------------------------------------*/
 .page-title {
   --default-color: var(--contrast-color);
   --background-color: #46707D;
@@ -12,18 +8,29 @@
 }
 
 .page-title .heading {
-  padding: 50px 0;
-  border-top: 1px solid color-mix(in srgb, var(--background-color), transparent 90%);
+  padding: 48px 0 40px;
 }
 
 .page-title .heading h1 {
-  font-size: 38px;
+  font-family: var(--heading-font);
+  font-size: 36px;
   font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.page-title .heading p {
+  opacity: 0.92;
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .page-title nav {
-  background-color: color-mix(in srgb, var(--background-color) 90%, var(--accent-color) 5%);
-  padding: 20px 0;
+  background-color: color-mix(in srgb, var(--background-color) 88%, var(--accent-color) 8%);
+  padding: 18px 0;
 }
 
 .page-title nav a {
@@ -35,8 +42,8 @@
   flex-wrap: wrap;
   list-style: none;
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .page-title nav ol li+li {
@@ -47,5 +54,139 @@
   content: "/";
   display: inline-block;
   padding-right: 10px;
-  color: color-mix(in srgb, var(--default-color), transparent 70%);
+  opacity: 0.6;
+}
+
+.presentation-page {
+  --pres-cream: #faf6f1;
+  --pres-white: #fffcf8;
+  --pres-radius: 20px;
+  --pres-shadow: 0 16px 48px rgba(70, 112, 125, 0.1);
+  --pres-hover-shadow: 0 14px 36px color-mix(in srgb, var(--accent-color), transparent 70%);
+  --pres-accent-gradient: linear-gradient(135deg, var(--accent-color) 0%, #d47835 100%);
+}
+
+.presentation-content {
+  background: linear-gradient(165deg, var(--pres-cream) 0%, #f3efe8 45%, var(--pres-cream) 100%);
+  padding-bottom: 64px;
+}
+
+.presentation-content .presentation-block {
+  padding: 48px 0;
+}
+
+.presentation-content .presentation-block:nth-child(even) {
+  background: color-mix(in srgb, var(--pres-white), transparent 50%);
+}
+
+.presentation-content .section-card {
+  background: var(--pres-white);
+  border-radius: var(--pres-radius);
+  padding: 36px 32px;
+  box-shadow: var(--pres-shadow);
+  border: 1px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.presentation-content .section-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pres-hover-shadow);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 75%);
+}
+
+.presentation-content .block-header {
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent-color), transparent 85%);
+}
+
+.presentation-content .block-header h3 {
+  font-family: var(--heading-font);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+  transition: color 0.25s ease;
+}
+
+.presentation-content .section-card:hover .block-header h3 {
+  color: var(--accent-color);
+}
+
+.presentation-content .block-header p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+}
+
+.presentation-content .content p {
+  line-height: 1.8;
+  color: var(--default-color);
+}
+
+.presentation-content .content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.presentation-content .content ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--pres-cream), transparent 30%);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.presentation-content .content ul li:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  transform: translateX(4px);
+}
+
+.presentation-content .content ul i {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  color: var(--accent-color);
+}
+
+.presentation-content .img-wrap {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+.presentation-content .img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.presentation-content .section-card:hover .img-wrap img {
+  transform: scale(1.02);
+}
+
+[dir="rtl"] .presentation-content .content ul li:hover {
+  transform: translateX(-4px);
+}
+
+@media (max-width: 767px) {
+  .presentation-content .presentation-block {
+    padding: 32px 0;
+  }
+
+  .presentation-content .section-card {
+    padding: 24px 20px;
+  }
+
+  .page-title .heading h1 {
+    font-size: 28px;
+  }
 }

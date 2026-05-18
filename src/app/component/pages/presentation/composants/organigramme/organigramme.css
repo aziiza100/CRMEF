@@ -1,0 +1,56 @@
+.organigramme-card .organigramme-viewer {
+  position: relative;
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  padding: 16px;
+  line-height: 0;
+  text-decoration: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.organigramme-card:hover .organigramme-viewer {
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-color), transparent 75%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 60%);
+  transform: translateY(-2px);
+}
+
+.organigramme-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.organigramme-overlay {
+  position: absolute;
+  inset: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  background: color-mix(in srgb, #1a1a1a, transparent 45%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.organigramme-overlay i {
+  font-size: 28px;
+}
+
+.organigramme-viewer:hover .organigramme-overlay {
+  opacity: 1;
+}
+
+.organigramme-viewer:hover .organigramme-img {
+  transform: scale(1.03);
+  filter: brightness(0.85);
+}

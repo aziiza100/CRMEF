@@ -1,25 +1,48 @@
-  <!-- messions et objc Section -->
-    <section id="about-us" class="section about-us container">
+<section class="presentation-block missions-block" id="missions-objectifs">
+  <div class="container">
+    <div class="section-card missions-card" data-aos="fade-up">
+      <div class="block-header missions-header">
+        <h3>{{ 'presentation.Missions-objectifs.titre' | translate }}</h3>
+        <p>{{ 'presentation.missions.subtitle' | translate }}</p>
+      </div>
 
-          <div class="col-lg-12 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-            <h3>{{"presentation.Missions-objectifs.titre" | translate}}</h3>
-              <ul> 
-               <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m1' | translate }}</span>
-                </li>
-                <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m2' | translate }}</span>
-                </li>
-                <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m3' | translate }}</span>
-                </li>
-                <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m4' | translate }}</span>
-                </li>                <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m5' | translate }}</span>
-                </li>                <li><i class="bi bi-check-circle"></i> 
-                    <span>{{ 'presentation.Missions-objectifs.m6' | translate }}</span>
-                </li>                
-             </ul>
-          </div>
-    </section><!-- /messions et objc Section -->
+      <div class="missions-grid">
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="50">
+          <span class="mission-number">01</span>
+          <span class="mission-icon"><i class="bi bi-mortarboard-fill"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m1' | translate }}</p>
+        </article>
+
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="100">
+          <span class="mission-number">02</span>
+          <span class="mission-icon"><i class="bi bi-laptop"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m2' | translate }}</p>
+        </article>
+
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="150">
+          <span class="mission-number">03</span>
+          <span class="mission-icon"><i class="bi bi-calendar-check"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m3' | translate }}</p>
+        </article>
+
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="200">
+          <span class="mission-number">04</span>
+          <span class="mission-icon"><i class="bi bi-lightbulb"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m4' | translate }}</p>
+        </article>
+
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="250">
+          <span class="mission-number">05</span>
+          <span class="mission-icon"><i class="bi bi-graph-up-arrow"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m5' | translate }}</p>
+        </article>
+
+        <article class="mission-item" data-aos="zoom-in" data-aos-delay="300">
+          <span class="mission-number">06</span>
+          <span class="mission-icon"><i class="bi bi-people"></i></span>
+          <p class="mission-text">{{ 'presentation.Missions-objectifs.m6' | translate }}</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

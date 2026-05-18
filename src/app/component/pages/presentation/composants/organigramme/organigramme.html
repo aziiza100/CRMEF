@@ -1,1 +1,29 @@
-<p>organigramme works!</p>
+<section class="presentation-block" id="organigramme">
+  <div class="container">
+    <div class="section-card organigramme-card" data-aos="fade-up">
+      <div class="block-header">
+        <h3>{{ 'presentation.organigramme.title' | translate }}</h3>
+        <p>{{ 'presentation.organigramme.subtitle' | translate }}</p>
+      </div>
+
+      <a
+        class="organigramme-viewer"
+        href="assets/images/organigramme.png"
+        target="_blank"
+        rel="noopener noreferrer"
+        [title]="'presentation.organigramme.zoom' | translate"
+      >
+        <img
+          src="assets/images/organigramme.png"
+          class="organigramme-img"
+          [alt]="'presentation.organigramme.title' | translate"
+          loading="lazy"
+        />
+        <span class="organigramme-overlay">
+          <i class="bi bi-zoom-in"></i>
+          {{ 'presentation.organigramme.zoom' | translate }}
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

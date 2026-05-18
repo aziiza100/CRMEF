@@ -1,33 +1,29 @@
-<!-- <div>
-   
-</div>  -->
-<main class="main">
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1>Presentation du CRMEF Marrakech-Safi</h1>
-            </div>
+<main class="main presentation-page">
+  <div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-9">
+            <h1>{{ 'presentation.pageTitle' | translate }}</h1>
+            <p class="mb-0">{{ 'presentation.pageSubtitle' | translate }}</p>
           </div>
         </div>
       </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="home">Home</a></li>
-            <li class="current">presentation<br></li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a routerLink="/home">{{ 'nav.home' | translate }}</a></li>
+          <li class="current">{{ 'presentation.breadcrumb' | translate }}</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
 
+  <div class="presentation-content">
     <app-historique></app-historique>
     <app-missions-objectifs></app-missions-objectifs>
     <app-organigramme></app-organigramme>
     <app-partenaires></app-partenaires>
-
-
-  </main>
- 
+  </div>
+</main>

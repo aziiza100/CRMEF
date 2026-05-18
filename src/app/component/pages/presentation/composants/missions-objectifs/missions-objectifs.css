@@ -1,15 +1,109 @@
-
-.about .content ul {
-  list-style: none;
-  padding: 0;
+.missions-header {
+  text-align: center;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 24px;
 }
 
-.about .content ul li {
-  padding-bottom: 10px;
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
 }
 
-.about .content ul i {
-  font-size: 1.25rem;
-  margin-right: 4px;
+.mission-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 20px 20px 56px;
+  min-height: 130px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-left: 4px solid color-mix(in srgb, var(--accent-color), transparent 50%);
+  cursor: default;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.mission-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-color), transparent 82%);
+  border-left-color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 96%);
+}
+
+.mission-number {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: var(--heading-font);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent-color), transparent 55%);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.mission-item:hover .mission-number {
   color: var(--accent-color);
+  transform: scale(1.08);
+}
+
+.mission-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-size: 18px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.mission-item:hover .mission-icon {
+  background: var(--pres-accent-gradient, linear-gradient(135deg, var(--accent-color) 0%, #d47835 100%));
+  color: #fff;
+  transform: rotate(-4deg) scale(1.08);
+}
+
+.mission-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  font-weight: 500;
+  color: var(--heading-color);
+}
+
+[dir="rtl"] .mission-item {
+  padding: 22px 56px 20px 20px;
+  border-left: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-right: 4px solid color-mix(in srgb, var(--accent-color), transparent 50%);
+}
+
+[dir="rtl"] .mission-item:hover {
+  border-right-color: var(--accent-color);
+}
+
+[dir="rtl"] .mission-number {
+  left: auto;
+  right: 16px;
+}
+
+@media (max-width: 991px) {
+  .missions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575px) {
+  .mission-item {
+    padding-left: 52px;
+  }
+
+  [dir="rtl"] .mission-item {
+    padding-right: 52px;
+  }
 }

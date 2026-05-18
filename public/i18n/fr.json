@@ -25,6 +25,15 @@
     "btn2": "Contact"
   },
 
+  "home": {
+    "news": {
+      "subtitle": "Les dernières annonces et événements du centre"
+    },
+    "quickAccess": {
+      "subtitle": "Accédez rapidement aux services du CRMEF"
+    }
+  },
+
   "quickAccess": {
     "title": "Accès rapide",
     "formations": {
@@ -46,6 +55,22 @@
   },
 
    "presentation":{
+    "pageTitle": "Présentation du CRMEF Marrakech-Safi",
+    "pageSubtitle": "Découvrez l'histoire, les missions et l'organisation du centre régional.",
+    "breadcrumb": "Présentation",
+    "historique": {
+      "title": "Historique",
+      "subtitle": "Le parcours et le rôle du CRMEF au service de la formation des enseignants."
+    },
+    "missions": {
+      "badge": "Nos engagements",
+      "subtitle": "Les missions qui guident nos actions au quotidien."
+    },
+    "organigramme": {
+      "title": "Organigramme",
+      "subtitle": "La structure organisationnelle du CRMEF Marrakech-Safi.",
+      "zoom": "Agrandir l'organigramme"
+    },
     "titre" : "Centre Régional des Métiers de l'Éducation et de la Formation - Marrakech",
     "descr" : "Le CRMEF de Marrakech est un établissement public chargé de la formation initiale et continue des enseignants et des cadres du système éducatif au Maroc.",
     "phrases": {
@@ -66,6 +91,8 @@
       "m6":"Encourager la recherche pédagogique et l’échange des expériences dans le domaine de l’éducation et de la formation."
     },
     "partenariats":{
+      "title": "Partenariats institutionnels",
+      "subtitle": "Nos partenaires au service de la qualité de la formation.",
       "p1":"Ministère de l'Éducation Nationale, du Préscolaire et des Sports",
       "p2":"Les Académies Régionales de l’Éducation et de la Formation (AREF)",
       "p3":"Les directions provinciales de l’éducation",
@@ -86,6 +113,7 @@
     "tel":"Téléphone",
     "email": "Email",
     "Accès-rapide": {
+      "title":"Accès rapide",
       "l1":"Home",
       "l2":"Présentation",
       "l3":"Formation",
@@ -93,6 +121,7 @@
       "l5":"contact"
     },
     "espaces": {
+      "title":"Espaces",
       "e1": "Pédagogique",
       "e2": "Enseignants.",
       "e3": "Étudiants"
@@ -104,5 +133,44 @@
       "button":"se connecter"
     },
     "copyright": "© 2026 CRMEF Marrakech-Safi"
+  },
+
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question, un renseignement ? Parlons-en simplement.",
+    "breadcrumb": "Contact",
+    "greeting": "Notre équipe est là pour vous accompagner avec bienveillance. Écrivez-nous, appelez-nous ou passez nous voir — nous vous répondrons avec plaisir.",
+    "info": {
+      "title": "Coordonnées du CRMEF",
+      "subtitle": "Adresse, téléphone et email du centre régional."
+    },
+    "address": {
+      "title": "Adresse"
+    },
+    "phone": {
+      "title": "Téléphone"
+    },
+    "email": {
+      "title": "Email"
+    },
+    "map": {
+      "title": "Localisation"
+    },
+    "form": {
+      "title": "Formulaire de contact",
+      "subtitle": "Envoyez-nous votre message, nous vous répondrons rapidement.",
+      "name": "Nom complet",
+      "email": "Adresse email",
+      "subject": "Sujet",
+      "message": "Votre message",
+      "namePlaceholder": "Ex. Ahmed Benali",
+      "emailPlaceholder": "Ex. nom@email.com",
+      "subjectPlaceholder": "Ex. Demande d'information",
+      "messagePlaceholder": "Écrivez votre message ici...",
+      "submit": "Envoyer le message",
+      "loading": "Envoi en cours...",
+      "success": "Votre message a été envoyé. Merci !",
+      "error": "Une erreur est survenue. Veuillez réessayer."
+    }
   }
 }

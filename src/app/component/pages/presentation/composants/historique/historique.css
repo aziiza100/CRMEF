@@ -1,0 +1,37 @@
+.historique-text {
+  padding: 24px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--pres-cream, #faf6f1), transparent 20%);
+  border-left: 4px solid var(--accent-color);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.historique-card:hover .historique-text {
+  background: color-mix(in srgb, var(--accent-color), transparent 94%);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-color), transparent 88%);
+  transform: translateX(4px);
+}
+
+.historique-text p {
+  margin: 0;
+  line-height: 1.85;
+  font-size: 15px;
+  color: var(--default-color);
+}
+
+.historique-img-wrap {
+  transition: box-shadow 0.35s ease;
+}
+
+.historique-card:hover .historique-img-wrap {
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+[dir="rtl"] .historique-text {
+  border-left: none;
+  border-right: 4px solid var(--accent-color);
+}
+
+[dir="rtl"] .historique-card:hover .historique-text {
+  transform: translateX(-4px);
+}

@@ -1,1 +1,21 @@
-<p>adresse-carte works!</p>
+<div class="contact-location" data-aos="fade-right" data-aos-delay="100">
+  <div class="location-map">
+    <a
+      class="map-header"
+      href="https://maps.google.com/maps?q=CRMEF+Marrakech+Boulevard+Al+Mouzdalifa"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <i class="bi bi-map"></i>
+      <h4>{{ 'contact.map.title' | translate }}</h4>
+      <i class="bi bi-box-arrow-up-right map-link-icon" aria-hidden="true"></i>
+    </a>
+    <iframe
+      src="https://maps.google.com/maps?q=CRMEF+Marrakech+Boulevard+Al+Mouzdalifa&hl=fr&z=16&output=embed"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      [title]="'contact.map.title' | translate"
+    ></iframe>
+  </div>
+</div>
