@@ -135,6 +135,389 @@
     "copyright": "© 2026 CRMEF Marrakech-Safi"
   },
 
+  "formations": {
+    "pageTitle": "Nos Formations",
+    "pageSubtitle": "Découvrez nos programmes de formation adaptés à vos besoins",
+    "breadcrumb": "Formations",
+    "hero": {
+      "title": "Formations au CRMEF",
+      "subtitle": "Des programmes d'excellence pour la formation initiale et continue des enseignants"
+    },
+    "filieres": {
+      "title": "Nos Filières",
+      "subtitle": "Explorez nos différentes filières de formation",
+      "primary": {
+        "title": "Filière Primaire",
+        "description": "Préparation à l'enseignement du cycle primaire avec une approche pédagogique innovante"
+      },
+      "secondary": {
+        "title": "Filière Secondaire",
+        "description": "Formation spécialisée pour l'enseignement secondaire avec expertise disciplinaire"
+      },
+      "qualifying": {
+        "title": "Filière Qualifiante",
+        "description": "Formation axée sur les compétences pratiques et professionnelles"
+      }
+    },
+    "programmes": {
+      "title": "Description des Programmes",
+      "subtitle": "Contenu et structure de nos formations",
+      "description": "Nos programmes sont conçus selon les standards internationaux et répondent aux besoins actuels du système éducatif marocain.",
+      "features": {
+        "f1": "Approche pédagogique moderne et innovante",
+        "f2": "Intégration des technologies numériques",
+        "f3": "Formation pratique et stage en milieu scolaire",
+        "f4": "Encadrement par des experts du domaine"
+      }
+    },
+    "modules": {
+      "title": "Modules et Contenus",
+      "subtitle": "Structuration et détail de nos cursus de formation",
+      "moduleList": {
+        "m1": {
+          "title": "Modules Pédagogiques",
+          "content": "Didactique, psychologie de l'apprentissage, stratégies d'enseignement"
+        },
+        "m2": {
+          "title": "Contenus Disciplinaires",
+          "content": "Approfondissement des connaissances dans les domaines de spécialité"
+        },
+        "m3": {
+          "title": "Formation Pratique",
+          "content": "Stages en établissements scolaires et pratiques de classe"
+        },
+        "m4": {
+          "title": "Compétences Transversales",
+          "content": "Communication, leadership, gestion de projets éducatifs"
+        }
+      }
+    },
+    "conditions": {
+      "title": "Conditions d'Accès",
+      "subtitle": "Prérequis et critères d'admission",
+      "requirements": {
+        "r1": "Être titulaire du baccalauréat ou diplôme équivalent",
+        "r2": "Réussir le concours d'accès au CRMEF",
+        "r3": "Réunir les conditions requises de nationalité marocaine",
+        "r4": "Jouir de ses droits civiques",
+        "r5": "Ne pas être atteint d'un handicap incompatible avec le métier d'enseignant",
+        "r6": "Satisfaire aux épreuves de sélection (écrit et oral)"
+      },
+      "button": "Consulter les modalités d'admission"
+    }
+  },
+
+  
+  "filierePrimaire": {
+    "hero": {
+      "stats": {
+          "stat1": "Mois (Durée Totale)",
+          "stat2": "Semestres Intensifs",
+          "stat3": "Modules de formation",
+          "stat4": "Stage par Semaine",
+          "stat4_val": "1 J"
+        },
+        "backBtn": "Retour aux formations",
+      "badge": "Tiers Temps / Formation Intensive",
+      "title": "Filière de l'Enseignement Primaire",
+      "subtitle": "Un cursus pédagogique d'excellence au CRMEF, condensé et orienté vers la pratique terrain immédiate pour former les professeurs du cycle primaire de demain."
+    },
+    "overview": {
+      "structure": {
+        "duree_lbl": "Durée",
+        "duree_val": "6 Mois condensés",
+        "pratique_lbl": "Mise en pratique",
+        "pratique_val": "1 Jour de stage / Semaine",
+        "volume_lbl": "Volume Pédagogique",
+        "volume_val": "8 Modules par semestre",
+        "diplome_lbl": "Diplôme",
+        "diplome_val": "Certificat de Qualification"
+      },
+      "title": "Aperçu de la formation",
+      "desc": "Le programme a été repensé pour une insertion rapide et efficace. Sur une période de <strong>6 mois</strong>, les stagiaires alternent entre l'acquisition des fondements didactiques au CRMEF et l'immersion hebdomadaire dans les écoles d'application."
+    },
+    "programme": {
+      "title": "Programme des 6 Mois",
+      "subtitle": "Répartition exacte des 16 modules sur les 2 semestres de formation intensive.",
+      "s1": {
+        "tab": "Semestre 1 (Fondamentaux)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S1",
+          "desc": "Un <strong>seul jour par semaine</strong> est consacré au stage au sein des écoles primaires. Le premier semestre se concentre sur l'observation de classe, la familiarisation avec l'environnement scolaire et la prise en charge partielle et progressive de la classe."
+        }
+      },
+      "s2": {
+        "tab": "Semestre 2 (Approfondissement)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S2",
+          "desc": "Poursuite du stage à raison d'<strong>un jour par semaine</strong>. Au cours de ce semestre, le stagiaire passe à la <strong>prise en charge totale de la classe</strong> sous la supervision de l'enseignant d'accueil, avec l'évaluation et l'orientation de l'inspecteur."
+        }
+      },
+      "modules": {
+        "m1": {
+          "title": "Sciences de l'éducation et psychologie de l'apprentissage",
+          "li1": "Théories fondamentales de l'apprentissage",
+          "li2": "Stades de développement de l'enfant"
+        },
+        "m2": {
+          "title": "Didactique de la langue arabe",
+          "li1": "Méthodologie de l'enseignement de la lecture",
+          "li2": "Expression et production écrite"
+        },
+        "m3": {
+          "title": "Didactique des mathématiques",
+          "li1": "Enseignement du calcul et de la géométrie",
+          "li2": "Résolution de problèmes mathématiques"
+        },
+        "m4": {
+          "title": "Planification des apprentissages",
+          "li1": "Planification à court terme",
+          "li2": "Élaboration des fiches pédagogiques"
+        },
+        "m5": {
+          "title": "Didactique du français et de l'éveil scientifique",
+          "li1": "Didactique du Français",
+          "li2": "Démarche d'investigation scientifique"
+        },
+        "m6": {
+          "title": "Gestion des apprentissages (Partie 1)",
+          "li1": "Gestion de l'espace et du temps",
+          "li2": "Communication en classe"
+        },
+        "m7": {
+          "title": "Législation scolaire et déontologie de la profession",
+          "li1": "Statut fondamental",
+          "li2": "Droits et devoirs de l'enseignant"
+        },
+        "m8": {
+          "title": "Technologies de l'Information (TICE)",
+          "li1": "Intégration des ressources numériques",
+          "li2": "Plateformes éducatives"
+        },
+        "m9": {
+          "title": "Gestion des apprentissages (Partie 2)",
+          "li1": "Travail en groupes",
+          "li2": "Construction de situations-problèmes"
+        },
+        "m10": {
+          "title": "Gestion des classes à cours multiples et différenciation",
+          "li1": "Pédagogie différenciée",
+          "li2": "Organisation des classes communes"
+        },
+        "m11": {
+          "title": "Évaluation des apprentissages",
+          "li1": "Évaluation diagnostique et formative",
+          "li2": "Grilles de correction"
+        },
+        "m12": {
+          "title": "Soutien scolaire et remédiation",
+          "li1": "Plan de soutien intégré",
+          "li2": "Traitement des difficultés d'apprentissage"
+        },
+        "m13": {
+          "title": "Méthodologie de la recherche-action",
+          "li1": "Diagnostic des problèmes de classe",
+          "li2": "Formulation du projet de recherche"
+        },
+        "m14": {
+          "title": "Didactique de l'éducation islamique et physique",
+          "li1": "Composantes de l'éducation islamique",
+          "li2": "Activités motrices et sportives"
+        },
+        "m15": {
+          "title": "Éducation inclusive",
+          "li1": "Enseignement aux enfants à besoins spécifiques",
+          "li2": "Adaptation des curricula"
+        },
+        "m16": {
+          "title": "Analyse des pratiques professionnelles et vie scolaire",
+          "li1": "Réflexivité professionnelle",
+          "li2": "Animation des clubs éducatifs"
+        }
+      }
+    }
+  },
+  
+ 
+  "filiereSecondaire": {
+    "hero": {
+      "badge": "Tiers Temps / Formation Intensive",
+      "title": "Filière de l'Enseignement Secondaire Collégial",
+      "subtitle": "Un cursus d'excellence au CRMEF pour former les professeurs de collège. Une formation de 6 mois axée sur la didactique disciplinaire et l'accompagnement des jeunes adolescents.",
+      "stats": {
+        "stat1": "Mois (Durée Totale)",
+        "stat2": "Semestres Intensifs",
+        "stat3": "Modules de formation",
+        "stat4": "Stage par Semaine",
+        "stat4_val": "1 J"
+      },
+      "backBtn": "Retour aux formations"
+    },
+    "overview": {
+      "title": "Aperçu de la formation",
+      "desc": "Le programme collégial est pensé pour une insertion immédiate. En <strong>6 mois</strong>, les professeurs stagiaires acquièrent les compétences pédagogiques nécessaires et s'immergent hebdomadairement dans les collèges d'application.",
+      "structure": {
+        "duree_lbl": "Durée",
+        "duree_val": "6 Mois condensés",
+        "pratique_lbl": "Mise en pratique",
+        "pratique_val": "1 Jour de stage / Semaine",
+        "volume_lbl": "Volume Pédagogique",
+        "volume_val": "8 Modules par semestre",
+        "diplome_lbl": "Diplôme",
+        "diplome_val": "Certificat de Qualification"
+      }
+    },
+    "programme": {
+      "title": "Programme des 6 Mois (Rozmana)",
+      "subtitle": "Répartition des 16 modules spécifiques au cycle collégial sur les 2 semestres.",
+      "s1": {
+        "tab": "Semestre 1 (Fondamentaux)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S1",
+          "desc": "<strong>Un jour par semaine</strong> dans les collèges. Familiarisation avec l'environnement scolaire, observation des pratiques et prise en charge progressive."
+        }
+      },
+      "s2": {
+        "tab": "Semestre 2 (Spécialisation)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S2",
+          "desc": "<strong>Un jour par semaine</strong>. Prise en charge totale des classes de collège, conception d'évaluations (contrôles et examens normalisés) sous la supervision de l'encadrant."
+        }
+      },
+      "modules": {
+        "m1": { "title": "Sciences de l'éducation & Psychologie", "li1": "Psychologie du jeune adolescent", "li2": "Théories de l'apprentissage au collège" },
+        "m2": { "title": "Didactique de la discipline (Partie 1)", "li1": "Épistémologie de la matière", "li2": "Analyse des programmes du collège" },
+        "m3": { "title": "Planification des apprentissages", "li1": "Planification à moyen et court terme", "li2": "Élaboration des fiches pédagogiques" },
+        "m4": { "title": "Transposition didactique", "li1": "Du savoir savant au savoir enseigné", "li2": "Conception des situations problèmes" },
+        "m5": { "title": "TICE appliquées au collège", "li1": "Ressources numériques éducatives", "li2": "Intégration technologique en classe" },
+        "m6": { "title": "Gestion des apprentissages (Partie 1)", "li1": "Techniques de communication", "li2": "Animation et gestion de l'espace" },
+        "m7": { "title": "Législation scolaire et déontologie", "li1": "Textes de loi du secondaire collégial", "li2": "Éthique et devoirs de l'enseignant" },
+        "m8": { "title": "Éducation inclusive au collège", "li1": "Scolarisation des enfants à besoins spécifiques", "li2": "Pédagogie différenciée" },
+        "m9": { "title": "Gestion des apprentissages (Partie 2)", "li1": "Gestion des conflits en classe", "li2": "Dynamique de groupe des collégiens" },
+        "m10": { "title": "Didactique appliquée (Partie 2)", "li1": "Travaux pratiques et expérimentaux", "li2": "Démarches d'investigation" },
+        "m11": { "title": "Évaluation et examens normalisés", "li1": "Évaluation diagnostique et sommative", "li2": "Préparation aux examens normalisés (3ème AC)" },
+        "m12": { "title": "Soutien scolaire et remédiation", "li1": "Diagnostic des erreurs", "li2": "Mise en place de plans de soutien" },
+        "m13": { "title": "Recherche-action (MSP)", "li1": "Méthodologie de recherche éducative", "li2": "Rédaction du projet de fin d'étude" },
+        "m14": { "title": "Vie scolaire et animation", "li1": "Clubs éducatifs au collège", "li2": "Accompagnement et orientation" },
+        "m15": { "title": "Analyse des pratiques professionnelles", "li1": "Ateliers d'analyse réflexive", "li2": "Capitalisation des stages" },
+        "m16": { "title": "Développement professionnel", "li1": "Auto-formation continue", "li2": "Projet professionnel de l'enseignant" }
+      }
+    },
+    "evaluation": {
+      "title": "Système d'Évaluation",
+      "subtitle": "Modalités de validation du certificat pour le secondaire collégial.",
+      "controle": { "title": "Évaluations Modulaires", "desc": "Examens de fin de semestre pour chaque module théorique (75% de la note modulaire)." },
+      "immersion": { "title": "Contrôle Continu", "desc": "Travaux dirigés, assiduité et réalisations didactiques (25%)." },
+      "memoire": { "title": "Recherche-Action (MSP)", "desc": "Validation du mémoire de recherche appliquée en fin de parcours." },
+      "projet": { "title": "Stage Pratique", "desc": "Inspection pédagogique validant l'aptitude à enseigner devant les élèves." }
+    },
+    "specialites": {
+      "title": "Spécialités Couvertes",
+      "subtitle": "La formation cible toutes les matières enseignées au cycle collégial.",
+      "list": [
+        "Mathématiques",
+        "Physique-Chimie (PC)",
+        "Sciences de la Vie et de la Terre",
+        "Langue Arabe",
+        "Langue Française",
+        "Histoire-Géographie",
+        "Éducation Islamique",
+        "Éducation Physique (EPS)"
+      ]
+    }
+  
+},
+
+ 
+  "filiereQualifiante": {
+    "hero": {
+      "badge": "Tiers Temps / Formation Intensive",
+      "title": "Filière de l'Enseignement Secondaire Qualifiant",
+      "subtitle": "Un cursus d'excellence au CRMEF pour former les professeurs de lycée. Une formation de 6 mois axée sur la didactique de spécialité et la pratique sur le terrain.",
+      "stats": {
+        "stat1": "Mois (Durée Totale)",
+        "stat2": "Semestres Intensifs",
+        "stat3": "Modules de formation",
+        "stat4": "Stage par Semaine",
+        "stat4_val": "1 J"
+      },
+      "backBtn": "Retour aux formations"
+    },
+    "overview": {
+      "title": "Aperçu de la formation",
+      "desc": "Le programme qualifiant est conçu pour une opérationnalisation immédiate. Sur une période de <strong>6 mois</strong>, les professeurs stagiaires maîtrisent la didactique de leur matière et s'immergent hebdomadairement dans les lycées d'application.",
+      "structure": {
+        "duree_lbl": "Durée",
+        "duree_val": "6 Mois condensés",
+        "pratique_lbl": "Mise en pratique",
+        "pratique_val": "1 Jour de stage / Semaine",
+        "volume_lbl": "Volume Pédagogique",
+        "volume_val": "8 Modules par semestre",
+        "diplome_lbl": "Diplôme",
+        "diplome_val": "Certificat de Qualification"
+      }
+    },
+    "programme": {
+      "title": "Programme des 6 Mois (Rozmana)",
+      "subtitle": "Répartition des 16 modules de spécialité et transversaux sur les 2 semestres.",
+      "s1": {
+        "tab": "Semestre 1 (Fondamentaux)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S1",
+          "desc": "<strong>Un jour par semaine</strong> dans les lycées. Observation des pratiques enseignantes, familiarisation avec les programmes de la spécialité, et prise en charge partielle."
+        }
+      },
+      "s2": {
+        "tab": "Semestre 2 (Spécialisation)",
+        "stage": {
+          "title": "Tadarib Maydaniya (Stage Pratique) - S2",
+          "desc": "<strong>Un jour par semaine</strong>. Prise en charge totale des classes de lycée, conception des évaluations, et encadrement direct par le professeur tuteur et l'inspecteur."
+        }
+      },
+      "modules": {
+        "m1": { "title": "Sciences de l'éducation & Psychologie", "li1": "Psychologie de l'adolescent", "li2": "Théories de l'apprentissage au lycée" },
+        "m2": { "title": "Didactique de la spécialité (Partie 1)", "li1": "Épistémologie de la discipline", "li2": "Analyse des programmes du secondaire" },
+        "m3": { "title": "Planification des apprentissages", "li1": "Planification annuelle et séquentielle", "li2": "Construction de fiches pédagogiques" },
+        "m4": { "title": "Ingénierie didactique", "li1": "Du savoir savant au savoir enseigné", "li2": "Conception des situations d'apprentissage" },
+        "m5": { "title": "TICE appliquées à la discipline", "li1": "Logiciels et simulateurs disciplinaires", "li2": "Scénarisation pédagogique numérique" },
+        "m6": { "title": "Gestion des apprentissages (Partie 1)", "li1": "Techniques d'animation en classe", "li2": "Gestion des interactions" },
+        "m7": { "title": "Législation scolaire et déontologie", "li1": "Statuts et textes juridiques", "li2": "Éthique de l'enseignant" },
+        "m8": { "title": "Éducation inclusive", "li1": "Intégration des élèves à besoins spécifiques", "li2": "Approches différenciées au secondaire" },
+        "m9": { "title": "Gestion des apprentissages (Partie 2)", "li1": "Gestion des situations problèmes", "li2": "Dynamique de groupe des adolescents" },
+        "m10": { "title": "Didactique de la spécialité (Partie 2)", "li1": "Méthodologie de résolution", "li2": "Didactique appliquée et travaux pratiques" },
+        "m11": { "title": "Évaluation des apprentissages", "li1": "Conception des contrôles continus", "li2": "Cadres de référence du Baccalauréat" },
+        "m12": { "title": "Soutien et remédiation", "li1": "Analyse didactique des erreurs", "li2": "Plan de soutien institutionnel" },
+        "m13": { "title": "Méthodologie de la recherche-action", "li1": "Méthodes de recherche en éducation", "li2": "Rédaction du mémoire (MSP)" },
+        "m14": { "title": "Vie scolaire et orientation", "li1": "Clubs éducatifs et citoyenneté", "li2": "Accompagnement au projet de l'élève" },
+        "m15": { "title": "Analyse des pratiques professionnelles", "li1": "Ateliers de réflexivité", "li2": "Études de cas cliniques" },
+        "m16": { "title": "Ingénierie de la formation", "li1": "Développement professionnel continu", "li2": "Leadership de l'enseignant" }
+      }
+    },
+    "evaluation": {
+      "title": "Système d'Évaluation",
+      "subtitle": "Critères de validation du certificat de qualification éducative pour le secondaire.",
+      "controle": { "title": "Évaluations Modulaires", "desc": "Examens écrits et pratiques à la fin de chaque semestre (75% de la note modulaire)." },
+      "immersion": { "title": "Contrôle Continu", "desc": "Évaluations régulières, exposés et productions didactiques dans la spécialité (25%)." },
+      "memoire": { "title": "Recherche-Action (MSP)", "desc": "Soutenance du mémoire d'intervention pédagogique devant un jury disciplinaire." },
+      "projet": { "title": "Stage Pratique", "desc": "Note d'inspection finale validant la maîtrise de la classe et de la matière enseignée." }
+    },
+    "specialites": {
+      "title": "Spécialités Couvertes",
+      "subtitle": "La formation qualifiante englobe l'ensemble des matières enseignées au lycée.",
+      "list": [
+        "Mathématiques",
+        "Physique - Chimie",
+        "Sciences de la Vie et de la Terre (SVT)",
+        "Informatique",
+        "Langue Française",
+        "Langue Anglaise",
+        "Philosophie",
+        "Éducation Islamique"
+      ]
+    }
+  
+},
+
   "contact": {
     "title": "Contactez-nous",
     "subtitle": "Une question, un renseignement ? Parlons-en simplement.",
@@ -171,6 +554,62 @@
       "loading": "Envoi en cours...",
       "success": "Votre message a été envoyé. Merci !",
       "error": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+
+  "common": {
+    "readMore": "Lire la suite",
+    "register": "S'inscrire",
+    "speaker": "Conférencier",
+    "location": "Localisation",
+    "time": "Heure"
+  },
+
+  "actualites": {
+    "pageTitle": "Actualités & Événements",
+    "pageSubtitle": "Restez informé des dernières annonces et événements du CRMEF",
+    "breadcrumb": "Actualités",
+    "hero": {
+      "title": "Actualités & Événements",
+      "subtitle": "Découvrez les dernières annonces, séminaires et conférences du CRMEF"
+    },
+    "tabs": {
+      "all": "Tous",
+      "announcements": "Annonces",
+      "events": "Événements",
+      "seminars": "Séminaires"
+    },
+    "announcements": {
+      "title": "Annonces Officielles",
+      "subtitle": "Mises à jour importantes du centre",
+      "count": 4
+    },
+    "events": {
+      "title": "Calendrier des Événements",
+      "subtitle": "Ne manquez pas nos prochains événements",
+      "count": 4
+    },
+    "seminars": {
+      "title": "Séminaires & Conférences",
+      "subtitle": "Enrichissez vos connaissances avec nos experts",
+      "count": 4
+    },
+    "highlights": {
+      "title": "Points Forts",
+      "subtitle": "Ce qui nous distingue",
+      "h1": "Innovations Pédagogiques",
+      "h1_desc": "Nous promouvons les approches modernes et innovantes de l'enseignement.",
+      "h2": "Experts Reconnus",
+      "h2_desc": "Nos conférenciers sont des spécialistes reconnus dans leurs domaines.",
+      "h3": "Événements Réguliers",
+      "h3_desc": "Programmation continue tout au long de l'année académique."
+    },
+    "subscribe": {
+      "title": "Restez Informé",
+      "subtitle": "Abonnez-vous à notre infolettre pour recevoir les mises à jour",
+      "placeholder": "Votre adresse email",
+      "button": "S'abonner",
+      "privacy": "Nous respectons votre confidentialité"
     }
   }
 }

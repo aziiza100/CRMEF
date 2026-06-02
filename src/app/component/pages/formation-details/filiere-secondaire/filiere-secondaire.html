@@ -1,0 +1,227 @@
+<main class="main">
+
+  <!-- Hero Section -->
+  <section class="hero dark-background">
+    <div class="container">
+      <div class="hero-badge">
+        <i class="bi bi-lightning-charge-fill"></i>
+        {{ 'filiereSecondaire.hero.badge' | translate }}
+      </div>
+      <h1>{{ 'filiereSecondaire.hero.title' | translate }}</h1>
+      <p>{{ 'filiereSecondaire.hero.subtitle' | translate }}</p>
+      
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-number">6</span>
+          <span class="stat-label">{{ 'filiereSecondaire.hero.stats.stat1' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">2</span>
+          <span class="stat-label">{{ 'filiereSecondaire.hero.stats.stat2' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">16</span>
+          <span class="stat-label">{{ 'filiereSecondaire.hero.stats.stat3' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">{{ 'filiereSecondaire.hero.stats.stat4_val' | translate }}</span>
+          <span class="stat-label">{{ 'filiereSecondaire.hero.stats.stat4' | translate }}</span>
+        </div>
+      </div>
+
+      <a routerLink="/formations" class="btn-back">
+        <i class="bi bi-arrow-left"></i>
+        {{ 'filiereSecondaire.hero.backBtn' | translate }}
+      </a>
+    </div>
+  </section>
+
+  <!-- Overview Section -->
+  <section class="overview section">
+    <div class="container">
+      <div class="row gy-5 align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-up">
+          <h2 class="overview-title">{{ 'filiereSecondaire.overview.title' | translate }}</h2>
+          <p class="overview-desc" [innerHTML]="'filiereSecondaire.overview.desc' | translate"></p>
+          
+          <div class="structure-info">
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-calendar-event-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filiereSecondaire.overview.structure.duree_lbl' | translate }}</span>
+                <h4>{{ 'filiereSecondaire.overview.structure.duree_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-briefcase-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filiereSecondaire.overview.structure.pratique_lbl' | translate }}</span>
+                <h4>{{ 'filiereSecondaire.overview.structure.pratique_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-book-half"></i></div>
+              <div>
+                <span class="info-label">{{ 'filiereSecondaire.overview.structure.volume_lbl' | translate }}</span>
+                <h4>{{ 'filiereSecondaire.overview.structure.volume_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-mortarboard-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filiereSecondaire.overview.structure.diplome_lbl' | translate }}</span>
+                <h4>{{ 'filiereSecondaire.overview.structure.diplome_val' | translate }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 text-center" data-aos="fade-up" data-aos-delay="200">
+          <img src="assets/images/crmef3.jpg" class="img-fluid overview-img" alt="CRMEF Formation Collégiale">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programme Semestriel -->
+  <section class="programme section" style="background: var(--surface-color);">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'filiereSecondaire.programme.title' | translate }}</h2>
+      <p>{{ 'filiereSecondaire.programme.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="prog-tabs-wrapper" data-aos="fade-up" data-aos-delay="100">
+        <!-- Tab Navigation -->
+        <div class="prog-tab-nav">
+          <button class="prog-tab-btn" [class.active]="activeTab === 's1'" (click)="switchTab('s1')">
+            <span class="sem-chip">S1</span> {{ 'filiereSecondaire.programme.s1.tab' | translate }}
+          </button>
+          <button class="prog-tab-btn" [class.active]="activeTab === 's2'" (click)="switchTab('s2')">
+            <span class="sem-chip">S2</span> {{ 'filiereSecondaire.programme.s2.tab' | translate }}
+          </button>
+        </div>
+
+        <!-- SEMESTRE 1 -->
+        <div id="prog-s1" class="prog-tab-content" [class.active]="activeTab === 's1'">
+          <div class="modules-grid-real">
+            <div class="mreal-card" *ngFor="let m of ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8']; let i = index">
+              <div class="mreal-num">0{{ i + 1 }}</div>
+              <h4>{{ 'filiereSecondaire.programme.modules.' + m + '.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filiereSecondaire.programme.modules.' + m + '.li1' | translate }}</li>
+                <li>{{ 'filiereSecondaire.programme.modules.' + m + '.li2' | translate }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="field-activity-block mt-4">
+            <div class="fab-icon"><i class="bi bi-buildings-fill"></i></div>
+            <div class="fab-content">
+              <h5>{{ 'filiereSecondaire.programme.s1.stage.title' | translate }}</h5>
+              <p class="mb-0" [innerHTML]="'filiereSecondaire.programme.s1.stage.desc' | translate"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEMESTRE 2 -->
+        <div id="prog-s2" class="prog-tab-content" [class.active]="activeTab === 's2'">
+          <div class="modules-grid-real">
+            <div class="mreal-card" *ngFor="let m of ['m9', 'm10', 'm11', 'm12', 'm13', 'm14', 'm15', 'm16']; let i = index">
+              <div class="mreal-num">{{ i + 9 < 10 ? '0' + (i + 9) : (i + 9) }}</div>
+              <h4>{{ 'filiereSecondaire.programme.modules.' + m + '.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filiereSecondaire.programme.modules.' + m + '.li1' | translate }}</li>
+                <li>{{ 'filiereSecondaire.programme.modules.' + m + '.li2' | translate }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="field-activity-block mt-4">
+            <div class="fab-icon"><i class="bi bi-person-video3"></i></div>
+            <div class="fab-content">
+              <h5>{{ 'filiereSecondaire.programme.s2.stage.title' | translate }}</h5>
+              <p class="mb-0" [innerHTML]="'filiereSecondaire.programme.s2.stage.desc' | translate"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Spécialités Section -->
+  <section class="specialites section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'filiereSecondaire.specialites.title' | translate }}</h2>
+      <p>{{ 'filiereSecondaire.specialites.subtitle' | translate }}</p>
+    </div>
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-10 mx-auto" data-aos="fade-up" data-aos-delay="100">
+          <div class="specialites-grid">
+            <div class="spec-item"><i class="bi bi-calculator-fill"></i><span>{{ 'filiereSecondaire.specialites.list.0' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-magnet-fill"></i><span>{{ 'filiereSecondaire.specialites.list.1' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-tree-fill"></i><span>{{ 'filiereSecondaire.specialites.list.2' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-translate"></i><span>{{ 'filiereSecondaire.specialites.list.3' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-book-half"></i><span>{{ 'filiereSecondaire.specialites.list.4' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-globe-americas"></i><span>{{ 'filiereSecondaire.specialites.list.5' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-moon-stars-fill"></i><span>{{ 'filiereSecondaire.specialites.list.6' | translate }}</span></div>
+            <div class="spec-item"><i class="bi bi-activity"></i><span>{{ 'filiereSecondaire.specialites.list.7' | translate }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Évaluation Section -->
+  <section class="evaluation section light-background">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'filiereSecondaire.evaluation.title' | translate }}</h2>
+      <p>{{ 'filiereSecondaire.evaluation.subtitle' | translate }}</p>
+    </div>
+    <div class="container">
+      <div class="row gy-4 justify-content-center">
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="eval-card">
+            <div class="eval-percentage">75%</div>
+            <div class="eval-icon"><i class="bi bi-pencil-square"></i></div>
+            <h5>{{ 'filiereSecondaire.evaluation.controle.title' | translate }}</h5>
+            <p>{{ 'filiereSecondaire.evaluation.controle.desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="eval-card">
+            <div class="eval-percentage">25%</div>
+            <div class="eval-icon"><i class="bi bi-building-gear"></i></div>
+            <h5>{{ 'filiereSecondaire.evaluation.immersion.title' | translate }}</h5>
+            <p>{{ 'filiereSecondaire.evaluation.immersion.desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="eval-card">
+            <div class="eval-percentage">MSP</div>
+            <div class="eval-icon"><i class="bi bi-file-earmark-text"></i></div>
+            <h5>{{ 'filiereSecondaire.evaluation.memoire.title' | translate }}</h5>
+            <p>{{ 'filiereSecondaire.evaluation.memoire.desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="eval-card">
+            <div class="eval-percentage">✓</div>
+            <div class="eval-icon"><i class="bi bi-person-video3"></i></div>
+            <h5>{{ 'filiereSecondaire.evaluation.projet.title' | translate }}</h5>
+            <p>{{ 'filiereSecondaire.evaluation.projet.desc' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta section dark-background">
+    <div class="container text-center" data-aos="fade-up">
+      <h2 style="font-family: 'Sora', sans-serif; font-weight: 800; color: white;">Envie d'en savoir plus ?</h2>
+      <p style="color: rgba(255,255,255,0.85); margin-bottom: 30px;">Consultez nos autres formations ou contactez l'administration du CRMEF.</p>
+      <a routerLink="/contact" class="btn-back" style="font-size: 1.1rem; padding: 14px 38px;">Nous contacter</a>
+    </div>
+  </section>
+
+</main>

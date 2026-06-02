@@ -4,12 +4,17 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-formation',
+  selector: 'app-filiere-secondaire',
   imports: [CommonModule, RouterModule, TranslateModule],
   standalone: true,
-  templateUrl: './formation.html',
-  styleUrl: './formation.css',
+  templateUrl: './filiere-secondaire.html',
+  styleUrl: './filiere-secondaire.css',
 })
-export class Formation {
+export class FiliereSecondaireComponent {
   translate = inject(TranslateService);
+  activeTab: string = 's1'; 
+
+  switchTab(tabId: string) {
+    this.activeTab = tabId;
+  }
 }

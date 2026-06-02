@@ -1,1 +1,235 @@
-<p>formation works!</p>
+<main class="main">
+
+  <!-- Hero Section -->
+  <section class="hero section dark-background">
+    <div class="container">
+      <h2>{{ 'formations.hero.title' | translate }}</h2>
+      <p>{{ 'formations.hero.subtitle' | translate }}</p>
+    </div>
+  </section>
+  <!-- /Hero Section -->
+
+  <!-- Filières Section -->
+  <section id="filieres" class="filieres section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'formations.filieres.title' | translate }}</h2>
+      <p>{{ 'formations.filieres.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Filière Primaire -->
+        <div class="col-lg-4 col-md-6">
+          <div class="filiere-card">
+            <div class="filiere-icon">
+              <i class="bi bi-book"></i>
+            </div>
+            <h3>{{ 'formations.filieres.primary.title' | translate }}</h3>
+            <p>{{ 'formations.filieres.primary.description' | translate }}</p>
+            <a routerLink="/formations/primaire" class="btn-learn-more">
+              {{ 'presentation.button' | translate }}
+              @if (translate.currentLang == "fr") {
+                <i class="bi bi-arrow-right"></i>
+              }@else{
+                <i class="bi bi-arrow-left"></i>
+              }
+            </a>
+          </div>
+        </div>
+
+        <!-- Filière Secondaire -->
+        <div class="col-lg-4 col-md-6">
+          <div class="filiere-card">
+            <div class="filiere-icon">
+              <i class="bi bi-laptop"></i>
+            </div>
+            <h3>{{ 'formations.filieres.secondary.title' | translate }}</h3>
+            <p>{{ 'formations.filieres.secondary.description' | translate }}</p>
+            <a routerLink="/formations/secondaire" class="btn-learn-more">
+              {{ 'presentation.button' | translate }}
+              @if (translate.currentLang == "fr") {
+                <i class="bi bi-arrow-right"></i>
+              }@else{
+                <i class="bi bi-arrow-left"></i>
+              }
+            </a>
+          </div>
+        </div>
+
+        <!-- Filière Qualifiante -->
+        <div class="col-lg-4 col-md-6">
+          <div class="filiere-card">
+            <div class="filiere-icon">
+              <i class="bi bi-award"></i>
+            </div>
+            <h3>{{ 'formations.filieres.qualifying.title' | translate }}</h3>
+            <p>{{ 'formations.filieres.qualifying.description' | translate }}</p>
+            <a routerLink="/formations/qualifiante" class="btn-learn-more">
+              {{ 'presentation.button' | translate }}
+              @if (translate.currentLang == "fr") {
+                <i class="bi bi-arrow-right"></i>
+              }@else{
+                <i class="bi bi-arrow-left"></i>
+              }
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /Filières Section -->
+
+  <!-- Programmes Section -->
+  <section id="programmes" class="programmes section light-background">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'formations.programmes.title' | translate }}</h2>
+      <p>{{ 'formations.programmes.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="100">
+          <h3>{{ 'formations.programmes.title' | translate }}</h3>
+          <p class="fst-italic">
+            {{ 'formations.programmes.description' | translate }}
+          </p>
+          <ul>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>{{ 'formations.programmes.features.f1' | translate }}</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>{{ 'formations.programmes.features.f2' | translate }}</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>{{ 'formations.programmes.features.f3' | translate }}</span>
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>
+              <span>{{ 'formations.programmes.features.f4' | translate }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="200">
+          <img src="assets/images/crmef3.jpg" class="img-fluid" alt="CRMEF Formation">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /Programmes Section -->
+
+  <!-- Modules & Contenus Section -->
+  <section id="modules" class="modules section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'formations.modules.title' | translate }}</h2>
+      <p>{{ 'formations.modules.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="row gy-4">
+        <!-- Module 1 -->
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="module-box">
+            <div class="module-icon">
+              <i class="bi bi-lightbulb"></i>
+            </div>
+            <h4>{{ 'formations.modules.moduleList.m1.title' | translate }}</h4>
+            <p>{{ 'formations.modules.moduleList.m1.content' | translate }}</p>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="module-box">
+            <div class="module-icon">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+            <h4>{{ 'formations.modules.moduleList.m2.title' | translate }}</h4>
+            <p>{{ 'formations.modules.moduleList.m2.content' | translate }}</p>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="module-box">
+            <div class="module-icon">
+              <i class="bi bi-hand-thumbs-up"></i>
+            </div>
+            <h4>{{ 'formations.modules.moduleList.m3.title' | translate }}</h4>
+            <p>{{ 'formations.modules.moduleList.m3.content' | translate }}</p>
+          </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="module-box">
+            <div class="module-icon">
+              <i class="bi bi-diagram-3"></i>
+            </div>
+            <h4>{{ 'formations.modules.moduleList.m4.title' | translate }}</h4>
+            <p>{{ 'formations.modules.moduleList.m4.content' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /Modules & Contenus Section -->
+
+  <!-- Conditions d'Accès Section -->
+  <section id="conditions" class="conditions section light-background">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'formations.conditions.title' | translate }}</h2>
+      <p>{{ 'formations.conditions.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-8 mx-auto" data-aos="fade-up" data-aos-delay="100">
+          <div class="conditions-box">
+            <ul class="conditions-list">
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r1' | translate }}</span>
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r2' | translate }}</span>
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r3' | translate }}</span>
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r4' | translate }}</span>
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r5' | translate }}</span>
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill"></i>
+                <span>{{ 'formations.conditions.requirements.r6' | translate }}</span>
+              </li>
+            </ul>
+            <div class="conditions-cta">
+              <a routerLink="/contact" class="btn-learn-more">
+                {{ 'formations.conditions.button' | translate }}
+                @if (translate.currentLang == "fr") {
+                  <i class="bi bi-arrow-right"></i>
+                }@else{
+                  <i class="bi bi-arrow-left"></i>
+                }
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /Conditions d'Accès Section -->
+
+</main>

@@ -53,17 +53,17 @@ export const routes: Routes = [
   {
     path: 'formations/primaire',
     loadComponent: () =>
-      import('./component/pages/formation/composants/primaire/primaire').then(m => m.Primaire)
+      import('./component/pages/formation-details/filiere-primaire/filiere-primaire').then(m => m.FilierePrimaireComponent)
   },
   {
     path: 'formations/secondaire',
     loadComponent: () =>
-      import('./component/pages/formation/composants/secondaire/secondaire').then(m => m.Secondaire)
+      import('./component/pages/formation-details/filiere-secondaire/filiere-secondaire').then(m => m.FiliereSecondaireComponent)
   },
   {
-    path: 'formations/qualifiant',
+    path: 'formations/qualifiante',
     loadComponent: () =>
-      import('./component/pages/formation/composants/qualifiant/qualifiant').then(m => m.Qualifiant)
+      import('./component/pages/formation-details/filiere-qualifiante/filiere-qualifiante').then(m => m.FiliereQualifianteComponent)
   },
    {
     path: 'formations/DescriptionProgrammes',
@@ -83,7 +83,7 @@ export const routes: Routes = [
   {
     path: 'actualites',
     loadComponent: () =>
-      import('./component/pages/home/composants/actualites/actualites').then(m => m.Actualites)
+      import('./component/pages/actualites/actualites').then(m => m.ActualitesComponent)
   },
   
   {

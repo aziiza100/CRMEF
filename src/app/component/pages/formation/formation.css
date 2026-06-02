@@ -1,0 +1,317 @@
+/* Formation Page Styles */
+
+.main {
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero.dark-background {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section Title */
+.section-title {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 30px 0;
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+.section-title p {
+  font-size: 1rem;
+  color: var(--default-color);
+  opacity: 0.8;
+}
+
+/* Filières Section */
+.filieres.section {
+  padding: 60px 0;
+}
+
+.filiere-card {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.filiere-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(200, 103, 32, 0.15);
+}
+
+.filiere-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), transparent 20%));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2.5rem;
+  color: white;
+}
+
+.filiere-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+.filiere-card p {
+  color: var(--default-color);
+  margin-bottom: 20px;
+  flex-grow: 1;
+  line-height: 1.6;
+}
+
+.btn-learn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-color);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.btn-learn-more:hover {
+  gap: 12px;
+  color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.btn-learn-more i {
+  transition: all 0.3s ease;
+}
+
+/* Programmes Section */
+.programmes.section {
+  padding: 60px 0;
+}
+
+.programmes .content {
+  padding-right: 30px;
+}
+
+.programmes h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--heading-color);
+}
+
+.programmes .fst-italic {
+  font-size: 1rem;
+  color: var(--default-color);
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.programmes ul {
+  list-style: none;
+  padding: 0;
+}
+
+.programmes ul li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  color: var(--default-color);
+}
+
+.programmes ul li i {
+  color: var(--accent-color);
+  font-size: 1.3rem;
+  margin-right: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.programmes ul li span {
+  line-height: 1.5;
+}
+
+.programmes img {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Modules Section */
+.modules.section {
+  padding: 60px 0;
+}
+
+.module-box {
+  background: var(--surface-color);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.module-box:hover {
+  box-shadow: 0 8px 30px rgba(200, 103, 32, 0.15);
+  transform: translateY(-5px);
+}
+
+.module-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), transparent 20%));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: white;
+}
+
+.module-box h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--heading-color);
+}
+
+.module-box p {
+  color: var(--default-color);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Conditions Section */
+.conditions.section {
+  padding: 60px 0;
+}
+
+.conditions-box {
+  background: var(--surface-color);
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.conditions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conditions-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--default-color);
+}
+
+.conditions-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 30px;
+  padding-bottom: 0;
+}
+
+.conditions-list i {
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.conditions-list span {
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.conditions-cta {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .section-title h2 {
+    font-size: 1.8rem;
+  }
+
+  .programmes .content {
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .conditions-box {
+    padding: 30px;
+  }
+
+  .filiere-card {
+    padding: 25px;
+  }
+
+  .module-box {
+    padding: 30px;
+  }
+}
+
+/* Light Background Variant */
+.light-background {
+  --background-color: #f9f9f9;
+  --surface-color: #ffffff;
+}
+
+/* Animation Classes */
+[data-aos] {
+  opacity: 0;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+}

@@ -1,0 +1,261 @@
+<main class="main">
+
+  <section class="hero dark-background">
+    <div class="container">
+      <div class="hero-badge">
+        <i class="bi bi-lightning-charge-fill"></i>
+        {{ 'filierePrimaire.hero.badge' | translate }}
+      </div>
+      <h1>{{ 'filierePrimaire.hero.title' | translate }}</h1>
+      <p>{{ 'filierePrimaire.hero.subtitle' | translate }}</p>
+      
+    <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-number">6</span>
+          <span class="stat-label">{{ 'filierePrimaire.hero.stats.stat1' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">2</span>
+          <span class="stat-label">{{ 'filierePrimaire.hero.stats.stat2' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">16</span>
+          <span class="stat-label">{{ 'filierePrimaire.hero.stats.stat3' | translate }}</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-number">{{ 'filierePrimaire.hero.stats.stat4_val' | translate }}</span>
+          <span class="stat-label">{{ 'filierePrimaire.hero.stats.stat4' | translate }}</span>
+        </div>
+      </div>
+
+      <a routerLink="/formations" class="btn-back">
+        <i class="bi bi-arrow-left"></i>
+        {{ 'filierePrimaire.hero.backBtn' | translate }}
+      </a>
+    </div>
+  </section>
+
+  <section class="overview section">
+    <div class="container">
+      <div class="row gy-5 align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-up">
+          <h2 class="overview-title">
+            {{ 'filierePrimaire.overview.title' | translate }}
+          </h2>
+          <p class="overview-desc" [innerHTML]="'filierePrimaire.overview.desc' | translate"></p>
+          
+          <div class="structure-info">
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-calendar-event-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filierePrimaire.overview.structure.duree_lbl' | translate }}</span>
+                <h4>{{ 'filierePrimaire.overview.structure.duree_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-briefcase-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filierePrimaire.overview.structure.pratique_lbl' | translate }}</span>
+                <h4>{{ 'filierePrimaire.overview.structure.pratique_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-book-half"></i></div>
+              <div>
+                <span class="info-label">{{ 'filierePrimaire.overview.structure.volume_lbl' | translate }}</span>
+                <h4>{{ 'filierePrimaire.overview.structure.volume_val' | translate }}</h4>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-icon"><i class="bi bi-mortarboard-fill"></i></div>
+              <div>
+                <span class="info-label">{{ 'filierePrimaire.overview.structure.diplome_lbl' | translate }}</span>
+                <h4>{{ 'filierePrimaire.overview.structure.diplome_val' | translate }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 text-center" data-aos="fade-up" data-aos-delay="200">
+          <img src="assets/images/crmef3.jpg" class="img-fluid overview-img" alt="CRMEF Formation">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="programme section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>{{ 'filierePrimaire.programme.title' | translate }}</h2>
+      <p>{{ 'filierePrimaire.programme.subtitle' | translate }}</p>
+    </div>
+
+    <div class="container">
+      <div class="prog-tabs-wrapper" data-aos="fade-up" data-aos-delay="100">
+        
+        <div class="prog-tab-nav">
+          <button class="prog-tab-btn" [class.active]="activeTab === 's1'" (click)="switchTab('s1')">
+            <span class="sem-chip">S1</span> {{ 'filierePrimaire.programme.s1.tab' | translate }}
+          </button>
+          <button class="prog-tab-btn" [class.active]="activeTab === 's2'" (click)="switchTab('s2')">
+            <span class="sem-chip">S2</span> {{ 'filierePrimaire.programme.s2.tab' | translate }}
+          </button>
+        </div>
+
+        <div id="prog-s1" class="prog-tab-content" [class.active]="activeTab === 's1'">
+          <div class="modules-grid-real">
+            <div class="mreal-card">
+              <div class="mreal-num">01</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m1.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m1.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m1.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">02</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m2.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m2.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m2.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">03</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m3.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m3.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m3.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">04</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m4.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m4.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m4.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">05</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m5.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m5.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m5.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">06</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m6.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m6.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m6.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">07</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m7.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m7.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m7.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">08</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m8.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m8.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m8.li2' | translate }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="field-activity-block mt-4">
+            <div class="fab-icon"><i class="bi bi-buildings-fill"></i></div>
+            <div class="fab-content">
+              <h5>{{ 'filierePrimaire.programme.s1.stage.title' | translate }}</h5>
+              <p class="mb-0" [innerHTML]="'filierePrimaire.programme.s1.stage.desc' | translate"></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="prog-s2" class="prog-tab-content" [class.active]="activeTab === 's2'">
+          <div class="modules-grid-real">
+            <div class="mreal-card">
+              <div class="mreal-num">09</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m9.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m9.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m9.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">10</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m10.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m10.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m10.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">11</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m11.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m11.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m11.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">12</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m12.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m12.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m12.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">13</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m13.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m13.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m13.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">14</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m14.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m14.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m14.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">15</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m15.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m15.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m15.li2' | translate }}</li>
+              </ul>
+            </div>
+            <div class="mreal-card">
+              <div class="mreal-num">16</div>
+              <h4>{{ 'filierePrimaire.programme.modules.m16.title' | translate }}</h4>
+              <ul>
+                <li>{{ 'filierePrimaire.programme.modules.m16.li1' | translate }}</li>
+                <li>{{ 'filierePrimaire.programme.modules.m16.li2' | translate }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="field-activity-block mt-4">
+            <div class="fab-icon"><i class="bi bi-person-video3"></i></div>
+            <div class="fab-content">
+              <h5>{{ 'filierePrimaire.programme.s2.stage.title' | translate }}</h5>
+              <p class="mb-0" [innerHTML]="'filierePrimaire.programme.s2.stage.desc' | translate"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
