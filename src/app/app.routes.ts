@@ -108,12 +108,16 @@ export const routes: Routes = [
     path: 'contact',
     loadComponent: () =>
       import('./component/pages/contact/contact').then(m => m.Contact)
-  }]}
-  ,
+  },
   {
     path: 'espace-pedagogique',
     loadComponent: () =>
       import('./component/pages/pedagogique/pedagogique').then(m => m.Pedagogique)
+  },
+  {
+    path: 'espace-enseignants',
+    redirectTo: 'espace-enseignant',
+    pathMatch: 'full'
   },
   {
     path: 'espace-enseignant',
@@ -124,6 +128,8 @@ export const routes: Routes = [
     path: 'espace-etudiant',
     loadComponent: () =>
       import('./component/pages/etudiants/etudiants').then(m => m.Etudiants)
+  }
+  ]
   }
 ];
   

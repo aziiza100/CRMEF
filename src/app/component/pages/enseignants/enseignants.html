@@ -1,6 +1,181 @@
-<p>enseignants works!</p>
-<app-supports></app-supports>
-<app-communication></app-communication>
-<app-notes></app-notes>
-<app-gestion-classes></app-gestion-classes>
-<a routerLink="/home">go back</a>
+<div class="enseignants-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Espace enseignant</p>
+      <h1>Mon espace pédagogique</h1>
+      <p class="subtitle">Vous êtes automatiquement affecté à vos classes. Vous pouvez consulter uniquement vos classes et leurs notes.</p>
+    </div>
+    <a routerLink="/home" class="back-link">Retour à l'accueil</a>
+  </header>
+
+  <nav class="internal-menu">
+    <button type="button" [class.active]="activeSection === 'profil'" (click)="activeSection = 'profil'">
+      Mon profil
+    </button>
+    <button type="button" [class.active]="activeSection === 'classes'" (click)="activeSection = 'classes'">
+      Mes classes
+    </button>
+  </nav>
+
+  <section class="content-grid">
+    <article class="card summary-card">
+      <div class="summary-head">
+        <div>
+          <span class="label">Profil enseignant</span>
+          <h2>{{ teacher.name }}</h2>
+          <p class="small">{{ teacher.role }}</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>Classes attribuées</span>
+          <strong>{{ classes.length }}</strong>
+        </div>
+        <div class="stat-card">
+          <span>Élèves suivis</span>
+          <strong>{{ classes.reduce((acc, classe) => acc + classe.students.length, 0) }}</strong>
+        </div>
+        <div class="stat-card">
+          <span>Site principal</span>
+          <strong>{{ teacher.campus }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="activeSection === 'profil'" class="section-body">
+        <div class="profile-row">
+          <span>Email</span>
+          <strong>{{ teacher.email }}</strong>
+        </div>
+        <div class="profile-row">
+          <span>Téléphone</span>
+          <strong>{{ teacher.phone }}</strong>
+        </div>
+        <div class="profile-row">
+          <span>Bio</span>
+          <strong>{{ teacher.bio }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="activeSection === 'classes'" class="section-body classes-summary">
+        <div class="summary-block">
+          <span>Classe active</span>
+          <strong>{{ selectedClass?.name || 'Aucune classe' }}</strong>
+        </div>
+        <div class="summary-block">
+          <span>Module</span>
+          <strong>{{ selectedClass?.moduleName || '—' }}</strong>
+        </div>
+        <div class="summary-block">
+          <span>Élèves</span>
+          <strong>{{ selectedClass?.students?.length ?? 0 }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="card classes-card" *ngIf="activeSection === 'classes'">
+      <div class="classes-shell">
+        <aside class="classes-sidebar">
+          <div class="section-title">Classes assignées</div>
+          <div class="class-list">
+            <button
+              *ngFor="let classe of classes; trackBy: trackByClass"
+              type="button"
+              class="class-chip"
+              [class.selected]="classe.id === selectedClassId"
+              (click)="selectClass(classe.id)">
+              <span>{{ classe.name }}</span>
+              <small>{{ classe.formationType }}</small>
+            </button>
+          </div>
+        </aside>
+
+        <div class="class-detail" *ngIf="selectedClass; else noClass">
+          <div class="detail-header">
+            <div>
+              <span class="label">Détails de la classe</span>
+              <h2>{{ selectedClass.name }}</h2>
+              <p>{{ selectedClass.formationType }} — {{ selectedClass.site }}</p>
+            </div>
+            <div class="module-chip">{{ selectedClass.moduleName }}</div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-card">
+              <span class="mini-label">Élèves associés</span>
+              <ul>
+                <li *ngFor="let student of selectedClass.students">
+                  {{ student.name }} <small>{{ student.email }}</small>
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-card resources-panel">
+              <span class="mini-label">Ressources PDF</span>
+              <div class="resource-list">
+                <div class="resource-row" *ngFor="let resource of selectedClass.resources">
+                  <div>
+                    <strong>{{ resource.title }}</strong>
+                    <small>{{ resource.file }}</small>
+                  </div>
+                  <a href="#" class="download-link">Ouvrir</a>
+                </div>
+              </div>
+              <div class="resource-form">
+                <label>
+                  Nouveau support
+                  <input type="text" [(ngModel)]="newResourceTitle" placeholder="Titre du document" />
+                </label>
+                <label>
+                  Fichier PDF
+                  <input type="text" [(ngModel)]="newResourceFile" placeholder="fichier.pdf" />
+                </label>
+                <button class="secondary-button" type="button" (click)="addResource()">Ajouter</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="notes-panel">
+            <div class="section-title">Notes de la classe</div>
+            <div class="notes-table-wrap">
+              <table class="notes-table">
+                <thead>
+                  <tr>
+                    <th>Élève</th>
+                    <th>Email</th>
+                    <th>Note /20</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of selectedClass.students">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        max="20"
+                        [value]="selectedClass.notes.find(note => note.studentId === student.id)?.value ?? 0"
+                        (change)="updateNote(student.id, $any($event.target).value)"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="notes-summary">
+              <span>Moyenne de la classe</span>
+              <strong>{{ averageNote }}/20</strong>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noClass>
+          <div class="empty-state">
+            <p>Aucune classe affectée pour le moment.</p>
+          </div>
+        </ng-template>
+      </div>
+    </article>
+  </section>
+</div>
