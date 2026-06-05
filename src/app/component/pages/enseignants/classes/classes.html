@@ -1,0 +1,79 @@
+<div class="classes-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'classes.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'classes.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Grille des Classes (Master) -->
+  <div class="classes-grid mb-5">
+    <div class="class-card" 
+         *ngFor="let classe of classes" 
+         [class.active]="selectedClasse?.id === classe.id"
+         (click)="selectClasse(classe)">
+      <div class="class-icon">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <div class="class-info">
+        <h3>{{ classe.nom }}</h3>
+        <p class="level">{{ classe.niveau }}</p>
+        <span class="badge-count">{{ classe.etudiants.length }} {{ 'classes.students' | translate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- État vide avant sélection -->
+  <div class="empty-selection" *ngIf="!selectedClasse">
+    <i class="bi bi-arrow-up-circle text-muted"></i>
+    <p>{{ 'classes.selectClass' | translate }}</p>
+  </div>
+
+  <!-- Tableau des Étudiants (Detail) -->
+  <div class="students-section card" *ngIf="selectedClasse">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h3><i class="bi bi-list-check"></i> {{ 'classes.listTitle' | translate }} - {{ selectedClasse.nom }}</h3>
+      
+      <div class="header-actions">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" [(ngModel)]="searchTerm" [placeholder]="'classes.searchPh' | translate">
+        </div>
+        <button class="btn-export" (click)="exportList()" [disabled]="filteredStudents.length === 0">
+          <i class="bi bi-download"></i> {{ 'classes.btnExport' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive" *ngIf="filteredStudents.length > 0">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>{{ 'classes.table.name' | translate }}</th>
+              <th>{{ 'classes.table.cin' | translate }}</th>
+              <th>{{ 'classes.table.email' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of filteredStudents">
+              <td>
+                <div class="student-profile">
+                  <img [src]="student.avatar" alt="Avatar" class="student-avatar">
+                  <span class="student-name">{{ student.nom }} {{ student.prenom }}</span>
+                </div>
+              </td>
+              <td><span class="cne-badge">{{ student.cin }}</span></td>
+              <td><a href="mailto:{{ student.email }}" class="email-link">{{ student.email }}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Vide après recherche ou classe vide -->
+      <div class="empty-state" *ngIf="filteredStudents.length === 0">
+        <i class="bi bi-inboxes"></i>
+        <p>{{ 'classes.empty' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

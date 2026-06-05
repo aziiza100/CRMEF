@@ -1,0 +1,63 @@
+<div class="telecharger-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'telechargerCours.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'telechargerCours.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showSuccess">
+    <i class="bi bi-cloud-arrow-down-fill"></i> {{ 'telechargerCours.successMsg' | translate }}
+  </div>
+
+  <!-- Barre de filtres -->
+  <div class="filter-bar card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8 mb-3 mb-md-0">
+          <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" [(ngModel)]="searchTerm" [placeholder]="'telechargerCours.searchPh' | translate">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <select class="form-select custom-select" [(ngModel)]="selectedSpecialty">
+            <option *ngFor="let spec of specialties" [value]="spec.value">{{ spec.labelKey | translate }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille des cours -->
+  <div class="cours-grid" *ngIf="filteredCours.length > 0">
+    <div class="cours-card" *ngFor="let cours of filteredCours">
+      <div class="cours-format-icon">
+        <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>
+      </div>
+      
+      <div class="cours-content">
+        <h3 class="cours-title">{{ cours.titre }}</h3>
+        <p class="cours-desc">{{ cours.description }}</p>
+        
+        <div class="cours-meta">
+          <span><i class="bi bi-person-fill"></i> {{ 'telechargerCours.by' | translate }}: {{ cours.auteur }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ cours.dateAjout }}</span>
+          <span><i class="bi bi-hdd-fill"></i> {{ 'telechargerCours.size' | translate }}: {{ cours.taille }}</span>
+        </div>
+      </div>
+
+      <div class="cours-action">
+        <button class="btn-download" (click)="telecharger(cours)">
+          <i class="bi bi-download"></i> {{ 'telechargerCours.btnDownload' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- État vide -->
+  <div class="empty-state" *ngIf="filteredCours.length === 0">
+    <i class="bi bi-folder-x"></i>
+    <p>{{ 'telechargerCours.empty' | translate }}</p>
+  </div>
+
+</div>

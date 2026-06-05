@@ -1,6 +1,83 @@
-<p>etudiants works!</p>
-<app-profil></app-profil>
-<app-messagerie-interne></app-messagerie-interne>
-<app-emploi></app-emploi>
-<app-resultats></app-resultats>
-<a routerLink="/home">go back</a>
+<div class="dashboard-layout">
+  
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="bi bi-mortarboard-fill"></i>
+        <span>CRMEF</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li *ngFor="let item of menuItems">
+          <!-- Si la route existe, on utilise routerLink -->
+          <a *ngIf="item.route" 
+             [routerLink]="item.route" 
+             routerLinkActive="active" 
+             [routerLinkActiveOptions]="{exact: item.id === 'dashboard'}">
+            <i class="bi {{item.icon}}"></i>
+            <span>{{ 'etudiant.menu.' + item.id | translate }}</span>
+          </a>
+          <!-- Si pas de route (en dev), on simule -->
+          <a *ngIf="!item.route" 
+             [routerLink]="[]" 
+             [fragment]="item.id">
+            <i class="bi {{item.icon}}"></i>
+            <span>{{ 'etudiant.menu.' + item.id | translate }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Language Toggle Button -->
+    <div class="lang-toggle-wrapper">
+      <button class="lang-toggle-btn" (click)="changeLang()">
+        <i class="bi bi-translate"></i>
+        <span>{{ currentLang === 'fr' ? 'العربية' : 'Français' }}</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>{{ 'enseignant.logout' | translate }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="dashboard-topbar">
+      <!-- Zone d'accueil dynamique : affichée uniquement sur le dashboard racine -->
+      <div class="welcome-text" *ngIf="router.url === '/espace-etudiant'">
+        <h1>{{ 'etudiant.welcome' | translate }}</h1>
+        <p>Année Scolaire 2023/2024</p>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="search-bar" *ngIf="router.url === '/espace-etudiant'">
+          <i class="bi bi-search"></i>
+          <input type="text" [placeholder]="'etudiant.searchPlaceholder' | translate">
+        </div>
+        <button class="notification-btn" *ngIf="router.url === '/espace-etudiant'">
+          <i class="bi bi-bell"></i>
+          <span class="badge">1</span>
+        </button>
+        <div class="user-profile">
+          <img src="https://ui-avatars.com/api/?name=Etudiant+Test&background=8b5cf6&color=fff" alt="Profile">
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Content (Pages) -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+
+</div>

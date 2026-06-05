@@ -1,0 +1,66 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        <h2>{{ 'login.title' | translate }}</h2>
+        <p>{{ 'login.subtitle' | translate }}</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+        
+        <div class="form-group">
+          <label for="email">{{ 'login.emailLabel' | translate }}</label>
+          <div class="input-wrapper">
+            <i class="bi bi-envelope"></i>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="email" 
+              [placeholder]="'login.emailPlaceholder' | translate"
+              required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">{{ 'login.passwordLabel' | translate }}</label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock"></i>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              [(ngModel)]="password" 
+              [placeholder]="'login.passwordPlaceholder' | translate"
+              required>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox"> {{ 'login.rememberMe' | translate }}
+          </label>
+          <a href="#" class="forgot-password">{{ 'login.forgotPassword' | translate }}</a>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="isLoading">
+          <span *ngIf="!isLoading">{{ 'login.submit' | translate }}</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoading">&nbsp;{{ 'login.loading' | translate }}</span>
+        </button>
+
+      </form>
+      
+      <div class="login-footer">
+        <p>{{ 'login.help' | translate }} <a routerLink="/contact">{{ 'login.contactAdmin' | translate }}</a></p>
+      </div>
+    </div>
+  </div>
+</div>

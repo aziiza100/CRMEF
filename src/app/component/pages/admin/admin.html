@@ -1,0 +1,79 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+  
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="bi bi-shield-lock-fill"></i>
+        <span>CRMEF Admin</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li *ngFor="let item of menuItems">
+          <a [routerLink]="item.route" routerLinkActive="active" class="nav-item">
+            <i class="bi" [ngClass]="item.icon"></i>
+            <span class="nav-text">{{ 'admin.menu.' + item.id | translate }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a (click)="logout()" class="nav-item logout-btn">
+        <i class="bi bi-box-arrow-left"></i>
+        <span class="nav-text">{{ 'admin.menu.logout' | translate }}</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Rechercher...">
+        </div>
+      </div>
+      
+      <div class="topbar-right">
+        <!-- Language Switcher -->
+        <button class="lang-switch" (click)="switchLanguage()">
+          <i class="bi bi-globe"></i>
+          <span>{{ currentLang === 'fr' ? 'العربية' : 'Français' }}</span>
+        </button>
+
+        <!-- Notifications -->
+        <button class="action-btn">
+          <i class="bi bi-bell-fill"></i>
+          <span class="badge">3</span>
+        </button>
+
+        <!-- Profile Menu -->
+        <div class="profile-menu">
+          <div class="avatar-admin">
+            <i class="bi bi-person-fill-lock"></i>
+          </div>
+          <div class="profile-info">
+            <span class="name">{{ adminName }}</span>
+            <span class="role">Administrateur</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Content (Pages) -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+
+</div>

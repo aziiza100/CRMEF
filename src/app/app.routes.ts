@@ -2,12 +2,10 @@ import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Navbar } from './component/shared/navbar/navbar';
 import { Layout } from './component/shared/layout/layout';
-// import {Home} from './component/home/home'
 
 export const routes: Routes = [
-    // { path: 'home', component: Home }
   { path: '', redirectTo: 'home', pathMatch: 'full' },
- {
+  {
     path: '',
     component: Layout,
     children: [
@@ -121,13 +119,103 @@ export const routes: Routes = [
   },
   {
     path: 'espace-enseignant',
-    loadComponent: () =>
-      import('./component/pages/enseignants/enseignants').then(m => m.Enseignants)
-  }, 
+    loadComponent: () => import('./component/pages/enseignants/enseignants').then(m => m.Enseignants),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./component/pages/enseignants/dashboard/dashboard').then(m => m.EnseignantDashboard)
+      },
+      {
+        path: 'cours',
+        loadComponent: () => import('./component/pages/enseignants/cours/cours').then(m => m.CoursComponent)
+      },
+      {
+        path: 'telecharger-cours',
+        loadComponent: () => import('./component/pages/enseignants/telecharger-cours/telecharger-cours').then(m => m.TelechargerCoursComponent)
+      },
+      {
+        path: 'classes',
+        loadComponent: () => import('./component/pages/enseignants/classes/classes').then(m => m.ClassesComponent)
+      },
+      {
+        path: 'notes',
+        loadComponent: () => import('./component/pages/enseignants/notes/notes').then(m => m.NotesComponent)
+      },
+      {
+        path: 'profil',
+        loadComponent: () => import('./component/pages/enseignants/profil/profil').then(m => m.ProfilComponent)
+      }
+    ]
+  },
   {
     path: 'espace-etudiant',
-    loadComponent: () =>
-      import('./component/pages/etudiants/etudiants').then(m => m.Etudiants)
+    loadComponent: () => import('./component/pages/etudiants/etudiants').then(m => m.EtudiantsComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./component/pages/etudiants/dashboard/dashboard').then(m => m.EtudiantDashboardComponent)
+      },
+      {
+        path: 'elearning',
+        loadComponent: () => import('./component/pages/etudiants/elearning/elearning').then(m => m.ElearningComponent)
+      },
+      {
+        path: 'resultats',
+        loadComponent: () => import('./component/pages/etudiants/resultats/resultats').then(m => m.EtudiantResultatsComponent)
+      },
+      {
+        path: 'emploi',
+        loadComponent: () => import('./component/pages/etudiants/emploi/emploi').then(m => m.EtudiantEmploiComponent)
+      },
+      {
+        path: 'profil',
+        loadComponent: () => import('./component/pages/etudiants/profil/profil').then(m => m.EtudiantProfilComponent)
+      }
+    ]
+  },
+  {
+    path: 'espace-admin',
+    loadComponent: () => import('./component/pages/admin/admin').then(m => m.AdminComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./component/pages/admin/dashboard/dashboard').then(m => m.AdminDashboardComponent)
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./component/pages/admin/users/users').then(m => m.AdminUsersComponent)
+      },
+      {
+        path: 'classes',
+        loadComponent: () => import('./component/pages/admin/classes/classes').then(m => m.AdminClassesComponent)
+      },
+      {
+        path: 'content',
+        loadComponent: () => import('./component/pages/admin/content/content').then(m => m.AdminContentComponent)
+      },
+      {
+        path: 'emploi',
+        loadComponent: () => import('./component/pages/admin/emploi/emploi').then(m => m.AdminEmploiComponent)
+      },
+      {
+        path: 'messages',
+        loadComponent: () => import('./component/pages/admin/messages/messages').then(m => m.AdminMessagesComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./component/pages/admin/settings/settings').then(m => m.AdminSettingsComponent)
+      }
+    ]
   }
   ]
   }

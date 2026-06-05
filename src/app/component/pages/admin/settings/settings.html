@@ -1,0 +1,108 @@
+<div class="admin-settings-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">{{ 'admin.settings.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.settings.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <div class="settings-container">
+    
+    <!-- Sidebar Navigation -->
+    <div class="settings-sidebar">
+      <button class="menu-item" [class.active]="activeTab === 'general'" (click)="switchTab('general')">
+        <i class="bi bi-building"></i>
+        <span>{{ 'admin.settings.tabs.general' | translate }}</span>
+      </button>
+      <button class="menu-item" [class.active]="activeTab === 'system'" (click)="switchTab('system')">
+        <i class="bi bi-hdd-network"></i>
+        <span>{{ 'admin.settings.tabs.system' | translate }}</span>
+      </button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="settings-content">
+      
+      <!-- Onglet Général -->
+      <div class="settings-section" *ngIf="activeTab === 'general'">
+        <h3 class="section-title"><i class="bi bi-building"></i> {{ 'admin.settings.tabs.general' | translate }}</h3>
+        
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>{{ 'admin.settings.form.schoolName' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="settings.schoolName">
+          </div>
+          
+          <div class="form-group">
+            <label>{{ 'admin.settings.form.email' | translate }}</label>
+            <input type="email" class="form-control" [(ngModel)]="settings.email">
+          </div>
+          
+          <div class="form-group">
+            <label>{{ 'admin.settings.form.phone' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="settings.phone" dir="ltr">
+          </div>
+          
+          <div class="form-group full-width">
+            <label>{{ 'admin.settings.form.address' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="settings.address">
+          </div>
+        </div>
+      </div>
+
+      <!-- Onglet Système -->
+      <div class="settings-section" *ngIf="activeTab === 'system'">
+        <h3 class="section-title"><i class="bi bi-hdd-network"></i> {{ 'admin.settings.tabs.system' | translate }}</h3>
+        
+        <div class="form-group">
+          <label>{{ 'admin.settings.form.academicYear' | translate }}</label>
+          <select class="form-select" [(ngModel)]="settings.academicYear">
+            <option value="2022/2023">2022/2023</option>
+            <option value="2023/2024">2023/2024</option>
+            <option value="2024/2025">2024/2025</option>
+          </select>
+        </div>
+
+        <hr class="separator">
+
+        <!-- Toggles -->
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <h4>{{ 'admin.settings.form.registrations' | translate }}</h4>
+            <p>{{ 'admin.settings.form.registrationsDesc' | translate }}</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="settings.registrations">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row danger-zone">
+          <div class="toggle-info">
+            <h4 class="text-danger">{{ 'admin.settings.form.maintenance' | translate }}</h4>
+            <p>{{ 'admin.settings.form.maintenanceDesc' | translate }}</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="settings.maintenance">
+            <span class="slider round danger"></span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Footer Action -->
+      <div class="settings-footer">
+        <button class="btn-primary" (click)="saveSettings()">
+          <i class="bi bi-save"></i> {{ 'admin.settings.btnSave' | translate }}
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

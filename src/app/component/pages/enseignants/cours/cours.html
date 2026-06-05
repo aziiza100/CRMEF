@@ -1,0 +1,144 @@
+<div class="cours-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'cours.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'cours.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast de succès -->
+  <div class="toast-notification" [class.show]="showSuccessToast">
+    <i class="bi bi-check-circle-fill"></i> {{ 'cours.successMsg' | translate }}
+  </div>
+
+  <div class="cours-grid">
+    
+    <!-- Zone Formulaire -->
+    <div class="form-section">
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <i class="bi" [ngClass]="modeEdition ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+            {{ modeEdition ? ('cours.editTitle' | translate) : ('cours.addTitle' | translate) }}
+          </h3>
+          <button *ngIf="modeEdition" class="btn-cancel-icon" (click)="annulerEdition()"><i class="bi bi-x"></i></button>
+        </div>
+        
+        <div class="card-body">
+          <form #coursForm="ngForm">
+            
+            <div class="form-group">
+              <label>{{ 'cours.form.titre' | translate }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" [(ngModel)]="nouveauCours.titre" name="titre" required [placeholder]="'cours.form.titrePh' | translate">
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'cours.form.desc' | translate }}</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="nouveauCours.description" name="description" [placeholder]="'cours.form.descPh' | translate"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'cours.form.fichier' | translate }}</label>
+              <div class="file-upload-wrapper">
+                <input type="file" id="fichierCours" (change)="onFileSelected($event)" class="file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip">
+                <div class="file-upload-box" [class.has-file]="nouveauCours.nomFichier">
+                  <i class="bi bi-cloud-arrow-up"></i>
+                  <span *ngIf="!nouveauCours.nomFichier">{{ 'cours.form.dragDrop' | translate }}</span>
+                  <span *ngIf="nouveauCours.nomFichier" class="file-name">{{ nouveauCours.nomFichier }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="m-0">{{ 'cours.form.classes' | translate }}</label>
+                <button type="button" class="btn-link-action" (click)="toggleToutesClasses()">
+                  <i class="bi" [ngClass]="allClassesSelected ? 'bi-check-square-fill' : 'bi-square'"></i> 
+                  {{ 'cours.form.classesAll' | translate }}
+                </button>
+              </div>
+              <div class="classes-grid">
+                <div class="class-checkbox" *ngFor="let classe of availableClasses" 
+                     [class.selected]="nouveauCours.classesSelectionnees.includes(classe)"
+                     (click)="toggleClasse(classe)">
+                  <i class="bi" [ngClass]="nouveauCours.classesSelectionnees.includes(classe) ? 'bi-check-square-fill' : 'bi-square'"></i>
+                  {{ classe }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-draft" (click)="soumettreCours('Brouillon')" [disabled]="!nouveauCours.titre">
+                <i class="bi bi-file-earmark"></i> {{ 'cours.form.btnDraft' | translate }}
+              </button>
+              <button type="button" class="btn-publish" (click)="soumettreCours('Publié')" [disabled]="!nouveauCours.titre">
+                <i class="bi bi-send-check"></i> {{ 'cours.form.btnPublish' | translate }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone Liste des Cours -->
+    <div class="list-section">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3><i class="bi bi-collection"></i> {{ 'cours.list.title' | translate }}</h3>
+          <span class="badge-count">{{ coursFiltres.length }} {{ 'cours.list.cours' | translate }}</span>
+        </div>
+        
+        <div class="card-body">
+          <!-- Filtres -->
+          <div class="filters-bar">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" [(ngModel)]="recherche" (ngModelChange)="appliquerFiltres()" [placeholder]="'cours.list.searchPh' | translate">
+            </div>
+            <select class="filter-select" [(ngModel)]="filtreStatut" (ngModelChange)="appliquerFiltres()">
+              <option value="Tous">{{ 'cours.list.filterAll' | translate }}</option>
+              <option value="Publié">{{ 'cours.list.filterPub' | translate }}</option>
+              <option value="Brouillon">{{ 'cours.list.filterDraft' | translate }}</option>
+            </select>
+          </div>
+
+          <!-- Liste -->
+          <div class="cours-list">
+            <div class="empty-state" *ngIf="coursFiltres.length === 0">
+              <i class="bi bi-inbox text-muted"></i>
+              <p>{{ 'cours.list.empty' | translate }}</p>
+            </div>
+
+            <div class="cours-item" *ngFor="let cours of coursFiltres">
+              <div class="cours-item-icon" [ngClass]="cours.statut === 'Publié' ? 'bg-success-light' : 'bg-warning-light'">
+                <i class="bi" [ngClass]="cours.fichier ? 'bi-file-earmark-text' : 'bi-file-earmark'"></i>
+              </div>
+              <div class="cours-item-content">
+                <div class="cours-item-header">
+                  <h4>{{ cours.titre }}</h4>
+                  <span class="status-badge" [ngClass]="cours.statut === 'Publié' ? 'status-pub' : 'status-draft'">
+                    {{ cours.statut === 'Publié' ? ('cours.list.filterPub' | translate) : ('cours.list.filterDraft' | translate) }}
+                  </span>
+                </div>
+                <p class="cours-item-desc">{{ cours.description || 'Aucune description.' }}</p>
+                <div class="cours-item-meta">
+                  <span class="meta-date"><i class="bi bi-calendar3"></i> {{ cours.date }}</span>
+                  <span class="meta-classes" *ngIf="cours.classes.length > 0">
+                    <i class="bi bi-people"></i> {{ cours.classes.join(', ') }}
+                  </span>
+                  <span class="meta-file" *ngIf="cours.fichier">
+                    <i class="bi bi-paperclip"></i> {{ cours.fichier }}
+                  </span>
+                </div>
+              </div>
+              <div class="cours-item-actions">
+                <button class="btn-action edit" (click)="editerCours(cours)" title="Modifier"><i class="bi bi-pencil"></i></button>
+                <button class="btn-action delete" (click)="supprimerCours(cours.id)" title="Supprimer"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

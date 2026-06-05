@@ -3,7 +3,8 @@
     "ministry": "Royaume du Maroc - Ministère de l'Éducation Nationale",
     "title": "Centre Régional des Métiers de l'Éducation et de la Formation",
     "button1" : "Découvrir les formations",
-    "button2" : "Contacter le centre"
+    "button2" : "Contacter le centre",
+    "login": "Connexion"
   },
  
   "nav": {
@@ -610,6 +611,380 @@
       "placeholder": "Votre adresse email",
       "button": "S'abonner",
       "privacy": "Nous respectons votre confidentialité"
+    }
+  },
+  "login": {
+    "title": "Connexion Espace Privé",
+    "subtitle": "Veuillez vous identifier pour accéder à votre espace",
+    "emailLabel": "Adresse Email",
+    "emailPlaceholder": "ex: enseignant@crmef.ma",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "••••••••",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "submit": "Se connecter",
+    "loading": "Connexion...",
+    "errorEmpty": "Veuillez remplir tous les champs.",
+    "help": "Besoin d'aide ?",
+    "contactAdmin": "Contactez l'administration"
+  },
+  "enseignant": {
+    "dashboard": "Tableau de bord",
+    "welcome": "Bienvenue sur votre espace enseignant personnel.",
+    "role": "Espace Enseignant",
+    "backHome": "Retour à l'accueil",
+    "mainMenu": "Menu Principal",
+    "logout": "Déconnexion",
+    "searchPlaceholder": "Rechercher un module, un cours...",
+    "stats": {
+      "courses": "Cours partagés",
+      "classes": "Classes assignées",
+      "hours": "Volume horaire / sem"
+    },
+    "modulesTitle": "Mes Outils Pédagogiques",
+    "activityTitle": "Activité Récente",
+    "nextClassTitle": "Prochain Cours",
+    "viewAll": "Voir tout l'historique",
+    "modules": {
+      "messagerie": { "title": "Messagerie interne", "desc": "Boîte de réception et communications avec l'administration et les collègues." },
+      "telecharger-cours": { "title": "Télécharger cours", "desc": "Accédez à l'archive des cours et ressources pédagogiques validées." },
+      "deposer-cours": { "title": "Déposer supports cours", "desc": "Partagez vos supports de cours avec vos étudiants et l'administration." },
+      "gerer-notes": { "title": "Gérer notes", "desc": "Saisie, consultation et validation des notes des étudiants." },
+      "gerer-classes": { "title": "Gérer classes", "desc": "Consultez les listes d'étudiants et les emplois du temps par classe." },
+      "profil": { "title": "Consulter profil", "desc": "Gérez vos informations personnelles et paramètres de compte." }
+    }
+  },
+  "cours": {
+    "pageTitle": "Déposer supports cours",
+    "pageDesc": "Gérez vos supports de cours, publiez de nouveaux documents et affectez-les à vos classes.",
+    "successMsg": "Opération effectuée avec succès !",
+    "addTitle": "Nouveau Cours",
+    "editTitle": "Modifier le Cours",
+    "form": {
+      "titre": "Titre du cours",
+      "titrePh": "Ex: Chapitre 1 - Introduction",
+      "desc": "Description (Optionnel)",
+      "descPh": "Bref résumé du contenu...",
+      "fichier": "Fichier joint",
+      "dragDrop": "Cliquez ou glissez un fichier ici (.pdf, .doc, .zip)",
+      "classes": "Affecter aux classes",
+      "classesAll": "Toutes les classes",
+      "btnDraft": "Brouillon",
+      "btnPublish": "Publier"
+    },
+    "list": {
+      "title": "Cours publiés et brouillons",
+      "cours": "cours",
+      "searchPh": "Rechercher un cours...",
+      "filterAll": "Tous les statuts",
+      "filterPub": "Publié",
+      "filterDraft": "Brouillon",
+      "empty": "Aucun cours trouvé. Commencez par en ajouter un !"
+    }
+  },
+  "profil": {
+    "pageTitle": "Mon Profil",
+    "pageDesc": "Gérez vos informations personnelles et vos paramètres de sécurité.",
+    "successMsg": "Profil mis à jour avec succès !",
+    "pwdSuccessMsg": "Mot de passe modifié avec succès !",
+    "personalInfo": "Informations Personnelles",
+    "security": "Sécurité & Mot de passe",
+    "avatar": "Changer la photo",
+    "form": {
+      "nom": "Nom Complet",
+      "email": "Adresse Email",
+      "tel": "Téléphone",
+      "telPh": "Ex: 06 00 00 00 00",
+      "specialite": "Spécialité",
+      "specialitePh": "Ex: Didactique des SVT",
+      "bio": "Biographie / Notes",
+      "bioPh": "Quelques mots sur votre parcours...",
+      "currentPwd": "Mot de passe actuel",
+      "newPwd": "Nouveau mot de passe",
+      "confirmPwd": "Confirmer le nouveau mot de passe",
+      "btnSave": "Enregistrer les modifications",
+      "btnPwd": "Mettre à jour le mot de passe"
+    }
+  },
+  "classes": {
+    "pageTitle": "Mes Classes",
+    "pageDesc": "Consultez les listes d'étudiants pour chaque classe qui vous est assignée.",
+    "selectClass": "Sélectionnez une classe pour voir les étudiants",
+    "students": "étudiants",
+    "listTitle": "Liste des étudiants inscrits",
+    "searchPh": "Rechercher un étudiant par nom, email ou CIN...",
+    "btnExport": "Exporter la liste",
+    "table": {
+      "name": "Nom & Prénom",
+      "cin": "CIN",
+      "email": "Email"
+    },
+    "empty": "Aucun étudiant ne correspond à votre recherche."
+  },
+  "notes": {
+    "pageTitle": "Saisie des Notes",
+    "pageDesc": "Enregistrez et gérez les notes de vos étudiants.",
+    "selectClassPh": "Sélectionner une classe",
+    "btnSave": "Enregistrer les notes",
+    "successMsg": "Les notes ont été enregistrées avec succès !",
+    "table": {
+      "name": "Nom & Prénom",
+      "cin": "CIN",
+      "noteExam": "Note Exam",
+      "noteActivite": "Note Activité",
+      "moyenGeneral": "Moyen Général"
+    },
+    "emptySelection": "Veuillez sélectionner une classe pour commencer la saisie."
+  },
+  "telechargerCours": {
+    "pageTitle": "Bibliothèque des Cours",
+    "pageDesc": "Consultez et téléchargez les supports de cours disponibles sur la plateforme.",
+    "searchPh": "Rechercher un cours par titre ou mots-clés...",
+    "allSpecialties": "Toutes les spécialités",
+    "specialties": {
+      "svt": "SVT",
+      "math": "Mathématiques",
+      "pc": "Physique-Chimie",
+      "didactique": "Didactique"
+    },
+    "by": "Par",
+    "size": "Taille",
+    "btnDownload": "Télécharger",
+    "downloading": "Téléchargement en cours...",
+    "successMsg": "Le cours a été téléchargé avec succès !",
+    "empty": "Aucun cours ne correspond à votre recherche."
+  },
+  "etudiant": {
+    "menu": {
+      "dashboard": "Tableau de bord",
+      "elearning": "E-learning",
+      "resultats": "Résultats et Notes",
+      "emploi": "Emploi du temps",
+      "messagerie": "Messagerie",
+      "profil": "Mon Profil"
+    },
+    "welcome": "Bienvenue dans votre Espace Étudiant",
+    "searchPlaceholder": "Rechercher un cours, une note...",
+    "elearning": {
+      "pageTitle": "E-learning",
+      "pageDesc": "Consultez et téléchargez les supports de cours mis à disposition par vos professeurs.",
+      "searchPh": "Rechercher un cours...",
+      "allSubjects": "Toutes les matières",
+      "by": "Professeur",
+      "btnDownload": "Télécharger",
+      "successMsg": "Le cours a été téléchargé avec succès !",
+      "empty": "Aucun cours trouvé."
+    },
+    "profil": {
+      "pageTitle": "Mon Profil",
+      "pageDesc": "Consultez vos informations personnelles et gérez la sécurité de votre compte.",
+      "personalInfo": "Informations Personnelles",
+      "security": "Sécurité du Compte",
+      "name": "Nom & Prénom",
+      "cne": "CNE / Massar",
+      "email": "Email Institutionnel",
+      "classe": "Classe / Filière",
+      "oldPwd": "Ancien mot de passe",
+      "newPwd": "Nouveau mot de passe",
+      "confirmPwd": "Confirmer le mot de passe",
+      "btnSave": "Mettre à jour le mot de passe",
+      "successMsg": "Mot de passe mis à jour avec succès !",
+      "errorMsg": "Les mots de passe ne correspondent pas."
+    },
+    "resultats": {
+      "pageTitle": "Mes Résultats et Notes",
+      "pageDesc": "Consultez le détail de vos évaluations et l'état de validation de vos modules.",
+      "moyenne": "Moyenne Générale",
+      "modulesValid": "Modules Validés",
+      "rang": "Rang Classe",
+      "details": "Détails des notes",
+      "matiere": "Matière",
+      "noteActivite": "Note Activité",
+      "noteExam": "Note Examen",
+      "moyModule": "Moyenne",
+      "statut": "Statut",
+      "valide": "Validé",
+      "nonValide": "Non Validé"
+    },
+    "emploi": {
+      "pageTitle": "Mon Emploi du Temps",
+      "pageDesc": "Consultez votre emploi du temps hebdomadaire mis à jour.",
+      "btnDownload": "Télécharger en PDF",
+      "days": {
+        "lundi": "Lundi",
+        "mardi": "Mardi",
+        "mercredi": "Mercredi",
+        "jeudi": "Jeudi",
+        "vendredi": "Vendredi",
+        "samedi": "Samedi"
+      },
+      "salle": "Salle",
+      "prof": "Professeur"
+    },
+    "dashboard": {
+      "quickOverview": "Aperçu rapide",
+      "nextClass": "Prochain Cours",
+      "performance": "Performance",
+      "lastGrade": "Dernière note",
+      "newCourses": "Nouveaux supports",
+      "available": "Disponibles",
+      "todaySchedule": "Emploi du temps (Aujourd'hui)",
+      "latestUploads": "Derniers ajouts E-learning",
+      "messages": "Dernières Annonces",
+      "noMessages": "Aucune annonce pour le moment.",
+      "goToElearning": "Voir tout"
+    }
+  },
+  "admin": {
+    "menu": {
+      "dashboard": "Tableau de Bord",
+      "users": "Gestion Utilisateurs",
+      "classes": "Gestion Classes",
+      "settings": "Paramètres",
+      "logout": "Déconnexion"
+    },
+    "dashboard": {
+      "pageTitle": "Tableau de bord Administrateur",
+      "pageDesc": "Vue d'ensemble de l'établissement",
+      "totalEtudiants": "Total Étudiants",
+      "totalProfs": "Total Enseignants",
+      "totalClasses": "Total Classes actives",
+      "welcome": "Bienvenue dans le panneau d'administration.",
+      "stats": "Statistiques globales",
+      "quickActions": "Actions Rapides",
+      "addEtudiant": "Ajouter un étudiant",
+      "addProf": "Ajouter un enseignant",
+      "createClasse": "Créer une classe"
+    },
+    "users": {
+      "pageTitle": "Gestion des Utilisateurs",
+      "pageDesc": "Administrez les comptes des étudiants et des enseignants.",
+      "tabEtudiants": "Étudiants",
+      "tabProfs": "Enseignants",
+      "searchPh": "Rechercher par nom, email...",
+      "filterClasse": "Toutes les classes",
+      "filterMatiere": "Toutes les matières",
+      "btnAdd": "Nouvel Utilisateur",
+      "table": {
+        "user": "Utilisateur",
+        "cne": "CNE / Massar",
+        "classe": "Classe",
+        "matiere": "Matière enseignée",
+        "status": "Statut",
+        "actions": "Actions",
+        "active": "Actif",
+        "blocked": "Bloqué"
+      },
+      "modal": {
+        "titleNew": "Ajouter un Utilisateur",
+        "role": "Rôle",
+        "student": "Étudiant",
+        "teacher": "Enseignant",
+        "name": "Nom & Prénom",
+        "email": "Adresse Email",
+        "cne": "CNE / Code Massar",
+        "classe": "Affectation (Classe)",
+        "matiere": "Matière",
+        "btnCancel": "Annuler",
+        "btnSave": "Enregistrer"
+      }
+    },
+    "classes": {
+      "pageTitle": "Gestion des Classes",
+      "pageDesc": "Gérez les classes, les filières et l'affectation des enseignants.",
+      "searchPh": "Rechercher une classe...",
+      "filterFiliere": "Toutes les filières",
+      "btnAdd": "Nouvelle Classe",
+      "table": {
+        "name": "Nom de la Classe",
+        "filiere": "Filière",
+        "students": "Étudiants",
+        "teachers": "Enseignants Affectés",
+        "actions": "Actions"
+      },
+      "modal": {
+        "titleNew": "Créer une Classe",
+        "name": "Nom (ex: SVT-4)",
+        "filiere": "Filière",
+        "teachers": "Enseignants affectés (optionnel)",
+        "btnCancel": "Annuler",
+        "btnSave": "Enregistrer"
+      }
+    },
+    "content": {
+      "pageTitle": "Gestion du Contenu",
+      "pageDesc": "Publiez et modifiez les articles de la plateforme.",
+      "tabActualites": "Actualités",
+      "tabEvenements": "Événements",
+      "tabAnnonces": "Annonces",
+      "searchPh": "Rechercher un titre...",
+      "btnAdd": "Nouvelle Publication",
+      "table": {
+        "article": "Article",
+        "date": "Date",
+        "status": "Statut",
+        "actions": "Actions",
+        "published": "Publié",
+        "draft": "Brouillon"
+      },
+      "modal": {
+        "titleNew": "Ajouter un Article",
+        "titleFr": "Titre (Français)",
+        "titleAr": "Titre (Arabe)",
+        "descFr": "Description (Français)",
+        "descAr": "Description (Arabe)",
+        "imageUrl": "URL de l'image (optionnel)",
+        "status": "Statut de publication",
+        "btnCancel": "Annuler",
+        "btnSave": "Enregistrer"
+      }
+    },
+    "emploi": {
+      "pageTitle": "Emplois du Temps",
+      "pageDesc": "Gérez l'emploi du temps de chaque classe.",
+      "selectClass": "Sélectionner une classe",
+      "btnAdd": "Nouvelle Séance",
+      "noSeances": "Aucune séance prévue pour ce jour.",
+      "modal": {
+        "titleNew": "Ajouter une Séance",
+        "timeStart": "Heure de début",
+        "timeEnd": "Heure de fin",
+        "matiere": "Matière",
+        "professeur": "Professeur",
+        "salle": "Salle",
+        "type": "Type de séance",
+        "btnCancel": "Annuler",
+        "btnSave": "Enregistrer"
+      }
+    },
+    "messages": {
+      "pageTitle": "Messagerie",
+      "pageDesc": "Consultez les messages reçus via la plateforme.",
+      "searchPh": "Rechercher dans les messages...",
+      "noMessageSelected": "Sélectionnez un message pour le lire",
+      "emptyInbox": "Votre boîte de réception est vide.",
+      "replyBtn": "Répondre",
+      "deleteBtn": "Supprimer"
+    },
+    "settings": {
+      "pageTitle": "Paramètres Généraux",
+      "pageDesc": "Configurez les informations et le comportement de la plateforme.",
+      "tabs": {
+        "general": "Informations Générales",
+        "system": "Système & Inscriptions"
+      },
+      "form": {
+        "schoolName": "Nom de l'établissement",
+        "email": "Email de contact public",
+        "phone": "Téléphone de contact",
+        "address": "Adresse physique",
+        "academicYear": "Année Scolaire en cours",
+        "maintenance": "Mode Maintenance",
+        "maintenanceDesc": "Si activé, le site public affichera une page de maintenance.",
+        "registrations": "Inscriptions Ouvertes",
+        "registrationsDesc": "Autoriser la création de nouveaux comptes étudiants depuis le site."
+      },
+      "btnSave": "Sauvegarder les paramètres"
     }
   }
 }

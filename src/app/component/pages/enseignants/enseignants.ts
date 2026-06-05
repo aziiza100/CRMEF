@@ -48,7 +48,7 @@ interface Classe {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './enseignants.html',
-  styleUrl: './enseignants.css',
+  styleUrls: ['./enseignants.css']
 })
 export class Enseignants {
   activeSection: 'profil' | 'classes' = 'profil';

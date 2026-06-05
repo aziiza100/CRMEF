@@ -1,0 +1,111 @@
+<div class="profil-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'etudiant.profil.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'etudiant.profil.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Messages Flash -->
+  <div class="alert alert-success d-flex align-items-center" *ngIf="showSuccess">
+    <i class="bi bi-check-circle-fill me-2"></i> {{ 'etudiant.profil.successMsg' | translate }}
+  </div>
+  
+  <div class="alert alert-danger d-flex align-items-center" *ngIf="showError">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ 'etudiant.profil.errorMsg' | translate }}
+  </div>
+
+  <div class="profil-grid">
+    <!-- Zone d'information (Bloquée) -->
+    <div class="profil-card info-card">
+      <div class="card-header">
+        <i class="bi bi-person-badge"></i>
+        <h3>{{ 'etudiant.profil.personalInfo' | translate }}</h3>
+      </div>
+      
+      <div class="card-body">
+        <div class="avatar-container">
+          <img [src]="etudiant.avatar" alt="Avatar">
+          <div class="avatar-badge">
+            <i class="bi bi-lock-fill"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'etudiant.profil.name' | translate }}</label>
+          <div class="input-with-icon disabled-input">
+            <i class="bi bi-person"></i>
+            <input type="text" [value]="etudiant.nom" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'etudiant.profil.cne' | translate }}</label>
+          <div class="input-with-icon disabled-input">
+            <i class="bi bi-upc-scan"></i>
+            <input type="text" [value]="etudiant.cne" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'etudiant.profil.email' | translate }}</label>
+          <div class="input-with-icon disabled-input">
+            <i class="bi bi-envelope"></i>
+            <input type="email" [value]="etudiant.email" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'etudiant.profil.classe' | translate }}</label>
+          <div class="input-with-icon disabled-input">
+            <i class="bi bi-mortarboard"></i>
+            <input type="text" [value]="etudiant.classe" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone Sécurité (Modifiable) -->
+    <div class="profil-card security-card">
+      <div class="card-header">
+        <i class="bi bi-shield-lock"></i>
+        <h3>{{ 'etudiant.profil.security' | translate }}</h3>
+      </div>
+      
+      <div class="card-body">
+        <div class="security-illustration">
+          <i class="bi bi-key"></i>
+        </div>
+        
+        <form (ngSubmit)="updatePassword()">
+          <div class="form-group">
+            <label>{{ 'etudiant.profil.oldPwd' | translate }}</label>
+            <div class="input-with-icon active-input">
+              <i class="bi bi-unlock"></i>
+              <input type="password" [(ngModel)]="oldPwd" name="oldPwd" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>{{ 'etudiant.profil.newPwd' | translate }}</label>
+            <div class="input-with-icon active-input">
+              <i class="bi bi-lock-fill"></i>
+              <input type="password" [(ngModel)]="newPwd" name="newPwd" required>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label>{{ 'etudiant.profil.confirmPwd' | translate }}</label>
+            <div class="input-with-icon active-input">
+              <i class="bi bi-check2-circle"></i>
+              <input type="password" [(ngModel)]="confirmPwd" name="confirmPwd" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-save" [disabled]="!oldPwd || !newPwd || !confirmPwd">
+            <i class="bi bi-shield-check"></i> {{ 'etudiant.profil.btnSave' | translate }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

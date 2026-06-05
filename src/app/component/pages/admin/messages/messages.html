@@ -1,0 +1,93 @@
+<div class="admin-messages-page">
+  
+  <div class="page-header">
+    <div class="title-container">
+      <h2 class="page-title">{{ 'admin.messages.pageTitle' | translate }}</h2>
+      <span class="unread-badge" *ngIf="unreadCount > 0">{{ unreadCount }} non lu(s)</span>
+    </div>
+    <p class="page-desc">{{ 'admin.messages.pageDesc' | translate }}</p>
+  </div>
+
+  <div class="inbox-container">
+    
+    <!-- Liste des messages (Gauche) -->
+    <div class="inbox-list">
+      
+      <div class="inbox-search">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.messages.searchPh' | translate">
+      </div>
+
+      <div class="message-items-scroll">
+        <div class="empty-list" *ngIf="filteredMessages.length === 0">
+          <i class="bi bi-inbox"></i>
+          <p>{{ 'admin.messages.emptyInbox' | translate }}</p>
+        </div>
+
+        <div class="message-item" 
+             *ngFor="let msg of filteredMessages" 
+             [class.active]="selectedMessage?.id === msg.id"
+             [class.unread]="!msg.lu"
+             (click)="selectMessage(msg)">
+          
+          <img [src]="msg.avatar" class="msg-avatar" alt="avatar">
+          
+          <div class="msg-preview">
+            <div class="msg-header-row">
+              <span class="msg-sender">{{ msg.expediteur }}</span>
+              <span class="msg-date">{{ msg.date }}</span>
+            </div>
+            <h4 class="msg-subject">{{ msg.sujet }}</h4>
+            <p class="msg-snippet">{{ msg.contenu | slice:0:40 }}...</p>
+          </div>
+          
+          <div class="unread-dot" *ngIf="!msg.lu"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Zone de lecture (Droite) -->
+    <div class="inbox-reader">
+      
+      <!-- État vide -->
+      <div class="reader-empty" *ngIf="!selectedMessage">
+        <div class="empty-circle"><i class="bi bi-envelope-open"></i></div>
+        <h3>{{ 'admin.messages.noMessageSelected' | translate }}</h3>
+      </div>
+
+      <!-- Message Ouvert -->
+      <div class="reader-content" *ngIf="selectedMessage">
+        
+        <div class="reader-header">
+          <h2 class="reader-subject">{{ selectedMessage.sujet }}</h2>
+          <div class="reader-actions">
+            <button class="action-btn" (click)="replyToMessage()" [title]="'admin.messages.replyBtn' | translate">
+              <i class="bi bi-reply-fill"></i>
+            </button>
+            <button class="action-btn danger" (click)="deleteMessage(selectedMessage.id)" [title]="'admin.messages.deleteBtn' | translate">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="sender-info-box">
+          <img [src]="selectedMessage.avatar" class="sender-avatar" alt="avatar">
+          <div class="sender-details">
+            <div class="sender-name">{{ selectedMessage.expediteur }}</div>
+            <div class="sender-email">{{ selectedMessage.email }}</div>
+          </div>
+          <div class="receive-date">{{ selectedMessage.date }}</div>
+        </div>
+
+        <div class="message-body">
+          {{ selectedMessage.contenu }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

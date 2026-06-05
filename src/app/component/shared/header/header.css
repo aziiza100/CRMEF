@@ -164,3 +164,34 @@
   color: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
+
+/* Connexion Button */
+.header-actions {
+  margin-right: 20px;
+}
+
+.btn-connexion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #005E76, #008AA8);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 94, 118, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-connexion:hover {
+  background: linear-gradient(135deg, #004d61, #007691);
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 94, 118, 0.3);
+}
+
+.btn-connexion i {
+  font-size: 1.1rem;
+}

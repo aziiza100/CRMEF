@@ -1,0 +1,337 @@
+.dashboard-page {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Quick Overview Cards */
+.quick-overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 992px) {
+  .quick-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overview-card {
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+
+[dir="rtl"] .overview-card::before {
+  right: auto;
+  left: -20px;
+}
+
+.overview-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-label {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.card-content h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
+}
+
+.card-content p {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.primary-card { background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); }
+.success-card { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+.warning-card { background: linear-gradient(135deg, #ea580c 0%, #f97316 100%); }
+
+/* Grid Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Widgets */
+.widget-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  overflow: hidden;
+}
+
+.widget-header {
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.widget-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.widget-header h3 i {
+  color: #4f46e5;
+  font-size: 20px;
+}
+
+.btn-link {
+  color: #4f46e5;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: opacity 0.3s;
+}
+
+.btn-link:hover {
+  opacity: 0.7;
+}
+
+.widget-body {
+  padding: 25px;
+}
+
+.p-0 { padding: 0 !important; }
+.mt-4 { margin-top: 30px; }
+
+/* Schedule List */
+.schedule-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.schedule-list li {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 25px;
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.3s;
+}
+
+.schedule-list li:hover {
+  background: #f8fafc;
+}
+
+.schedule-time {
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  width: 100px;
+}
+
+.schedule-details {
+  flex: 1;
+}
+
+.schedule-details h4 {
+  margin: 0 0 5px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.schedule-details p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.type-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.type-badge.cours { background: #eef2ff; color: #4f46e5; }
+.type-badge.td { background: #ecfdf5; color: #059669; }
+
+/* E-learning Mini Cards */
+.elearning-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  transition: all 0.3s;
+}
+
+.elearning-mini-card:last-child {
+  margin-bottom: 0;
+}
+
+.elearning-mini-card:hover {
+  border-color: #c7d2fe;
+  background: #f8fafc;
+}
+
+.doc-icon {
+  width: 45px;
+  height: 45px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.doc-icon.pdf { color: #ef4444; }
+.doc-icon.doc { color: #3b82f6; }
+
+.doc-info {
+  flex: 1;
+}
+
+.doc-info h4 {
+  margin: 0 0 3px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.doc-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.btn-download-mini {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-download-mini:hover {
+  background: #4f46e5;
+  color: white;
+}
+
+/* Messages Widget */
+.messages-widget {
+  height: 100%;
+}
+
+.message-item {
+  display: flex;
+  gap: 15px;
+  padding: 20px 25px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.msg-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.msg-icon.urgent {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.msg-content h4 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.msg-date {
+  font-size: 12px;
+  color: #94a3b8;
+}

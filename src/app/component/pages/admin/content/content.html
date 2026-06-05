@@ -1,0 +1,159 @@
+<div class="admin-content-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">{{ 'admin.content.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.content.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <!-- Tabs & Toolbar -->
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab-btn" [class.active]="activeTab === 'actualites'" (click)="switchTab('actualites')">
+        <i class="bi bi-newspaper"></i> {{ 'admin.content.tabActualites' | translate }}
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'evenements'" (click)="switchTab('evenements')">
+        <i class="bi bi-calendar-event"></i> {{ 'admin.content.tabEvenements' | translate }}
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'annonces'" (click)="switchTab('annonces')">
+        <i class="bi bi-megaphone"></i> {{ 'admin.content.tabAnnonces' | translate }}
+      </button>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.content.searchPh' | translate">
+      </div>
+      <button class="btn-primary" (click)="openModal()">
+        <i class="bi bi-plus-lg"></i> {{ 'admin.content.btnAdd' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div class="table-container">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ 'admin.content.table.article' | translate }}</th>
+          <th>{{ 'admin.content.table.date' | translate }}</th>
+          <th>{{ 'admin.content.table.status' | translate }}</th>
+          <th class="text-end">{{ 'admin.content.table.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of filteredArticles" [class.is-draft]="article.status === 'draft'">
+          <td>
+            <div class="article-cell">
+              <div class="article-img-wrapper">
+                <img [src]="article.imageUrl" alt="cover">
+                <div class="img-overlay" *ngIf="article.status === 'draft'"><i class="bi bi-eye-slash-fill"></i></div>
+              </div>
+              <div class="article-info">
+                <h4 class="fr-text">{{ article.titreFr }}</h4>
+                <h4 class="ar-text" dir="rtl">{{ article.titreAr }}</h4>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted"><i class="bi bi-clock"></i> {{ article.date }}</td>
+          <td>
+            <!-- Bouton Toggle Statut -->
+            <button class="status-toggle" [ngClass]="article.status" (click)="toggleStatus(article)">
+              <span class="dot"></span>
+              {{ (article.status === 'published' ? 'admin.content.table.published' : 'admin.content.table.draft') | translate }}
+            </button>
+          </td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openModal(article)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteArticle(article.id)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        
+        <!-- Empty State -->
+        <tr *ngIf="filteredArticles.length === 0">
+          <td colspan="4" class="text-center p-5 text-muted">
+            <i class="bi bi-folder-x fs-1 mb-3 d-block"></i>
+            Aucun contenu trouvé dans cette catégorie.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Form Modal (Bilingual) -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content large-modal" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>{{ editingId ? 'Modifier Article' : ('admin.content.modal.titleNew' | translate) }}</h3>
+        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body modal-scroll">
+        
+        <!-- Image & Status -->
+        <div class="top-fields-grid">
+          <div class="form-group">
+            <label><i class="bi bi-image"></i> {{ 'admin.content.modal.imageUrl' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="newArticle.imageUrl" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label><i class="bi bi-eye"></i> {{ 'admin.content.modal.status' | translate }}</label>
+            <select class="form-select status-select" [ngClass]="newArticle.status" [(ngModel)]="newArticle.status">
+              <option value="published">🟢 Publié (Visible)</option>
+              <option value="draft">⚪ Brouillon (Caché)</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="separator">
+
+        <!-- Champs Bilingues -->
+        <div class="bilingual-grid">
+          
+          <!-- Colonne Français -->
+          <div class="lang-col fr-col">
+            <div class="lang-badge">🇫🇷 Français</div>
+            <div class="form-group mt-3">
+              <label>{{ 'admin.content.modal.titleFr' | translate }}</label>
+              <input type="text" class="form-control" [(ngModel)]="newArticle.titreFr" required>
+            </div>
+            <div class="form-group">
+              <label>{{ 'admin.content.modal.descFr' | translate }}</label>
+              <textarea class="form-control" rows="4" [(ngModel)]="newArticle.descFr"></textarea>
+            </div>
+          </div>
+
+          <!-- Colonne Arabe -->
+          <div class="lang-col ar-col" dir="rtl">
+            <div class="lang-badge">🇲🇦 العربية</div>
+            <div class="form-group mt-3">
+              <label>{{ 'admin.content.modal.titleAr' | translate }}</label>
+              <input type="text" class="form-control" [(ngModel)]="newArticle.titreAr" required>
+            </div>
+            <div class="form-group">
+              <label>{{ 'admin.content.modal.descAr' | translate }}</label>
+              <textarea class="form-control" rows="4" [(ngModel)]="newArticle.descAr"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.content.modal.btnCancel' | translate }}</button>
+        <button class="btn-primary" (click)="saveArticle()" [disabled]="!newArticle.titreFr || !newArticle.titreAr">
+          <i class="bi bi-check2"></i> {{ 'admin.content.modal.btnSave' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

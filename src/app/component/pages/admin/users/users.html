@@ -1,0 +1,214 @@
+<div class="admin-users-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">{{ 'admin.users.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.users.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <!-- Tabs & Toolbar -->
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab-btn" [class.active]="activeTab === 'etudiants'" (click)="switchTab('etudiants')">
+        <i class="bi bi-mortarboard"></i> {{ 'admin.users.tabEtudiants' | translate }}
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'profs'" (click)="switchTab('profs')">
+        <i class="bi bi-person-video3"></i> {{ 'admin.users.tabProfs' | translate }}
+      </button>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.users.searchPh' | translate">
+      </div>
+      
+      <select class="form-select filter-select" *ngIf="activeTab === 'etudiants'" [(ngModel)]="selectedFilter">
+        <option value="all">{{ 'admin.users.filterClasse' | translate }}</option>
+        <option value="SVT-4">SVT-4</option>
+        <option value="Math-1">Math-1</option>
+      </select>
+
+      <select class="form-select filter-select" *ngIf="activeTab === 'profs'" [(ngModel)]="selectedFilter">
+        <option value="all">{{ 'admin.users.filterMatiere' | translate }}</option>
+        <option value="Informatique">Informatique</option>
+        <option value="Sciences de l'Éducation">Sciences de l'Éducation</option>
+        <option value="SVT">SVT</option>
+      </select>
+
+      <button class="btn-primary" (click)="openModal()">
+        <i class="bi bi-plus-lg"></i> {{ 'admin.users.btnAdd' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div class="table-container">
+    
+    <!-- Table Étudiants -->
+    <table class="admin-table" *ngIf="activeTab === 'etudiants'">
+      <thead>
+        <tr>
+          <th>{{ 'admin.users.table.user' | translate }}</th>
+          <th>{{ 'admin.users.table.cne' | translate }}</th>
+          <th>{{ 'admin.users.table.classe' | translate }}</th>
+          <th>{{ 'admin.users.table.status' | translate }}</th>
+          <th class="text-end">{{ 'admin.users.table.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of filteredEtudiants">
+          <td>
+            <div class="user-cell">
+              <img [src]="student.avatar" class="user-avatar" alt="avatar">
+              <div class="user-info">
+                <h4>{{ student.nom }}</h4>
+                <span>{{ student.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td class="fw-bold">{{ student.cne }}</td>
+          <td><span class="badge-outline">{{ student.classe }}</span></td>
+          <td>
+            <span class="status-badge" [ngClass]="student.statut === 'actif' ? 'active' : 'blocked'">
+              {{ (student.statut === 'actif' ? 'admin.users.table.active' : 'admin.users.table.blocked') | translate }}
+            </span>
+          </td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openModal(student)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteUser(student.id)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Table Professeurs -->
+    <table class="admin-table" *ngIf="activeTab === 'profs'">
+      <thead>
+        <tr>
+          <th>{{ 'admin.users.table.user' | translate }}</th>
+          <th>{{ 'admin.users.table.matiere' | translate }}</th>
+          <th>{{ 'admin.users.table.status' | translate }}</th>
+          <th class="text-end">{{ 'admin.users.table.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prof of filteredProfs">
+          <td>
+            <div class="user-cell">
+              <img [src]="prof.avatar" class="user-avatar" alt="avatar">
+              <div class="user-info">
+                <h4>{{ prof.nom }}</h4>
+                <span>{{ prof.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex flex-column gap-1">
+              <span class="text-muted" style="font-size: 12px;"><i class="bi bi-book"></i> {{ prof.matiere }}</span>
+              <div class="d-flex flex-wrap gap-1 mt-1">
+                <span class="badge-outline-purple" *ngFor="let c of prof.classes">{{ c }}</span>
+                <span class="text-muted fst-italic" *ngIf="prof.classes.length === 0" style="font-size: 11px;">Aucune classe</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="prof.statut === 'actif' ? 'active' : 'blocked'">
+              {{ (prof.statut === 'actif' ? 'admin.users.table.active' : 'admin.users.table.blocked') | translate }}
+            </span>
+          </td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openModal(prof)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteUser(prof.id)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Form Modal (Overlay) -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>{{ editingId ? 'Modifier Utilisateur' : ('admin.users.modal.titleNew' | translate) }}</h3>
+        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group" *ngIf="!editingId">
+          <label>{{ 'admin.users.modal.role' | translate }}</label>
+          <select class="form-select" [(ngModel)]="newUser.role">
+            <option value="student">{{ 'admin.users.modal.student' | translate }}</option>
+            <option value="teacher">{{ 'admin.users.modal.teacher' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="editingId">
+          <label>Statut</label>
+          <select class="form-select" [(ngModel)]="newUser.statut">
+            <option value="actif">Actif</option>
+            <option value="bloque">Bloqué</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'admin.users.modal.name' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newUser.nom" required>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'admin.users.modal.email' | translate }}</label>
+          <input type="email" class="form-control" [(ngModel)]="newUser.email" required>
+        </div>
+
+        <!-- Champs Spécifiques Étudiant -->
+        <ng-container *ngIf="newUser.role === 'student'">
+          <div class="form-group">
+            <label>{{ 'admin.users.modal.cne' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="newUser.cne">
+          </div>
+          <div class="form-group">
+            <label>{{ 'admin.users.modal.classe' | translate }}</label>
+            <select class="form-select" [(ngModel)]="newUser.classe">
+              <option value="SVT-4">SVT-4</option>
+              <option value="Math-1">Math-1</option>
+            </select>
+          </div>
+        </ng-container>
+
+        <!-- Champs Spécifiques Professeur -->
+        <ng-container *ngIf="newUser.role === 'teacher'">
+          <div class="form-group">
+            <label>{{ 'admin.users.modal.matiere' | translate }} (Spécialité principale)</label>
+            <input type="text" class="form-control" [(ngModel)]="newUser.matiere">
+          </div>
+          <div class="form-group">
+            <label>Classes enseignées</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-container" *ngFor="let cls of availableClasses">
+                <input type="checkbox" [checked]="isProfClassSelected(cls)" (change)="toggleProfClass(cls)">
+                <span class="checkmark"></span>
+                {{ cls }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.users.modal.btnCancel' | translate }}</button>
+        <button class="btn-primary" (click)="saveUser()" [disabled]="!newUser.nom || !newUser.email">
+          {{ 'admin.users.modal.btnSave' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
