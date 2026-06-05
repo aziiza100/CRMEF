@@ -6,28 +6,50 @@
 
 /* Hero Section */
 .hero.dark-background {
-  min-height: 400px;
+  min-height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
+  position: relative;
+  background: linear-gradient(135deg, #C86720 0%, #F59E0B 45%, #FDE68A 100%);
+  overflow: hidden;
+}
+
+/* Overlay */
+.hero.dark-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  z-index: 1;
+}
+
+/* Content */
+.hero.dark-background .container {
+  position: relative;
+  z-index: 2;
 }
 
 .hero h2 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 12px 30px rgba(113, 63, 18, 0.35);
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-bottom: 30px;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 600px;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  text-shadow: 0 4px 16px rgba(113, 63, 18, 0.22);
+  line-height: 1.8;
 }
 
 /* Section Title */

@@ -156,7 +156,7 @@
   </section>
 
   <!-- Highlights Section -->
-  <section class="highlights-section section-padding">
+  <section class="highlights-section section-padding" *ngIf="activeTab === 'all'">
     <div class="container">
       <div class="section-header" data-aos="fade-up">
         <h2 class="section-title">{{ 'actualites.highlights.title' | translate }}</h2>
