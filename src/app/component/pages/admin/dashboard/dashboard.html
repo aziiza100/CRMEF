@@ -1,0 +1,104 @@
+<div class="admin-dashboard-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">{{ 'admin.dashboard.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.dashboard.pageDesc' | translate }}</p>
+  </div>
+
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <h2>{{ 'admin.dashboard.welcome' | translate }}</h2>
+      <p>Gérez l'ensemble de l'établissement depuis ce panneau de contrôle unifié.</p>
+    </div>
+    <div class="banner-illustration">
+      <i class="bi bi-shield-check"></i>
+    </div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="section-title">
+    <h3>{{ 'admin.dashboard.stats' | translate }}</h3>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card bg-blue">
+      <div class="metric-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="metric-info">
+        <h3>{{ stats.etudiants }}</h3>
+        <p>{{ 'admin.dashboard.totalEtudiants' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="metric-card bg-emerald">
+      <div class="metric-icon"><i class="bi bi-person-video3"></i></div>
+      <div class="metric-info">
+        <h3>{{ stats.profs }}</h3>
+        <p>{{ 'admin.dashboard.totalProfs' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="metric-card bg-purple">
+      <div class="metric-icon"><i class="bi bi-diagram-3-fill"></i></div>
+      <div class="metric-info">
+        <h3>{{ stats.classes }}</h3>
+        <p>{{ 'admin.dashboard.totalClasses' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lower Section -->
+  <div class="dashboard-grid">
+    
+    <!-- Quick Actions -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="bi bi-lightning-charge-fill"></i> {{ 'admin.dashboard.quickActions' | translate }}</h3>
+      </div>
+      <div class="card-body">
+        <div class="quick-actions-grid">
+          <button class="action-btn">
+            <div class="icon-wrapper bg-blue-light"><i class="bi bi-person-plus-fill"></i></div>
+            <span>{{ 'admin.dashboard.addEtudiant' | translate }}</span>
+          </button>
+          
+          <button class="action-btn">
+            <div class="icon-wrapper bg-emerald-light"><i class="bi bi-person-badge-fill"></i></div>
+            <span>{{ 'admin.dashboard.addProf' | translate }}</span>
+          </button>
+
+          <button class="action-btn">
+            <div class="icon-wrapper bg-purple-light"><i class="bi bi-folder-plus"></i></div>
+            <span>{{ 'admin.dashboard.createClasse' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="bi bi-activity"></i> Activité Récente</h3>
+      </div>
+      <div class="card-body p-0">
+        <ul class="activity-list">
+          <li *ngFor="let act of recentActivities">
+            <div class="act-icon" 
+                 [class.bg-blue]="act.type === 'user'"
+                 [class.bg-purple]="act.type === 'class'"
+                 [class.bg-emerald]="act.type === 'doc'">
+              <i class="bi" 
+                 [ngClass]="{'bi-person': act.type === 'user', 'bi-diagram-3': act.type === 'class', 'bi-file-earmark': act.type === 'doc'}">
+              </i>
+            </div>
+            <div class="act-content">
+              <p>{{ act.message }}</p>
+              <span>{{ act.time }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,99 @@
+<div class="dashboard-page">
+  
+  <!-- Aperçu Rapide (3 Cartes) -->
+  <div class="quick-overview">
+    <div class="overview-card primary-card">
+      <div class="card-icon"><i class="bi bi-calendar-event"></i></div>
+      <div class="card-content">
+        <span class="card-label">{{ 'etudiant.dashboard.nextClass' | translate }}</span>
+        <h3>{{ prochainCours.matiere }}</h3>
+        <p><i class="bi bi-clock"></i> {{ prochainCours.heure }} &nbsp; <i class="bi bi-geo-alt"></i> {{ prochainCours.salle }}</p>
+      </div>
+    </div>
+
+    <div class="overview-card success-card">
+      <div class="card-icon"><i class="bi bi-graph-up-arrow"></i></div>
+      <div class="card-content">
+        <span class="card-label">{{ 'etudiant.dashboard.lastGrade' | translate }}</span>
+        <h3>{{ derniereNote.note }} / 20</h3>
+        <p>{{ derniereNote.matiere }} ({{ derniereNote.date }})</p>
+      </div>
+    </div>
+
+    <div class="overview-card warning-card">
+      <div class="card-icon"><i class="bi bi-cloud-arrow-down"></i></div>
+      <div class="card-content">
+        <span class="card-label">{{ 'etudiant.dashboard.newCourses' | translate }}</span>
+        <h3>{{ nouveauxSupports }}</h3>
+        <p>{{ 'etudiant.dashboard.available' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    
+    <!-- Colonne Gauche (Emploi + Elarning) -->
+    <div class="left-col">
+      <!-- Emploi du jour -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3><i class="bi bi-calendar2-day"></i> {{ 'etudiant.dashboard.todaySchedule' | translate }}</h3>
+          <a routerLink="/espace-etudiant/emploi" class="btn-link"><i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="widget-body p-0">
+          <ul class="schedule-list">
+            <li *ngFor="let cours of coursDuJour">
+              <div class="schedule-time">{{ cours.heure }}</div>
+              <div class="schedule-details">
+                <span class="type-badge" [ngClass]="cours.type">{{ cours.type | uppercase }}</span>
+                <h4>{{ cours.matiere }}</h4>
+                <p><i class="bi bi-door-open"></i> {{ cours.salle }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Derniers ajouts E-learning -->
+      <div class="widget-card mt-4">
+        <div class="widget-header">
+          <h3><i class="bi bi-laptop"></i> {{ 'etudiant.dashboard.latestUploads' | translate }}</h3>
+          <a routerLink="/espace-etudiant/elearning" class="btn-link">{{ 'etudiant.dashboard.goToElearning' | translate }}</a>
+        </div>
+        <div class="widget-body">
+          <div class="elearning-mini-card" *ngFor="let doc of derniersCoursElearning">
+            <div class="doc-icon" [ngClass]="doc.format">
+              <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <div class="doc-info">
+              <h4>{{ doc.titre }}</h4>
+              <p>{{ doc.professeur }} - {{ doc.date }}</p>
+            </div>
+            <button class="btn-download-mini"><i class="bi bi-download"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne Droite (Messages/Annonces) -->
+    <div class="right-col">
+      <div class="widget-card messages-widget">
+        <div class="widget-header">
+          <h3><i class="bi bi-megaphone"></i> {{ 'etudiant.dashboard.messages' | translate }}</h3>
+        </div>
+        <div class="widget-body p-0">
+          <div class="message-item" *ngFor="let msg of messages">
+            <div class="msg-icon" [class.urgent]="msg.urgent">
+              <i class="bi" [ngClass]="msg.urgent ? 'bi-exclamation-diamond-fill' : 'bi-info-circle-fill'"></i>
+            </div>
+            <div class="msg-content">
+              <h4>{{ msg.titre }}</h4>
+              <span class="msg-date">{{ msg.date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

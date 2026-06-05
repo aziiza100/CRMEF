@@ -1,0 +1,71 @@
+<div class="overview-cards">
+  <div class="stat-card">
+    <div class="stat-icon bg-blue-light"><i class="bi bi-book"></i></div>
+    <div class="stat-details">
+      <h3>12</h3>
+      <p>{{ 'enseignant.stats.courses' | translate }}</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-green-light"><i class="bi bi-people"></i></div>
+    <div class="stat-details">
+      <h3>4</h3>
+      <p>{{ 'enseignant.stats.classes' | translate }}</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon bg-orange-light"><i class="bi bi-calendar-event"></i></div>
+    <div class="stat-details">
+      <h3>18h</h3>
+      <p>{{ 'enseignant.stats.hours' | translate }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <!-- Modules Grid -->
+  <div class="modules-section">
+    <h3 class="section-title">{{ 'enseignant.modulesTitle' | translate }}</h3>
+    <div class="modules-grid">
+      <div class="module-card" *ngFor="let mod of dashboardModules" [ngClass]="mod.colorClass" [routerLink]="mod.route">
+        <div class="module-icon">
+          <i class="bi {{ mod.icon }}"></i>
+        </div>
+        <div class="module-info">
+          <h4>{{ 'enseignant.modules.' + mod.id + '.title' | translate }}</h4>
+          <p>{{ 'enseignant.modules.' + mod.id + '.desc' | translate }}</p>
+        </div>
+        <span class="module-badge" *ngIf="mod.badge">{{ mod.badge }}</span>
+        <button class="module-btn"><i class="bi bi-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity Sidebar -->
+  <div class="activity-section">
+    <div class="activity-card">
+      <h3 class="card-title">{{ 'enseignant.activityTitle' | translate }}</h3>
+      <ul class="activity-list">
+        <li *ngFor="let act of recentActivities">
+          <div class="activity-icon">
+            <i class="bi {{ act.icon }} {{ act.color }}"></i>
+          </div>
+          <div class="activity-details">
+            <p>{{ act.text }}</p>
+            <span>{{ act.time }}</span>
+          </div>
+        </li>
+      </ul>
+      <button class="btn-outline-primary w-100 mt-3">{{ 'enseignant.viewAll' | translate }}</button>
+    </div>
+
+    <div class="planning-card mt-4">
+      <h3 class="card-title">{{ 'enseignant.nextClassTitle' | translate }}</h3>
+      <div class="next-class">
+        <div class="class-time">14:30 - 16:30</div>
+        <div class="class-subject">Didactique des Sciences</div>
+        <div class="class-location"><i class="bi bi-geo-alt"></i> Salle B4 (Groupe SVT-2)</div>
+      </div>
+    </div>
+  </div>
+</div>

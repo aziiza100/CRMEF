@@ -1,0 +1,136 @@
+<div class="profil-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'profil.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'profil.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-notification profile-toast" [class.show]="showProfileSuccess">
+    <i class="bi bi-check-circle-fill"></i> {{ 'profil.successMsg' | translate }}
+  </div>
+  <div class="toast-notification pwd-toast" [class.show]="showPwdSuccess">
+    <i class="bi bi-shield-check"></i> {{ 'profil.pwdSuccessMsg' | translate }}
+  </div>
+
+  <div class="profil-grid">
+    
+    <!-- Zone Avatar et Résumé (Gauche) -->
+    <div class="profil-sidebar">
+      <div class="card text-center p-4">
+        <div class="avatar-container">
+          <img [src]="profilInfo.avatar" alt="Avatar" class="profil-avatar">
+          <label class="avatar-edit-btn" title="{{ 'profil.avatar' | translate }}">
+            <i class="bi bi-camera-fill"></i>
+            <input type="file" (change)="onAvatarChange($event)" accept="image/*" hidden>
+          </label>
+        </div>
+        <h3 class="profil-name">{{ profilInfo.nom }}</h3>
+        <p class="profil-role">{{ 'enseignant.role' | translate }}</p>
+        
+        <div class="profil-meta mt-4">
+          <div class="meta-item">
+            <i class="bi bi-envelope"></i>
+            <span>{{ profilInfo.email }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-telephone"></i>
+            <span>{{ profilInfo.tel }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-calendar-check"></i>
+            <span>Membre depuis: {{ profilInfo.dateRejoindre }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone Formulaires (Droite) -->
+    <div class="profil-content">
+      
+      <!-- Informations Personnelles -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3><i class="bi bi-person-lines-fill"></i> {{ 'profil.personalInfo' | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="sauvegarderProfil()" #profilForm="ngForm">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.nom' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="profilInfo.nom" name="nom" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.email' | translate }}</label>
+                <!-- Email en lecture seule car souvent lié au compte admin -->
+                <input type="email" class="form-control bg-light" [(ngModel)]="profilInfo.email" name="email" readonly>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.tel' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="profilInfo.tel" name="tel" [placeholder]="'profil.form.telPh' | translate">
+              </div>
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.specialite' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="profilInfo.specialite" name="specialite" [placeholder]="'profil.form.specialitePh' | translate">
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <label>{{ 'profil.form.bio' | translate }}</label>
+              <textarea class="form-control" rows="4" [(ngModel)]="profilInfo.bio" name="bio" [placeholder]="'profil.form.bioPh' | translate"></textarea>
+            </div>
+
+            <div class="text-end mt-4">
+              <button type="submit" class="btn-save" [disabled]="!profilForm.valid">
+                <i class="bi bi-save"></i> {{ 'profil.form.btnSave' | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sécurité & Mot de passe -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="bi bi-shield-lock-fill"></i> {{ 'profil.security' | translate }}</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="changerMotDePasse()" #pwdForm="ngForm">
+            
+            <div class="form-group mb-3">
+              <label>{{ 'profil.form.currentPwd' | translate }}</label>
+              <input type="password" class="form-control" [(ngModel)]="passwordData.current" name="currentPwd" required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.newPwd' | translate }}</label>
+                <input type="password" class="form-control" [(ngModel)]="passwordData.new" name="newPwd" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>{{ 'profil.form.confirmPwd' | translate }}</label>
+                <input type="password" class="form-control" [(ngModel)]="passwordData.confirm" name="confirmPwd" required
+                       [ngClass]="{'is-invalid': passwordData.confirm !== '' && passwordData.new !== passwordData.confirm}">
+                
+                <div class="invalid-feedback d-block" *ngIf="passwordData.confirm !== '' && passwordData.new !== passwordData.confirm">
+                  Les mots de passe ne correspondent pas.
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end mt-4">
+              <button type="submit" class="btn-save-pwd" 
+                      [disabled]="!pwdForm.valid || passwordData.new !== passwordData.confirm">
+                <i class="bi bi-key"></i> {{ 'profil.form.btnPwd' | translate }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

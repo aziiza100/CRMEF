@@ -1,0 +1,95 @@
+<div class="notes-page">
+  <div class="page-header">
+    <h2 class="page-title">{{ 'notes.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'notes.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showSuccess">
+    <i class="bi bi-check-circle-fill"></i> {{ 'notes.successMsg' | translate }}
+  </div>
+
+  <!-- Grille des Classes (Master) -->
+  <div class="classes-grid mb-4">
+    <div class="class-card" 
+         *ngFor="let classe of classes" 
+         [class.active]="selectedClasseId === classe.id"
+         (click)="selectClasse(classe)">
+      <div class="class-icon">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <div class="class-info">
+        <h3>{{ classe.nom }}</h3>
+        <p class="level">{{ classe.niveau }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- État vide si non sélectionné -->
+  <div class="empty-selection" *ngIf="!canShowTable">
+    <i class="bi bi-pencil-square"></i>
+    <p>{{ 'notes.emptySelection' | translate }}</p>
+  </div>
+
+  <!-- Tableau de saisie -->
+  <div class="card notes-card" *ngIf="canShowTable && currentClasse">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th width="30%">{{ 'notes.table.name' | translate }}</th>
+              <th width="15%">{{ 'notes.table.cin' | translate }}</th>
+              <th width="20%">{{ 'notes.table.noteExam' | translate }}</th>
+              <th width="20%">{{ 'notes.table.noteActivite' | translate }}</th>
+              <th width="15%">{{ 'notes.table.moyenGeneral' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of currentClasse.etudiants">
+              <td>
+                <div class="student-profile">
+                  <img [src]="student.avatar" alt="Avatar" class="student-avatar">
+                  <span class="student-name">{{ student.nom }} {{ student.prenom }}</span>
+                </div>
+              </td>
+              <td><span class="cin-badge">{{ student.cin }}</span></td>
+              <td>
+                <div class="note-input-wrapper">
+                  <input type="number" 
+                         class="form-control note-input" 
+                         [(ngModel)]="student.noteExam" 
+                         (ngModelChange)="validateAndCalculate(student, 'noteExam')"
+                         min="0" max="20" step="0.25"
+                         placeholder="--">
+                </div>
+              </td>
+              <td>
+                <div class="note-input-wrapper">
+                  <input type="number" 
+                         class="form-control note-input" 
+                         [(ngModel)]="student.noteActivite" 
+                         (ngModelChange)="validateAndCalculate(student, 'noteActivite')"
+                         min="0" max="20" step="0.25"
+                         placeholder="--">
+                </div>
+              </td>
+              <td>
+                <div class="moyen-badge" [ngClass]="{'moyen-valid': student.moyenGeneral !== null && student.moyenGeneral >= 10, 'moyen-fail': student.moyenGeneral !== null && student.moyenGeneral < 10}">
+                  {{ student.moyenGeneral !== null ? (student.moyenGeneral | number:'1.2-2') : '--' }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="card-footer text-end p-4 bg-white border-top">
+        <button class="btn-save" (click)="saveNotes()">
+          <i class="bi bi-save2-fill"></i> {{ 'notes.btnSave' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

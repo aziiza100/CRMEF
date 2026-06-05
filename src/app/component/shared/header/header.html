@@ -13,8 +13,11 @@
   
   <!-- </div> -->
     </div>
-    <div class="lang-switcher d-flex align-items-center gap-2">
-
+    <div class="header-actions d-flex align-items-center gap-3">
+      <a routerLink="/login" class="btn-connexion">
+        <i class="bi bi-person-circle"></i> {{ 'header.login' | translate }}
+      </a>
+      <div class="lang-switcher d-flex align-items-center gap-2">
       <button
         class="lang-btn"
         [class.active-lang]="currentLang === 'fr'"
@@ -29,7 +32,8 @@
         AR
       </button>
 
-    </div> 
+      </div>
+    </div>
   </section>
    
     <app-navbar></app-navbar> 

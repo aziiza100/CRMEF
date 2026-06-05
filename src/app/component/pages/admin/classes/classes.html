@@ -1,0 +1,119 @@
+<div class="admin-classes-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">{{ 'admin.classes.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.classes.pageDesc' | translate }}</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.classes.searchPh' | translate">
+      </div>
+      
+      <select class="form-select filter-select" [(ngModel)]="selectedFilter">
+        <option value="all">{{ 'admin.classes.filterFiliere' | translate }}</option>
+        <option value="SVT">SVT</option>
+        <option value="Mathématiques">Mathématiques</option>
+        <option value="Informatique">Informatique</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" (click)="openModal()">
+      <i class="bi bi-plus-lg"></i> {{ 'admin.classes.btnAdd' | translate }}
+    </button>
+  </div>
+
+  <!-- Table View -->
+  <div class="table-container">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ 'admin.classes.table.name' | translate }}</th>
+          <th>{{ 'admin.classes.table.filiere' | translate }}</th>
+          <th>{{ 'admin.classes.table.students' | translate }}</th>
+          <th>{{ 'admin.classes.table.teachers' | translate }}</th>
+          <th class="text-end">{{ 'admin.classes.table.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cls of filteredClasses">
+          <td class="fw-bold fs-5">{{ cls.nom }}</td>
+          <td><span class="badge-outline-blue">{{ cls.filiere }}</span></td>
+          <td>
+            <div class="students-count">
+              <i class="bi bi-people-fill"></i> {{ cls.studentsCount }}
+            </div>
+          </td>
+          <td>
+            <div class="teachers-list">
+              <span class="badge-teacher" *ngFor="let t of cls.teachers">
+                <i class="bi bi-person-video3"></i> {{ t }}
+              </span>
+              <span class="text-muted fst-italic" *ngIf="cls.teachers.length === 0">Aucun</span>
+            </div>
+          </td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openModal(cls)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteClass(cls.id)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Form Modal (Overlay) -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>{{ editingId ? 'Modifier Classe' : ('admin.classes.modal.titleNew' | translate) }}</h3>
+        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>{{ 'admin.classes.modal.name' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newClass.nom" required placeholder="ex: SVT-4">
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'admin.classes.modal.filiere' | translate }}</label>
+          <select class="form-select" [(ngModel)]="newClass.filiere">
+            <option value="SVT">SVT</option>
+            <option value="Mathématiques">Mathématiques</option>
+            <option value="Informatique">Informatique</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-4">
+          <label class="mb-3"><i class="bi bi-person-video3"></i> {{ 'admin.classes.modal.teachers' | translate }}</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-container" *ngFor="let t of availableTeachers">
+              <input type="checkbox" [checked]="isTeacherSelected(t)" (change)="toggleTeacher(t)">
+              <span class="checkmark"></span>
+              {{ t }}
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.classes.modal.btnCancel' | translate }}</button>
+        <button class="btn-primary" (click)="saveClass()" [disabled]="!newClass.nom || !newClass.filiere">
+          {{ 'admin.classes.modal.btnSave' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

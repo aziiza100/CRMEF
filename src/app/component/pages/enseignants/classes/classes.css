@@ -1,0 +1,367 @@
+.classes-page {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  margin-bottom: 25px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.page-desc {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Grille des Cartes (Classes) */
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.class-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.class-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  border-color: rgba(0, 94, 118, 0.2);
+}
+
+.class-card.active {
+  border-color: #005E76;
+  background: #f0f7f9;
+}
+
+.class-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(0, 94, 118, 0.1);
+  color: #005E76;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.class-card.active .class-icon {
+  background: #005E76;
+  color: #fff;
+}
+
+.class-info {
+  flex: 1;
+}
+
+.class-info h3 {
+  margin: 0 0 3px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.class-info .level {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 8px 0;
+}
+
+.badge-count {
+  font-size: 11px;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #475569;
+  padding: 3px 8px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.class-card.active .badge-count {
+  background: #fff;
+  color: #005E76;
+}
+
+/* État Vide */
+.empty-selection {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+}
+
+.empty-selection i {
+  font-size: 40px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.empty-selection p {
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Section Étudiants */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  border: none;
+  overflow: hidden;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.card-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fff;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h3 i {
+  color: #005E76;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-box {
+  position: relative;
+  width: 280px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+[dir="rtl"] .search-box i {
+  left: auto;
+  right: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 9px 15px 9px 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  background: #f8fafc;
+  transition: all 0.3s;
+}
+
+[dir="rtl"] .search-box input {
+  padding: 9px 40px 9px 15px;
+}
+
+.search-box input:focus {
+  background: #fff;
+  border-color: #005E76;
+  box-shadow: 0 0 0 3px rgba(0, 94, 118, 0.1);
+}
+
+.btn-export {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-export:hover:not([disabled]) {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.btn-export[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tableau */
+.table-responsive {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: 15px 25px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+[dir="rtl"] .table th {
+  text-align: right;
+}
+[dir="ltr"] .table th {
+  text-align: left;
+}
+
+.table td {
+  padding: 15px 25px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #334155;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.student-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.cne-badge {
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.email-link {
+  color: #005E76;
+  text-decoration: none;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #ecfdf5;
+  color: #10b981;
+}
+
+.status-inactive {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-state i {
+  font-size: 45px;
+  color: #cbd5e1;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 15px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .btn-export {
+    width: 100%;
+    justify-content: center;
+  }
+}

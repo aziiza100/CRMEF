@@ -1,6 +1,67 @@
-<p>enseignants works!</p>
-<app-supports></app-supports>
-<app-communication></app-communication>
-<app-notes></app-notes>
-<app-gestion-classes></app-gestion-classes>
-<a routerLink="/home">go back</a>
+<div class="dashboard-wrapper">
+  <!-- Sidebar / Navigation Menu -->
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-header">
+      <div class="user-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="user-info">
+        <h3>{{ enseignantName }}</h3>
+        <p>{{ 'enseignant.role' | translate }}</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a routerLink="/home" class="back-home"><i class="bi bi-arrow-left-circle"></i> {{ 'enseignant.backHome' | translate }}</a></li>
+        <li class="nav-title">{{ 'enseignant.mainMenu' | translate }}</li>
+        <li><a routerLink="/espace-enseignant" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="bi bi-grid-1x2"></i> {{ 'enseignant.dashboard' | translate }}</a></li>
+        <li *ngFor="let mod of dashboardModules">
+          <a *ngIf="mod.route" [routerLink]="mod.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi {{ mod.icon }}"></i> {{ 'enseignant.modules.' + mod.id + '.title' | translate }}
+          </a>
+          <a *ngIf="!mod.route" [routerLink]="[]" fragment="{{ mod.id }}">
+            <i class="bi {{ mod.icon }}"></i> {{ 'enseignant.modules.' + mod.id + '.title' | translate }}
+          </a>
+        </li>
+        <li class="mt-auto"><a routerLink="/login" class="text-danger"><i class="bi bi-box-arrow-right"></i> {{ 'enseignant.logout' | translate }}</a></li>
+        
+        <!-- Language Switcher -->
+        <li class="lang-switcher-sidebar">
+          <button class="lang-btn" [class.active-lang]="currentLang === 'fr'" (click)="changeLang('fr')">FR</button>
+          <button class="lang-btn" [class.active-lang]="currentLang === 'ar'" (click)="changeLang('ar')">AR</button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="dashboard-main">
+    
+    <!-- Topbar -->
+    <header class="dashboard-topbar">
+      <div class="welcome-text" *ngIf="router.url === '/espace-enseignant'">
+        <h2>{{ 'enseignant.dashboard' | translate }}</h2>
+        <p>{{ 'enseignant.welcome' | translate }}</p>
+      </div>
+      <div class="welcome-text" *ngIf="router.url !== '/espace-enseignant'">
+        <!-- Titre vide pour garder la mise en page flex si besoin, ou on le laisse complètement disparaître -->
+      </div>
+      
+      <div class="topbar-actions">
+        <div class="search-bar" *ngIf="router.url === '/espace-enseignant'">
+          <i class="bi bi-search"></i>
+          <input type="text" [placeholder]="'enseignant.searchPlaceholder' | translate">
+        </div>
+        <button class="notification-btn" *ngIf="router.url === '/espace-enseignant'">
+          <i class="bi bi-bell"></i>
+          <span class="badge">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Dashboard Content (Router Outlet) -->
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
