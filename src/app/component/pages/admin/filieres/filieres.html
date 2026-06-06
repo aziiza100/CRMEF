@@ -1,0 +1,113 @@
+<div class="admin-filieres-page">
+  <div class="page-header">
+    <h2 class="page-title">Gestion des Filières</h2>
+    <p class="page-desc">Gérez les filières avec leur nom et leur description.</p>
+  </div>
+
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-actions">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une filière...">
+      </div>
+    </div>
+
+    <button class="btn-primary" (click)="openModal()">
+      <i class="bi bi-plus-lg"></i> Nouvelle Filière
+    </button>
+  </div>
+
+  <div class="table-container">
+    <div *ngIf="isLoading" class="table-loading">
+      <span class="loading-dot"></span> Chargement des filières...
+    </div>
+
+    <table *ngIf="!isLoading" class="admin-table">
+      <thead>
+        <tr>
+          <th>Nom de la Filière</th>
+          <th>Description</th>
+          <th>Formations</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let filiere of filteredFilieres; trackBy: trackByFiliere">
+          <td class="fw-bold fs-5">{{ filiere.nom }}</td>
+          <td>{{ filiere.description }}</td>
+          <td>
+            <ng-container *ngIf="filiere.formations && filiere.formations.length; else noFormations">
+              <span class="badge-outline-secondary" *ngFor="let formation of filiere.formations; let i = index">
+                {{ formation.type }}<span *ngIf="formation.description || formation.description_fr"> - {{ formation.description || formation.description_fr }}</span>
+                <span *ngIf="i < filiere.formations.length - 1">,</span>
+              </span>
+            </ng-container>
+            <ng-template #noFormations>
+              <span class="text-muted">Aucune formation</span>
+            </ng-template>
+          </td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openModal(filiere)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteFiliere(filiere.id!)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredFilieres.length === 0">
+          <td colspan="4" class="text-muted text-center">Aucune filière disponible.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingId ? 'Modifier Filière' : 'Créer une Filière' }}</h3>
+        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" class="form-control" [(ngModel)]="newFiliere.nom" required placeholder="ex: SVT">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" placeholder="Description de la filière..."></textarea>
+        </div>
+
+        <div class="form-group" *ngIf="editingId">
+          <label>Formations associées</label>
+          <div *ngIf="formations.length; else noFormationOptions">
+            <div class="form-check" *ngFor="let formation of formations">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [checked]="isFormationSelected(formation.id!)"
+                (change)="toggleFormationSelection(formation.id!)"
+                [id]="'formation-' + formation.id"
+              />
+              <label class="form-check-label" [for]="'formation-' + formation.id">
+                {{ formation.type }}<span *ngIf="formation.description || formation.description_fr"> - {{ formation.description || formation.description_fr }}</span>
+              </label>
+            </div>
+          </div>
+          <ng-template #noFormationOptions>
+            <p class="text-muted">Aucune formation disponible pour lier à cette filière.</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button class="btn-primary" (click)="saveFiliere()" [disabled]="!newFiliere.nom || isSaving">
+          {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

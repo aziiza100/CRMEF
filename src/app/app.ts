@@ -13,12 +13,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.css'
 })
 export class App implements OnInit { 
-  constructor(private cdr: ChangeDetectorRef){}
+  constructor(private cdr: ChangeDetectorRef){
+    this.cleanupObsoleteData();
+  }
   protected readonly title = signal('Crmef');
   
   isLoading = true;
 
- 
+  /**
+   * Nettoie les données obsolètes du localStorage
+   */
+  private cleanupObsoleteData(): void {
+    const obsoleteKeys = ['crmef_admin_role']; // anciennes clés à supprimer
+    obsoleteKeys.forEach(key => {
+      localStorage.removeItem(key);
+    });
+  }
+
   ngOnInit(): void {
 
     setTimeout(() => {

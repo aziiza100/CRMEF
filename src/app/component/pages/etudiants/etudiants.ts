@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-etudiants-layout',
@@ -46,11 +47,24 @@ export class EtudiantsComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(public router: Router, private translate: TranslateService) {
+  constructor(public router: Router, private translate: TranslateService, private api: ApiService) {
     const savedLang = localStorage.getItem('lang') || 'fr';
     this.currentLang = savedLang;
     this.translate.use(this.currentLang);
     this.updateDirection();
+  }
+
+  logout() {
+    this.api.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('crmef_admin_token');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.removeItem('crmef_admin_token');
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   ngOnInit() {
@@ -75,9 +89,5 @@ export class EtudiantsComponent implements OnInit, OnDestroy {
     } else {
       document.documentElement.dir = 'ltr';
     }
-  }
-
-  logout() {
-    this.router.navigate(['/']);
   }
 }

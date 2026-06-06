@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Navbar } from './component/shared/navbar/navbar';
 import { Layout } from './component/shared/layout/layout';
+import { AuthGuard } from './core/services/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -114,6 +115,9 @@ export const routes: Routes = [
   {
     path: 'espace-enseignant',
     loadComponent: () => import('./component/pages/enseignants/enseignants').then(m => m.Enseignants),
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    data: { roles: ['enseignant', 'teacher'] },
     children: [
       {
         path: '',
@@ -144,6 +148,9 @@ export const routes: Routes = [
   {
     path: 'espace-etudiant',
     loadComponent: () => import('./component/pages/etudiants/etudiants').then(m => m.EtudiantsComponent),
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    data: { roles: ['etudiant'] },
     children: [
       {
         path: '',
@@ -175,6 +182,9 @@ export const routes: Routes = [
   {
     path: 'espace-admin',
     loadComponent: () => import('./component/pages/admin/admin').then(m => m.AdminComponent),
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    data: { roles: ['admin'] },
     children: [
       {
         path: '',
@@ -192,6 +202,10 @@ export const routes: Routes = [
       {
         path: 'classes',
         loadComponent: () => import('./component/pages/admin/classes/classes').then(m => m.AdminClassesComponent)
+      },
+      {
+        path: 'filieres',
+        loadComponent: () => import('./component/pages/admin/filieres/filieres').then(m => m.AdminFilieresComponent)
       },
       {
         path: 'content',

@@ -1,8 +1,8 @@
 <div class="admin-settings-page">
   
   <div class="page-header">
-    <h2 class="page-title">{{ 'admin.settings.pageTitle' | translate }}</h2>
-    <p class="page-desc">{{ 'admin.settings.pageDesc' | translate }}</p>
+    <h2 class="page-title">Paramètres Généraux</h2>
+    <p class="page-desc">Configurez les informations et le comportement de la plateforme.</p>
   </div>
 
   <!-- Toast Notification -->
@@ -16,11 +16,11 @@
     <div class="settings-sidebar">
       <button class="menu-item" [class.active]="activeTab === 'general'" (click)="switchTab('general')">
         <i class="bi bi-building"></i>
-        <span>{{ 'admin.settings.tabs.general' | translate }}</span>
+        <span>Informations Générales</span>
       </button>
       <button class="menu-item" [class.active]="activeTab === 'system'" (click)="switchTab('system')">
         <i class="bi bi-hdd-network"></i>
-        <span>{{ 'admin.settings.tabs.system' | translate }}</span>
+        <span>Système & Inscriptions</span>
       </button>
     </div>
 
@@ -29,26 +29,26 @@
       
       <!-- Onglet Général -->
       <div class="settings-section" *ngIf="activeTab === 'general'">
-        <h3 class="section-title"><i class="bi bi-building"></i> {{ 'admin.settings.tabs.general' | translate }}</h3>
+        <h3 class="section-title"><i class="bi bi-building"></i> Informations Générales</h3>
         
         <div class="form-grid">
           <div class="form-group full-width">
-            <label>{{ 'admin.settings.form.schoolName' | translate }}</label>
+            <label>Nom de l'établissement</label>
             <input type="text" class="form-control" [(ngModel)]="settings.schoolName">
           </div>
           
           <div class="form-group">
-            <label>{{ 'admin.settings.form.email' | translate }}</label>
+            <label>Email de contact public</label>
             <input type="email" class="form-control" [(ngModel)]="settings.email">
           </div>
           
           <div class="form-group">
-            <label>{{ 'admin.settings.form.phone' | translate }}</label>
+            <label>Téléphone de contact</label>
             <input type="text" class="form-control" [(ngModel)]="settings.phone" dir="ltr">
           </div>
           
           <div class="form-group full-width">
-            <label>{{ 'admin.settings.form.address' | translate }}</label>
+            <label>Adresse physique</label>
             <input type="text" class="form-control" [(ngModel)]="settings.address">
           </div>
         </div>
@@ -56,10 +56,10 @@
 
       <!-- Onglet Système -->
       <div class="settings-section" *ngIf="activeTab === 'system'">
-        <h3 class="section-title"><i class="bi bi-hdd-network"></i> {{ 'admin.settings.tabs.system' | translate }}</h3>
+        <h3 class="section-title"><i class="bi bi-hdd-network"></i> Système & Inscriptions</h3>
         
         <div class="form-group">
-          <label>{{ 'admin.settings.form.academicYear' | translate }}</label>
+          <label>Année Scolaire en cours</label>
           <select class="form-select" [(ngModel)]="settings.academicYear">
             <option value="2022/2023">2022/2023</option>
             <option value="2023/2024">2023/2024</option>
@@ -72,8 +72,8 @@
         <!-- Toggles -->
         <div class="toggle-row">
           <div class="toggle-info">
-            <h4>{{ 'admin.settings.form.registrations' | translate }}</h4>
-            <p>{{ 'admin.settings.form.registrationsDesc' | translate }}</p>
+            <h4>Inscriptions Ouvertes</h4>
+            <p>Autoriser la création de nouveaux comptes étudiants depuis le site.</p>
           </div>
           <label class="switch">
             <input type="checkbox" [(ngModel)]="settings.registrations">
@@ -83,8 +83,8 @@
 
         <div class="toggle-row danger-zone">
           <div class="toggle-info">
-            <h4 class="text-danger">{{ 'admin.settings.form.maintenance' | translate }}</h4>
-            <p>{{ 'admin.settings.form.maintenanceDesc' | translate }}</p>
+            <h4 class="text-danger">Mode Maintenance</h4>
+            <p>Si activé, le site public affichera une page de maintenance.</p>
           </div>
           <label class="switch">
             <input type="checkbox" [(ngModel)]="settings.maintenance">
@@ -97,7 +97,7 @@
       <!-- Footer Action -->
       <div class="settings-footer">
         <button class="btn-primary" (click)="saveSettings()">
-          <i class="bi bi-save"></i> {{ 'admin.settings.btnSave' | translate }}
+          <i class="bi bi-save"></i> Sauvegarder les paramètres
         </button>
       </div>
 

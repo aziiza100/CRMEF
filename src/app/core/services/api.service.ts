@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
@@ -24,12 +24,23 @@ export interface Formation {
   titre_ar: string;
   type: 'primaire' | 'secondaire' | 'qualifiante';
   volume_horaire: number;
+  description?: string;
   description_fr: string;
   description_ar: string;
+  duree?: string;
+  condition_acces?: string;
   syllabus_json?: any;
   objectifs_json?: any;
   debouches_json?: any;
   is_published: boolean;
+}
+
+export interface Filiere {
+  id?: number;
+  nom: string;
+  niveau?: string;
+  description?: string;
+  formations?: Formation[];
 }
 
 export interface SiteContent {
@@ -46,13 +57,9 @@ export interface ApiResponse<T> {
 }
 
 export interface AuthResponse {
-  success: boolean;
-  token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
+  message?: string;
+  token?: string;
+  user?: any;
 }
 
 export interface DashboardStats {
@@ -68,6 +75,7 @@ export interface DashboardStats {
 export class ApiService {
   private baseUrl = environment.apiUrl;
   private tokenKey = 'crmef_admin_token';
+  private userRole: string | null = null;
   
   // Auth state
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
@@ -98,17 +106,26 @@ export class ApiService {
 
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
+    this.userRole = null;
     this.isAuthenticatedSubject.next(false);
+  }
+
+  setUserRole(role: string): void {
+    this.userRole = role;
+  }
+
+  getUserRole(): string | null {
+    return this.userRole;
   }
 
   // ============================================================
   // AUTH
   // ============================================================
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, { email, password }).pipe(
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, { email, password }).pipe(
       tap(response => {
-        if (response.success && response.token) {
-          this.saveToken(response.token);
+        if (response.token) {
+          this.saveToken(response.token as string);
         }
       }),
       catchError(this.handleError)
@@ -116,7 +133,7 @@ export class ApiService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/logout`, {}, {
+    return this.http.post(`${this.baseUrl}/logout`, {}, {
       headers: this.getHeaders()
     }).pipe(
       tap(() => this.clearToken()),
@@ -125,7 +142,24 @@ export class ApiService {
   }
 
   getMe(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/auth/me`, {
+    return this.http.get(`${this.baseUrl}/user`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email }, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  resetPassword(email: string, token: string, password: string, password_confirmation: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset-password`, {
+      email,
+      token,
+      password,
+      password_confirmation
+    }, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
@@ -173,22 +207,67 @@ export class ApiService {
   }
 
   // ============================================================
+  // FILIÈRES
+  // ============================================================
+  getFilieres(): Observable<Filiere[]> {
+    return this.http.get<Filiere[]>(`${this.baseUrl}/admin/filieres`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  getFiliere(id: number): Observable<Filiere> {
+    return this.http.get<Filiere>(`${this.baseUrl}/admin/filieres/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createFiliere(data: Partial<Filiere> & { formation_ids?: number[] }): Observable<Filiere> {
+    return this.http.post<Filiere>(`${this.baseUrl}/admin/filieres`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateFiliere(id: number, data: Partial<Filiere> & { formation_ids?: number[] }): Observable<Filiere> {
+    return this.http.put<Filiere>(`${this.baseUrl}/admin/filieres/${id}`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteFiliere(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/filieres/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
   // FORMATIONS
   // ============================================================
-  getFormations(): Observable<ApiResponse<Formation[]>> {
-    return this.http.get<ApiResponse<Formation[]>>(`${this.baseUrl}/formations`, {
+  getFormations(): Observable<Formation[]> {
+    return this.http.get<Formation[]>(`${this.baseUrl}/admin/formations`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
 
-  getFormationByType(type: string): Observable<ApiResponse<Formation>> {
-    return this.http.get<ApiResponse<Formation>>(`${this.baseUrl}/formations?type=${type}`, {
+  getFormationByType(type: string): Observable<Formation> {
+    return this.http.get<Formation>(`${this.baseUrl}/admin/formations?type=${type}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
 
-  updateFormation(id: number, data: Partial<Formation>): Observable<ApiResponse<Formation>> {
-    return this.http.put<ApiResponse<Formation>>(`${this.baseUrl}/formations/${id}`, data, {
+  createFormation(data: Partial<Formation> & { filiere_ids?: number[] }): Observable<Formation> {
+    return this.http.post<Formation>(`${this.baseUrl}/admin/formations`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateFormation(id: number, data: Partial<Formation> & { filiere_ids?: number[] }): Observable<Formation> {
+    return this.http.put<Formation>(`${this.baseUrl}/admin/formations/${id}`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteFormation(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/formations/${id}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }

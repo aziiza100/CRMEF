@@ -23,7 +23,7 @@
             <i class="bi {{ mod.icon }}"></i> {{ 'enseignant.modules.' + mod.id + '.title' | translate }}
           </a>
         </li>
-        <li class="mt-auto"><a routerLink="/login" class="text-danger"><i class="bi bi-box-arrow-right"></i> {{ 'enseignant.logout' | translate }}</a></li>
+        <li class="mt-auto"><a (click)="logout()" class="nav-item logout-btn"><i class="bi bi-box-arrow-right"></i> {{ 'enseignant.logout' | translate }}</a></li>
         
         <!-- Language Switcher -->
         <li class="lang-switcher-sidebar">

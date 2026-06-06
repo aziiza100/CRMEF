@@ -1,13 +1,13 @@
 <div class="admin-dashboard-page">
   
   <div class="page-header">
-    <h2 class="page-title">{{ 'admin.dashboard.pageTitle' | translate }}</h2>
-    <p class="page-desc">{{ 'admin.dashboard.pageDesc' | translate }}</p>
+    <h2 class="page-title">Tableau de bord Administrateur</h2>
+    <p class="page-desc">Vue d'ensemble de l'établissement</p>
   </div>
 
   <div class="welcome-banner">
     <div class="banner-content">
-      <h2>{{ 'admin.dashboard.welcome' | translate }}</h2>
+      <h2>Bienvenue dans le panneau d'administration.</h2>
       <p>Gérez l'ensemble de l'établissement depuis ce panneau de contrôle unifié.</p>
     </div>
     <div class="banner-illustration">
@@ -17,7 +17,7 @@
 
   <!-- Key Metrics -->
   <div class="section-title">
-    <h3>{{ 'admin.dashboard.stats' | translate }}</h3>
+    <h3>Statistiques globales</h3>
   </div>
 
   <div class="metrics-grid">
@@ -25,7 +25,7 @@
       <div class="metric-icon"><i class="bi bi-mortarboard-fill"></i></div>
       <div class="metric-info">
         <h3>{{ stats.etudiants }}</h3>
-        <p>{{ 'admin.dashboard.totalEtudiants' | translate }}</p>
+        <p>Total étudiants</p>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
       <div class="metric-icon"><i class="bi bi-person-video3"></i></div>
       <div class="metric-info">
         <h3>{{ stats.profs }}</h3>
-        <p>{{ 'admin.dashboard.totalProfs' | translate }}</p>
+        <p>Total Enseignants</p>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
       <div class="metric-icon"><i class="bi bi-diagram-3-fill"></i></div>
       <div class="metric-info">
         <h3>{{ stats.classes }}</h3>
-        <p>{{ 'admin.dashboard.totalClasses' | translate }}</p>
+        <p>Total Classes actives</p>
       </div>
     </div>
   </div>
@@ -52,24 +52,29 @@
     <!-- Quick Actions -->
     <div class="card">
       <div class="card-header">
-        <h3><i class="bi bi-lightning-charge-fill"></i> {{ 'admin.dashboard.quickActions' | translate }}</h3>
+        <h3><i class="bi bi-lightning-charge-fill"></i> Actions Rapides</h3>
       </div>
       <div class="card-body">
         <div class="quick-actions-grid">
           <button class="action-btn">
             <div class="icon-wrapper bg-blue-light"><i class="bi bi-person-plus-fill"></i></div>
-            <span>{{ 'admin.dashboard.addEtudiant' | translate }}</span>
+            <span>Ajouter un étudiant</span>
           </button>
           
           <button class="action-btn">
             <div class="icon-wrapper bg-emerald-light"><i class="bi bi-person-badge-fill"></i></div>
-            <span>{{ 'admin.dashboard.addProf' | translate }}</span>
+            <span>Ajouter un enseignant</span>
           </button>
 
           <button class="action-btn">
             <div class="icon-wrapper bg-purple-light"><i class="bi bi-folder-plus"></i></div>
-            <span>{{ 'admin.dashboard.createClasse' | translate }}</span>
+            <span>Créer une classe</span>
           </button>
+
+          <a routerLink="/espace-admin/filieres" class="action-btn">
+            <div class="icon-wrapper bg-emerald-light"><i class="bi bi-bookmarks-fill"></i></div>
+            <span>Gérer les filières</span>
+          </a>
         </div>
       </div>
     </div>

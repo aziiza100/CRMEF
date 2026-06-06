@@ -11,7 +11,7 @@
 
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
         
-        <div class="form-group">
+        <div class="form-group" *ngIf="mode !== 'reset'">
           <label for="email">{{ 'login.emailLabel' | translate }}</label>
           <div class="input-wrapper">
             <i class="bi bi-envelope"></i>
@@ -25,7 +25,10 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <input *ngIf="mode === 'reset'" type="hidden" name="email" [(ngModel)]="email">
+        <input *ngIf="mode === 'reset'" type="hidden" name="resetToken" [(ngModel)]="resetToken">
+
+        <div class="form-group" *ngIf="mode === 'login'">
           <label for="password">{{ 'login.passwordLabel' | translate }}</label>
           <div class="input-wrapper">
             <i class="bi bi-lock"></i>
@@ -39,25 +42,61 @@
           </div>
         </div>
 
+        <div *ngIf="mode === 'reset'">
+          <div class="form-group">
+            <label for="resetPassword">Nouveau mot de passe</label>
+            <div class="input-wrapper">
+              <i class="bi bi-lock"></i>
+              <input
+                type="password"
+                id="resetPassword"
+                name="resetPassword"
+                [(ngModel)]="resetPasswordValue"
+                placeholder="Nouveau mot de passe"
+                required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="resetPasswordConfirm">Confirmer mot de passe</label>
+            <div class="input-wrapper">
+              <i class="bi bi-lock"></i>
+              <input
+                type="password"
+                id="resetPasswordConfirm"
+                name="resetPasswordConfirm"
+                [(ngModel)]="resetPasswordConfirm"
+                placeholder="Confirmer le mot de passe"
+                required>
+            </div>
+          </div>
+        </div>
+
         <div class="form-options">
-          <label class="remember-me">
+          <label class="remember-me" *ngIf="mode === 'login'">
             <input type="checkbox"> {{ 'login.rememberMe' | translate }}
           </label>
-          <a href="#" class="forgot-password">{{ 'login.forgotPassword' | translate }}</a>
+          <a class="forgot-password" (click)="mode === 'login' ? switchToForgot() : backToLogin()">
+            {{ mode === 'login' ? 'Mot de passe oublié ?' : 'Retour à la connexion' }}
+          </a>
         </div>
 
         <div *ngIf="errorMessage" class="error-message">
           <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
         </div>
+        <div *ngIf="successMessage" class="success-message">
+          <i class="bi bi-check-circle"></i> {{ successMessage }}
+        </div>
 
         <button type="submit" class="btn-submit" [disabled]="isLoading">
-          <span *ngIf="!isLoading">{{ 'login.submit' | translate }}</span>
+          <span *ngIf="!isLoading">
+            {{ mode === 'login' ? ('login.submit' | translate) : mode === 'forgot' ? 'Envoyer le lien' : 'Réinitialiser le mot de passe' }}
+          </span>
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span *ngIf="isLoading">&nbsp;{{ 'login.loading' | translate }}</span>
         </button>
 
       </form>
-      
+
       <div class="login-footer">
         <p>{{ 'login.help' | translate }} <a routerLink="/contact">{{ 'login.contactAdmin' | translate }}</a></p>
       </div>

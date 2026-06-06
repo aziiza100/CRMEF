@@ -12,9 +12,9 @@
     <nav class="sidebar-nav">
       <ul>
         <li *ngFor="let item of menuItems">
-          <a [routerLink]="item.route" routerLinkActive="active" class="nav-item">
+          <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="prefetch(item)">
             <i class="bi" [ngClass]="item.icon"></i>
-            <span class="nav-text">{{ 'admin.menu.' + item.id | translate }}</span>
+            <span class="nav-text">{{ currentLang === 'fr' ? item.labelFr : item.labelAr }}</span>
           </a>
         </li>
       </ul>
@@ -23,7 +23,7 @@
     <div class="sidebar-footer">
       <a (click)="logout()" class="nav-item logout-btn">
         <i class="bi bi-box-arrow-left"></i>
-        <span class="nav-text">{{ 'admin.menu.logout' | translate }}</span>
+        <span class="nav-text">{{ currentLang === 'fr' ? 'Déconnexion' : 'تسجيل الخروج' }}</span>
       </a>
     </div>
   </aside>

@@ -2,11 +2,10 @@
   "header": {
     "ministry": "Royaume du Maroc - Ministère de l'Éducation Nationale",
     "title": "Centre Régional des Métiers de l'Éducation et de la Formation",
-    "button1" : "Découvrir les formations",
-    "button2" : "Contacter le centre",
+    "button1": "Découvrir les formations",
+    "button2": "Contacter le centre",
     "login": "Connexion"
   },
- 
   "nav": {
     "home": "Accueil",
     "presentation": "Présentation",
@@ -17,15 +16,13 @@
     "etudiants": "Étudiants",
     "contact": "Contact"
   },
-
   "hero": {
     "eyebrow": "CRMEF Marrakech-Safi",
     "title": "Une plateforme institutionnelle moderne pour présenter le centre, ses formations, ses actualités et ses espaces numériques.",
     "desc": "Version bilingue moderne avec navigation et structure prête pour backend.",
-    "btn1": "Voir les formations", 
+    "btn1": "Voir les formations",
     "btn2": "Contact"
   },
-
   "home": {
     "news": {
       "subtitle": "Les dernières annonces et événements du centre"
@@ -34,7 +31,6 @@
       "subtitle": "Accédez rapidement aux services du CRMEF"
     }
   },
-
   "quickAccess": {
     "title": "Accès rapide",
     "formations": {
@@ -54,8 +50,7 @@
       "desc": "Étudiants, enseignants et administration."
     }
   },
-
-   "presentation":{
+  "presentation": {
     "pageTitle": "Présentation du CRMEF Marrakech-Safi",
     "pageSubtitle": "Découvrez l'histoire, les missions et l'organisation du centre régional.",
     "breadcrumb": "Présentation",
@@ -72,70 +67,67 @@
       "subtitle": "La structure organisationnelle du CRMEF Marrakech-Safi.",
       "zoom": "Agrandir l'organigramme"
     },
-    "titre" : "Centre Régional des Métiers de l'Éducation et de la Formation - Marrakech",
-    "descr" : "Le CRMEF de Marrakech est un établissement public chargé de la formation initiale et continue des enseignants et des cadres du système éducatif au Maroc.",
+    "titre": "Centre Régional des Métiers de l'Éducation et de la Formation - Marrakech",
+    "descr": "Le CRMEF de Marrakech est un établissement public chargé de la formation initiale et continue des enseignants et des cadres du système éducatif au Maroc.",
     "phrases": {
       "p1": "Assurer la formation des futurs enseignants dans différentes disciplines.",
       "p2": "Développer les compétences pédagogiques et professionnelles des formateurs.",
       "p3": "Accompagner les enseignants à travers des formations continues et des ateliers de perfectionnement.",
       "p4": "Contribuer à l’amélioration de la qualité de l’éducation au niveau régional et national."
     },
-    "button":"Voir plus",
-    "par":"Centre Régional des Métiers de l’Éducation et de la Formation de Marrakech-Safi est considéré comme l’un des établissements éducatifs les plus importants au Maroc. Il a été créé dans le cadre de la réforme du système de l’éducation et de la formation afin d’assurer la qualification des cadres pédagogiques et administratifs ainsi que le développement de leurs compétences professionnelles. Sa création s’inscrit dans une politique nationale visant l’amélioration de la qualité de l’enseignement et le renforcement de la formation initiale et continue des professionnels de l’éducation. Depuis sa création, le centre contribue à la formation de plusieurs générations d’enseignants et de cadres éducatifs dans différentes spécialités, tout en accompagnant les évolutions pédagogiques et technologiques à travers des programmes de formation modernes et des partenariats éducatifs aux niveaux régional et national.",
-    "Missions-objectifs":{
-      "titre":"Missions et objectifs",
-      "m1":"Assurer la formation initiale des futurs enseignants et cadres éducatifs.",
-      "m2":"Développer les compétences pédagogiques, professionnelles et numériques des formateurs et des enseignants.",
-      "m3":"Organiser des formations continues et des ateliers de perfectionnement au profit des professionnels de l’éducation.",
-      "m4":"Accompagner les réformes du système éducatif et promouvoir l’innovation pédagogique.",
-      "m5":"Contribuer à l’amélioration de la qualité de l’enseignement au niveau régional et national.",
-      "m6":"Encourager la recherche pédagogique et l’échange des expériences dans le domaine de l’éducation et de la formation."
+    "button": "Voir plus",
+    "par": "Centre Régional des Métiers de l’Éducation et de la Formation de Marrakech-Safi est considéré comme l’un des établissements éducatifs les plus importants au Maroc. Il a été créé dans le cadre de la réforme du système de l’éducation et de la formation afin d’assurer la qualification des cadres pédagogiques et administratifs ainsi que le développement de leurs compétences professionnelles. Sa création s’inscrit dans une politique nationale visant l’amélioration de la qualité de l’enseignement et le renforcement de la formation initiale et continue des professionnels de l’éducation. Depuis sa création, le centre contribue à la formation de plusieurs générations d’enseignants et de cadres éducatifs dans différentes spécialités, tout en accompagnant les évolutions pédagogiques et technologiques à travers des programmes de formation modernes et des partenariats éducatifs aux niveaux régional et national.",
+    "Missions-objectifs": {
+      "titre": "Missions et objectifs",
+      "m1": "Assurer la formation initiale des futurs enseignants et cadres éducatifs.",
+      "m2": "Développer les compétences pédagogiques, professionnelles et numériques des formateurs et des enseignants.",
+      "m3": "Organiser des formations continues et des ateliers de perfectionnement au profit des professionnels de l’éducation.",
+      "m4": "Accompagner les réformes du système éducatif et promouvoir l’innovation pédagogique.",
+      "m5": "Contribuer à l’amélioration de la qualité de l’enseignement au niveau régional et national.",
+      "m6": "Encourager la recherche pédagogique et l’échange des expériences dans le domaine de l’éducation et de la formation."
     },
-    "partenariats":{
+    "partenariats": {
       "title": "Partenariats institutionnels",
       "subtitle": "Nos partenaires au service de la qualité de la formation.",
-      "p1":"Ministère de l'Éducation Nationale, du Préscolaire et des Sports",
-      "p2":"Les Académies Régionales de l’Éducation et de la Formation (AREF)",
-      "p3":"Les directions provinciales de l’éducation",
-      "p4":"Les centres de recherche pédagogique et scientifique"
+      "p1": "Ministère de l'Éducation Nationale, du Préscolaire et des Sports",
+      "p2": "Les Académies Régionales de l’Éducation et de la Formation (AREF)",
+      "p3": "Les directions provinciales de l’éducation",
+      "p4": "Les centres de recherche pédagogique et scientifique"
     }
-   },
-   "stats": {
+  },
+  "stats": {
     "1": "Espaces utilisateurs",
     "2": "nombres des Enseignants",
     "3": "Nombres des Etudiants",
     "4": "Accès aux ressources"
   },
-
   "footer": {
     "title": "CRMEF Marrakech-Safi",
     "location": "JXXQ+4P6, Boulevard Al Mouzdalifa Marrakech 40000",
     "ville": "Marrakech 40000",
-    "tel":"Téléphone",
+    "tel": "Téléphone",
     "email": "Email",
     "Accès-rapide": {
-      "title":"Accès rapide",
-      "l1":"Home",
-      "l2":"Présentation",
-      "l3":"Formation",
-      "l4":"Actualités",
-      "l5":"contact"
+      "title": "Accès rapide",
+      "l1": "Home",
+      "l2": "Présentation",
+      "l3": "Formation",
+      "l4": "Actualités",
+      "l5": "contact"
     },
     "espaces": {
-      "title":"Espaces",
+      "title": "Espaces",
       "e1": "Pédagogique",
       "e2": "Enseignants.",
       "e3": "Étudiants"
-
     },
     "connexion": {
-      "titre":"Se connecter",
-      "descr":"Vous pouvez désormais accéder à votre espace personnel et consulter les ressources disponibles sur la plateforme.",
-      "button":"se connecter"
+      "titre": "Se connecter",
+      "descr": "Vous pouvez désormais accéder à votre espace personnel et consulter les ressources disponibles sur la plateforme.",
+      "button": "se connecter"
     },
     "copyright": "© 2026 CRMEF Marrakech-Safi"
   },
-
   "formations": {
     "pageTitle": "Nos Formations",
     "pageSubtitle": "Découvrez nos programmes de formation adaptés à vos besoins",
@@ -207,18 +199,16 @@
       "button": "Consulter les modalités d'admission"
     }
   },
-
-  
   "filierePrimaire": {
     "hero": {
       "stats": {
-          "stat1": "Mois (Durée Totale)",
-          "stat2": "Semestres Intensifs",
-          "stat3": "Modules de formation",
-          "stat4": "Stage par Semaine",
-          "stat4_val": "1 J"
-        },
-        "backBtn": "Retour aux formations",
+        "stat1": "Mois (Durée Totale)",
+        "stat2": "Semestres Intensifs",
+        "stat3": "Modules de formation",
+        "stat4": "Stage par Semaine",
+        "stat4_val": "1 J"
+      },
+      "backBtn": "Retour aux formations",
       "badge": "Tiers Temps / Formation Intensive",
       "title": "Filière de l'Enseignement Primaire",
       "subtitle": "Un cursus pédagogique d'excellence au CRMEF, condensé et orienté vers la pratique terrain immédiate pour former les professeurs du cycle primaire de demain."
@@ -338,8 +328,6 @@
       }
     }
   },
-  
- 
   "filiereSecondaire": {
     "hero": {
       "badge": "Tiers Temps / Formation Intensive",
@@ -386,31 +374,107 @@
         }
       },
       "modules": {
-        "m1": { "title": "Sciences de l'éducation & Psychologie", "li1": "Psychologie du jeune adolescent", "li2": "Théories de l'apprentissage au collège" },
-        "m2": { "title": "Didactique de la discipline (Partie 1)", "li1": "Épistémologie de la matière", "li2": "Analyse des programmes du collège" },
-        "m3": { "title": "Planification des apprentissages", "li1": "Planification à moyen et court terme", "li2": "Élaboration des fiches pédagogiques" },
-        "m4": { "title": "Transposition didactique", "li1": "Du savoir savant au savoir enseigné", "li2": "Conception des situations problèmes" },
-        "m5": { "title": "TICE appliquées au collège", "li1": "Ressources numériques éducatives", "li2": "Intégration technologique en classe" },
-        "m6": { "title": "Gestion des apprentissages (Partie 1)", "li1": "Techniques de communication", "li2": "Animation et gestion de l'espace" },
-        "m7": { "title": "Législation scolaire et déontologie", "li1": "Textes de loi du secondaire collégial", "li2": "Éthique et devoirs de l'enseignant" },
-        "m8": { "title": "Éducation inclusive au collège", "li1": "Scolarisation des enfants à besoins spécifiques", "li2": "Pédagogie différenciée" },
-        "m9": { "title": "Gestion des apprentissages (Partie 2)", "li1": "Gestion des conflits en classe", "li2": "Dynamique de groupe des collégiens" },
-        "m10": { "title": "Didactique appliquée (Partie 2)", "li1": "Travaux pratiques et expérimentaux", "li2": "Démarches d'investigation" },
-        "m11": { "title": "Évaluation et examens normalisés", "li1": "Évaluation diagnostique et sommative", "li2": "Préparation aux examens normalisés (3ème AC)" },
-        "m12": { "title": "Soutien scolaire et remédiation", "li1": "Diagnostic des erreurs", "li2": "Mise en place de plans de soutien" },
-        "m13": { "title": "Recherche-action (MSP)", "li1": "Méthodologie de recherche éducative", "li2": "Rédaction du projet de fin d'étude" },
-        "m14": { "title": "Vie scolaire et animation", "li1": "Clubs éducatifs au collège", "li2": "Accompagnement et orientation" },
-        "m15": { "title": "Analyse des pratiques professionnelles", "li1": "Ateliers d'analyse réflexive", "li2": "Capitalisation des stages" },
-        "m16": { "title": "Développement professionnel", "li1": "Auto-formation continue", "li2": "Projet professionnel de l'enseignant" }
+        "m1": {
+          "title": "Sciences de l'éducation & Psychologie",
+          "li1": "Psychologie du jeune adolescent",
+          "li2": "Théories de l'apprentissage au collège"
+        },
+        "m2": {
+          "title": "Didactique de la discipline (Partie 1)",
+          "li1": "Épistémologie de la matière",
+          "li2": "Analyse des programmes du collège"
+        },
+        "m3": {
+          "title": "Planification des apprentissages",
+          "li1": "Planification à moyen et court terme",
+          "li2": "Élaboration des fiches pédagogiques"
+        },
+        "m4": {
+          "title": "Transposition didactique",
+          "li1": "Du savoir savant au savoir enseigné",
+          "li2": "Conception des situations problèmes"
+        },
+        "m5": {
+          "title": "TICE appliquées au collège",
+          "li1": "Ressources numériques éducatives",
+          "li2": "Intégration technologique en classe"
+        },
+        "m6": {
+          "title": "Gestion des apprentissages (Partie 1)",
+          "li1": "Techniques de communication",
+          "li2": "Animation et gestion de l'espace"
+        },
+        "m7": {
+          "title": "Législation scolaire et déontologie",
+          "li1": "Textes de loi du secondaire collégial",
+          "li2": "Éthique et devoirs de l'enseignant"
+        },
+        "m8": {
+          "title": "Éducation inclusive au collège",
+          "li1": "Scolarisation des enfants à besoins spécifiques",
+          "li2": "Pédagogie différenciée"
+        },
+        "m9": {
+          "title": "Gestion des apprentissages (Partie 2)",
+          "li1": "Gestion des conflits en classe",
+          "li2": "Dynamique de groupe des collégiens"
+        },
+        "m10": {
+          "title": "Didactique appliquée (Partie 2)",
+          "li1": "Travaux pratiques et expérimentaux",
+          "li2": "Démarches d'investigation"
+        },
+        "m11": {
+          "title": "Évaluation et examens normalisés",
+          "li1": "Évaluation diagnostique et sommative",
+          "li2": "Préparation aux examens normalisés (3ème AC)"
+        },
+        "m12": {
+          "title": "Soutien scolaire et remédiation",
+          "li1": "Diagnostic des erreurs",
+          "li2": "Mise en place de plans de soutien"
+        },
+        "m13": {
+          "title": "Recherche-action (MSP)",
+          "li1": "Méthodologie de recherche éducative",
+          "li2": "Rédaction du projet de fin d'étude"
+        },
+        "m14": {
+          "title": "Vie scolaire et animation",
+          "li1": "Clubs éducatifs au collège",
+          "li2": "Accompagnement et orientation"
+        },
+        "m15": {
+          "title": "Analyse des pratiques professionnelles",
+          "li1": "Ateliers d'analyse réflexive",
+          "li2": "Capitalisation des stages"
+        },
+        "m16": {
+          "title": "Développement professionnel",
+          "li1": "Auto-formation continue",
+          "li2": "Projet professionnel de l'enseignant"
+        }
       }
     },
     "evaluation": {
       "title": "Système d'Évaluation",
       "subtitle": "Modalités de validation du certificat pour le secondaire collégial.",
-      "controle": { "title": "Évaluations Modulaires", "desc": "Examens de fin de semestre pour chaque module théorique (75% de la note modulaire)." },
-      "immersion": { "title": "Contrôle Continu", "desc": "Travaux dirigés, assiduité et réalisations didactiques (25%)." },
-      "memoire": { "title": "Recherche-Action (MSP)", "desc": "Validation du mémoire de recherche appliquée en fin de parcours." },
-      "projet": { "title": "Stage Pratique", "desc": "Inspection pédagogique validant l'aptitude à enseigner devant les élèves." }
+      "controle": {
+        "title": "Évaluations Modulaires",
+        "desc": "Examens de fin de semestre pour chaque module théorique (75% de la note modulaire)."
+      },
+      "immersion": {
+        "title": "Contrôle Continu",
+        "desc": "Travaux dirigés, assiduité et réalisations didactiques (25%)."
+      },
+      "memoire": {
+        "title": "Recherche-Action (MSP)",
+        "desc": "Validation du mémoire de recherche appliquée en fin de parcours."
+      },
+      "projet": {
+        "title": "Stage Pratique",
+        "desc": "Inspection pédagogique validant l'aptitude à enseigner devant les élèves."
+      }
     },
     "specialites": {
       "title": "Spécialités Couvertes",
@@ -426,10 +490,7 @@
         "Éducation Physique (EPS)"
       ]
     }
-  
-},
-
- 
+  },
   "filiereQualifiante": {
     "hero": {
       "badge": "Tiers Temps / Formation Intensive",
@@ -476,31 +537,107 @@
         }
       },
       "modules": {
-        "m1": { "title": "Sciences de l'éducation & Psychologie", "li1": "Psychologie de l'adolescent", "li2": "Théories de l'apprentissage au lycée" },
-        "m2": { "title": "Didactique de la spécialité (Partie 1)", "li1": "Épistémologie de la discipline", "li2": "Analyse des programmes du secondaire" },
-        "m3": { "title": "Planification des apprentissages", "li1": "Planification annuelle et séquentielle", "li2": "Construction de fiches pédagogiques" },
-        "m4": { "title": "Ingénierie didactique", "li1": "Du savoir savant au savoir enseigné", "li2": "Conception des situations d'apprentissage" },
-        "m5": { "title": "TICE appliquées à la discipline", "li1": "Logiciels et simulateurs disciplinaires", "li2": "Scénarisation pédagogique numérique" },
-        "m6": { "title": "Gestion des apprentissages (Partie 1)", "li1": "Techniques d'animation en classe", "li2": "Gestion des interactions" },
-        "m7": { "title": "Législation scolaire et déontologie", "li1": "Statuts et textes juridiques", "li2": "Éthique de l'enseignant" },
-        "m8": { "title": "Éducation inclusive", "li1": "Intégration des élèves à besoins spécifiques", "li2": "Approches différenciées au secondaire" },
-        "m9": { "title": "Gestion des apprentissages (Partie 2)", "li1": "Gestion des situations problèmes", "li2": "Dynamique de groupe des adolescents" },
-        "m10": { "title": "Didactique de la spécialité (Partie 2)", "li1": "Méthodologie de résolution", "li2": "Didactique appliquée et travaux pratiques" },
-        "m11": { "title": "Évaluation des apprentissages", "li1": "Conception des contrôles continus", "li2": "Cadres de référence du Baccalauréat" },
-        "m12": { "title": "Soutien et remédiation", "li1": "Analyse didactique des erreurs", "li2": "Plan de soutien institutionnel" },
-        "m13": { "title": "Méthodologie de la recherche-action", "li1": "Méthodes de recherche en éducation", "li2": "Rédaction du mémoire (MSP)" },
-        "m14": { "title": "Vie scolaire et orientation", "li1": "Clubs éducatifs et citoyenneté", "li2": "Accompagnement au projet de l'élève" },
-        "m15": { "title": "Analyse des pratiques professionnelles", "li1": "Ateliers de réflexivité", "li2": "Études de cas cliniques" },
-        "m16": { "title": "Ingénierie de la formation", "li1": "Développement professionnel continu", "li2": "Leadership de l'enseignant" }
+        "m1": {
+          "title": "Sciences de l'éducation & Psychologie",
+          "li1": "Psychologie de l'adolescent",
+          "li2": "Théories de l'apprentissage au lycée"
+        },
+        "m2": {
+          "title": "Didactique de la spécialité (Partie 1)",
+          "li1": "Épistémologie de la discipline",
+          "li2": "Analyse des programmes du secondaire"
+        },
+        "m3": {
+          "title": "Planification des apprentissages",
+          "li1": "Planification annuelle et séquentielle",
+          "li2": "Construction de fiches pédagogiques"
+        },
+        "m4": {
+          "title": "Ingénierie didactique",
+          "li1": "Du savoir savant au savoir enseigné",
+          "li2": "Conception des situations d'apprentissage"
+        },
+        "m5": {
+          "title": "TICE appliquées à la discipline",
+          "li1": "Logiciels et simulateurs disciplinaires",
+          "li2": "Scénarisation pédagogique numérique"
+        },
+        "m6": {
+          "title": "Gestion des apprentissages (Partie 1)",
+          "li1": "Techniques d'animation en classe",
+          "li2": "Gestion des interactions"
+        },
+        "m7": {
+          "title": "Législation scolaire et déontologie",
+          "li1": "Statuts et textes juridiques",
+          "li2": "Éthique de l'enseignant"
+        },
+        "m8": {
+          "title": "Éducation inclusive",
+          "li1": "Intégration des élèves à besoins spécifiques",
+          "li2": "Approches différenciées au secondaire"
+        },
+        "m9": {
+          "title": "Gestion des apprentissages (Partie 2)",
+          "li1": "Gestion des situations problèmes",
+          "li2": "Dynamique de groupe des adolescents"
+        },
+        "m10": {
+          "title": "Didactique de la spécialité (Partie 2)",
+          "li1": "Méthodologie de résolution",
+          "li2": "Didactique appliquée et travaux pratiques"
+        },
+        "m11": {
+          "title": "Évaluation des apprentissages",
+          "li1": "Conception des contrôles continus",
+          "li2": "Cadres de référence du Baccalauréat"
+        },
+        "m12": {
+          "title": "Soutien et remédiation",
+          "li1": "Analyse didactique des erreurs",
+          "li2": "Plan de soutien institutionnel"
+        },
+        "m13": {
+          "title": "Méthodologie de la recherche-action",
+          "li1": "Méthodes de recherche en éducation",
+          "li2": "Rédaction du mémoire (MSP)"
+        },
+        "m14": {
+          "title": "Vie scolaire et orientation",
+          "li1": "Clubs éducatifs et citoyenneté",
+          "li2": "Accompagnement au projet de l'élève"
+        },
+        "m15": {
+          "title": "Analyse des pratiques professionnelles",
+          "li1": "Ateliers de réflexivité",
+          "li2": "Études de cas cliniques"
+        },
+        "m16": {
+          "title": "Ingénierie de la formation",
+          "li1": "Développement professionnel continu",
+          "li2": "Leadership de l'enseignant"
+        }
       }
     },
     "evaluation": {
       "title": "Système d'Évaluation",
       "subtitle": "Critères de validation du certificat de qualification éducative pour le secondaire.",
-      "controle": { "title": "Évaluations Modulaires", "desc": "Examens écrits et pratiques à la fin de chaque semestre (75% de la note modulaire)." },
-      "immersion": { "title": "Contrôle Continu", "desc": "Évaluations régulières, exposés et productions didactiques dans la spécialité (25%)." },
-      "memoire": { "title": "Recherche-Action (MSP)", "desc": "Soutenance du mémoire d'intervention pédagogique devant un jury disciplinaire." },
-      "projet": { "title": "Stage Pratique", "desc": "Note d'inspection finale validant la maîtrise de la classe et de la matière enseignée." }
+      "controle": {
+        "title": "Évaluations Modulaires",
+        "desc": "Examens écrits et pratiques à la fin de chaque semestre (75% de la note modulaire)."
+      },
+      "immersion": {
+        "title": "Contrôle Continu",
+        "desc": "Évaluations régulières, exposés et productions didactiques dans la spécialité (25%)."
+      },
+      "memoire": {
+        "title": "Recherche-Action (MSP)",
+        "desc": "Soutenance du mémoire d'intervention pédagogique devant un jury disciplinaire."
+      },
+      "projet": {
+        "title": "Stage Pratique",
+        "desc": "Note d'inspection finale validant la maîtrise de la classe et de la matière enseignée."
+      }
     },
     "specialites": {
       "title": "Spécialités Couvertes",
@@ -516,9 +653,7 @@
         "Éducation Islamique"
       ]
     }
-  
-},
-
+  },
   "contact": {
     "title": "Contactez-nous",
     "subtitle": "Une question, un renseignement ? Parlons-en simplement.",
@@ -557,7 +692,6 @@
       "error": "Une erreur est survenue. Veuillez réessayer."
     }
   },
-
   "common": {
     "readMore": "Lire la suite",
     "register": "S'inscrire",
@@ -565,7 +699,6 @@
     "location": "Localisation",
     "time": "Heure"
   },
-
   "actualites": {
     "pageTitle": "Actualités & Événements",
     "pageSubtitle": "Restez informé des dernières annonces et événements du CRMEF",
@@ -646,12 +779,30 @@
     "nextClassTitle": "Prochain Cours",
     "viewAll": "Voir tout l'historique",
     "modules": {
-      "messagerie": { "title": "Messagerie interne", "desc": "Boîte de réception et communications avec l'administration et les collègues." },
-      "telecharger-cours": { "title": "Télécharger cours", "desc": "Accédez à l'archive des cours et ressources pédagogiques validées." },
-      "deposer-cours": { "title": "Déposer supports cours", "desc": "Partagez vos supports de cours avec vos étudiants et l'administration." },
-      "gerer-notes": { "title": "Gérer notes", "desc": "Saisie, consultation et validation des notes des étudiants." },
-      "gerer-classes": { "title": "Gérer classes", "desc": "Consultez les listes d'étudiants et les emplois du temps par classe." },
-      "profil": { "title": "Consulter profil", "desc": "Gérez vos informations personnelles et paramètres de compte." }
+      "messagerie": {
+        "title": "Messagerie interne",
+        "desc": "Boîte de réception et communications avec l'administration et les collègues."
+      },
+      "telecharger-cours": {
+        "title": "Télécharger cours",
+        "desc": "Accédez à l'archive des cours et ressources pédagogiques validées."
+      },
+      "deposer-cours": {
+        "title": "Déposer supports cours",
+        "desc": "Partagez vos supports de cours avec vos étudiants et l'administration."
+      },
+      "gerer-notes": {
+        "title": "Gérer notes",
+        "desc": "Saisie, consultation et validation des notes des étudiants."
+      },
+      "gerer-classes": {
+        "title": "Gérer classes",
+        "desc": "Consultez les listes d'étudiants et les emplois du temps par classe."
+      },
+      "profil": {
+        "title": "Consulter profil",
+        "desc": "Gérez vos informations personnelles et paramètres de compte."
+      }
     }
   },
   "cours": {
@@ -707,19 +858,26 @@
     }
   },
   "classes": {
-    "pageTitle": "Mes Classes",
-    "pageDesc": "Consultez les listes d'étudiants pour chaque classe qui vous est assignée.",
-    "selectClass": "Sélectionnez une classe pour voir les étudiants",
-    "students": "étudiants",
-    "listTitle": "Liste des étudiants inscrits",
-    "searchPh": "Rechercher un étudiant par nom, email ou CIN...",
-    "btnExport": "Exporter la liste",
+    "pageTitle": "Gestion des Classes",
+    "pageDesc": "Gérez les classes, les filières et l'affectation des enseignants.",
+    "searchPh": "Rechercher une classe...",
+    "filterFiliere": "Toutes les filières",
+    "btnAdd": "Nouvelle Classe",
     "table": {
-      "name": "Nom & Prénom",
-      "cin": "CIN",
-      "email": "Email"
+      "name": "Nom de la Classe",
+      "filiere": "Filière",
+      "students": "Étudiants",
+      "teachers": "Enseignants Affectés",
+      "actions": "Actions"
     },
-    "empty": "Aucun étudiant ne correspond à votre recherche."
+    "modal": {
+      "titleNew": "Créer une Classe",
+      "name": "Nom (ex: SVT-4)",
+      "filiere": "Filière",
+      "teachers": "Enseignants affectés (optionnel)",
+      "btnCancel": "Annuler",
+      "btnSave": "Enregistrer"
+    }
   },
   "notes": {
     "pageTitle": "Saisie des Notes",
@@ -835,156 +993,132 @@
       "goToElearning": "Voir tout"
     }
   },
-  "admin": {
-    "menu": {
-      "dashboard": "Tableau de Bord",
-      "users": "Gestion Utilisateurs",
-      "classes": "Gestion Classes",
-      "settings": "Paramètres",
-      "logout": "Déconnexion"
+  "menu": {
+    "dashboard": "Tableau de Bord",
+    "users": "Gestion Utilisateurs",
+    "classes": "Gestion Classes",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "pageTitle": "Tableau de bord Administrateur",
+    "pageDesc": "Vue d'ensemble de l'établissement",
+    "totalEtudiants": "Total Étudiants",
+    "totalProfs": "Total Enseignants",
+    "totalClasses": "Total Classes actives",
+    "welcome": "Bienvenue dans le panneau d'administration.",
+    "stats": "Statistiques globales",
+    "quickActions": "Actions Rapides",
+    "addEtudiant": "Ajouter un étudiant",
+    "addProf": "Ajouter un enseignant",
+    "createClasse": "Créer une classe"
+  },
+  "users": {
+    "pageTitle": "Gestion des Utilisateurs",
+    "pageDesc": "Administrez les comptes des étudiants et des enseignants.",
+    "tabEtudiants": "Étudiants",
+    "tabProfs": "Enseignants",
+    "searchPh": "Rechercher par nom, email...",
+    "filterClasse": "Toutes les classes",
+    "filterMatiere": "Toutes les matières",
+    "btnAdd": "Nouvel Utilisateur",
+    "table": {
+      "user": "Utilisateur",
+      "cne": "CNE / Massar",
+      "classe": "Classe",
+      "matiere": "Matière enseignée",
+      "status": "Statut",
+      "actions": "Actions",
+      "active": "Actif",
+      "blocked": "Bloqué"
     },
-    "dashboard": {
-      "pageTitle": "Tableau de bord Administrateur",
-      "pageDesc": "Vue d'ensemble de l'établissement",
-      "totalEtudiants": "Total Étudiants",
-      "totalProfs": "Total Enseignants",
-      "totalClasses": "Total Classes actives",
-      "welcome": "Bienvenue dans le panneau d'administration.",
-      "stats": "Statistiques globales",
-      "quickActions": "Actions Rapides",
-      "addEtudiant": "Ajouter un étudiant",
-      "addProf": "Ajouter un enseignant",
-      "createClasse": "Créer une classe"
-    },
-    "users": {
-      "pageTitle": "Gestion des Utilisateurs",
-      "pageDesc": "Administrez les comptes des étudiants et des enseignants.",
-      "tabEtudiants": "Étudiants",
-      "tabProfs": "Enseignants",
-      "searchPh": "Rechercher par nom, email...",
-      "filterClasse": "Toutes les classes",
-      "filterMatiere": "Toutes les matières",
-      "btnAdd": "Nouvel Utilisateur",
-      "table": {
-        "user": "Utilisateur",
-        "cne": "CNE / Massar",
-        "classe": "Classe",
-        "matiere": "Matière enseignée",
-        "status": "Statut",
-        "actions": "Actions",
-        "active": "Actif",
-        "blocked": "Bloqué"
-      },
-      "modal": {
-        "titleNew": "Ajouter un Utilisateur",
-        "role": "Rôle",
-        "student": "Étudiant",
-        "teacher": "Enseignant",
-        "name": "Nom & Prénom",
-        "email": "Adresse Email",
-        "cne": "CNE / Code Massar",
-        "classe": "Affectation (Classe)",
-        "matiere": "Matière",
-        "btnCancel": "Annuler",
-        "btnSave": "Enregistrer"
-      }
-    },
-    "classes": {
-      "pageTitle": "Gestion des Classes",
-      "pageDesc": "Gérez les classes, les filières et l'affectation des enseignants.",
-      "searchPh": "Rechercher une classe...",
-      "filterFiliere": "Toutes les filières",
-      "btnAdd": "Nouvelle Classe",
-      "table": {
-        "name": "Nom de la Classe",
-        "filiere": "Filière",
-        "students": "Étudiants",
-        "teachers": "Enseignants Affectés",
-        "actions": "Actions"
-      },
-      "modal": {
-        "titleNew": "Créer une Classe",
-        "name": "Nom (ex: SVT-4)",
-        "filiere": "Filière",
-        "teachers": "Enseignants affectés (optionnel)",
-        "btnCancel": "Annuler",
-        "btnSave": "Enregistrer"
-      }
-    },
-    "content": {
-      "pageTitle": "Gestion du Contenu",
-      "pageDesc": "Publiez et modifiez les articles de la plateforme.",
-      "tabActualites": "Actualités",
-      "tabEvenements": "Événements",
-      "tabAnnonces": "Annonces",
-      "searchPh": "Rechercher un titre...",
-      "btnAdd": "Nouvelle Publication",
-      "table": {
-        "article": "Article",
-        "date": "Date",
-        "status": "Statut",
-        "actions": "Actions",
-        "published": "Publié",
-        "draft": "Brouillon"
-      },
-      "modal": {
-        "titleNew": "Ajouter un Article",
-        "titleFr": "Titre (Français)",
-        "titleAr": "Titre (Arabe)",
-        "descFr": "Description (Français)",
-        "descAr": "Description (Arabe)",
-        "imageUrl": "URL de l'image (optionnel)",
-        "status": "Statut de publication",
-        "btnCancel": "Annuler",
-        "btnSave": "Enregistrer"
-      }
-    },
-    "emploi": {
-      "pageTitle": "Emplois du Temps",
-      "pageDesc": "Gérez l'emploi du temps de chaque classe.",
-      "selectClass": "Sélectionner une classe",
-      "btnAdd": "Nouvelle Séance",
-      "noSeances": "Aucune séance prévue pour ce jour.",
-      "modal": {
-        "titleNew": "Ajouter une Séance",
-        "timeStart": "Heure de début",
-        "timeEnd": "Heure de fin",
-        "matiere": "Matière",
-        "professeur": "Professeur",
-        "salle": "Salle",
-        "type": "Type de séance",
-        "btnCancel": "Annuler",
-        "btnSave": "Enregistrer"
-      }
-    },
-    "messages": {
-      "pageTitle": "Messagerie",
-      "pageDesc": "Consultez les messages reçus via la plateforme.",
-      "searchPh": "Rechercher dans les messages...",
-      "noMessageSelected": "Sélectionnez un message pour le lire",
-      "emptyInbox": "Votre boîte de réception est vide.",
-      "replyBtn": "Répondre",
-      "deleteBtn": "Supprimer"
-    },
-    "settings": {
-      "pageTitle": "Paramètres Généraux",
-      "pageDesc": "Configurez les informations et le comportement de la plateforme.",
-      "tabs": {
-        "general": "Informations Générales",
-        "system": "Système & Inscriptions"
-      },
-      "form": {
-        "schoolName": "Nom de l'établissement",
-        "email": "Email de contact public",
-        "phone": "Téléphone de contact",
-        "address": "Adresse physique",
-        "academicYear": "Année Scolaire en cours",
-        "maintenance": "Mode Maintenance",
-        "maintenanceDesc": "Si activé, le site public affichera une page de maintenance.",
-        "registrations": "Inscriptions Ouvertes",
-        "registrationsDesc": "Autoriser la création de nouveaux comptes étudiants depuis le site."
-      },
-      "btnSave": "Sauvegarder les paramètres"
+    "modal": {
+      "titleNew": "Ajouter un Utilisateur",
+      "role": "Rôle",
+      "student": "Étudiant",
+      "teacher": "Enseignant",
+      "name": "Nom & Prénom",
+      "email": "Adresse Email",
+      "cne": "CNE / Code Massar",
+      "classe": "Affectation (Classe)",
+      "matiere": "Matière",
+      "btnCancel": "Annuler",
+      "btnSave": "Enregistrer"
     }
+  },
+  "content": {
+    "pageTitle": "Gestion du Contenu",
+    "pageDesc": "Publiez et modifiez les articles de la plateforme.",
+    "tabActualites": "Actualités",
+    "tabEvenements": "Événements",
+    "tabAnnonces": "Annonces",
+    "searchPh": "Rechercher un titre...",
+    "btnAdd": "Nouvelle Publication",
+    "table": {
+      "article": "Article",
+      "date": "Date",
+      "status": "Statut",
+      "actions": "Actions",
+      "published": "Publié",
+      "draft": "Brouillon"
+    },
+    "modal": {
+      "titleNew": "Ajouter un Article",
+      "titleFr": "Titre (Français)",
+      "titleAr": "Titre (Arabe)",
+      "descFr": "Description (Français)",
+      "descAr": "Description (Arabe)",
+      "imageUrl": "URL de l'image (optionnel)",
+      "status": "Statut de publication",
+      "btnCancel": "Annuler",
+      "btnSave": "Enregistrer"
+    }
+  },
+  "emploi": {
+    "pageTitle": "Emplois du Temps",
+    "pageDesc": "Gérez l'emploi du temps de chaque classe.",
+    "selectClass": "Sélectionner une classe",
+    "btnAdd": "Nouvelle Séance",
+    "noSeances": "Aucune séance prévue pour ce jour.",
+    "modal": {
+      "titleNew": "Ajouter une Séance",
+      "timeStart": "Heure de début",
+      "timeEnd": "Heure de fin",
+      "matiere": "Matière",
+      "professeur": "Professeur",
+      "salle": "Salle",
+      "type": "Type de séance",
+      "btnCancel": "Annuler",
+      "btnSave": "Enregistrer"
+    }
+  },
+  "messages": {
+    "pageTitle": "Messagerie",
+    "pageDesc": "Consultez les messages reçus via la plateforme.",
+    "searchPh": "Rechercher dans les messages...",
+    "noMessageSelected": "Sélectionnez un message pour le lire",
+    "emptyInbox": "Votre boîte de réception est vide.",
+    "replyBtn": "Répondre",
+    "deleteBtn": "Supprimer"
+  },
+  "settings": {
+    "pageTitle": "Paramètres Généraux",
+    "pageDesc": "Configurez les informations et le comportement de la plateforme.",
+    "tabs": {
+      "general": "Informations Générales",
+      "system": "Système & Inscriptions"
+    },
+    "form": {
+      "schoolName": "Nom de l'établissement",
+      "email": "Email de contact public",
+      "phone": "Téléphone de contact",
+      "address": "Adresse physique",
+      "academicYear": "Année Scolaire en cours",
+      "maintenance": "Mode Maintenance",
+      "maintenanceDesc": "Si activé, le site public affichera une page de maintenance.",
+      "registrations": "Inscriptions Ouvertes",
+      "registrationsDesc": "Autoriser la création de nouveaux comptes étudiants depuis le site."
+    },
+    "btnSave": "Sauvegarder les paramètres"
   }
 }

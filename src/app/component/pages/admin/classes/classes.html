@@ -1,8 +1,8 @@
 <div class="admin-classes-page">
   
   <div class="page-header">
-    <h2 class="page-title">{{ 'admin.classes.pageTitle' | translate }}</h2>
-    <p class="page-desc">{{ 'admin.classes.pageDesc' | translate }}</p>
+    <h2 class="page-title">Gestion des Classes</h2>
+    <p class="page-desc">Gérez les classes, les filières et l'affectation des enseignants.</p>
   </div>
 
   <!-- Toast Notification -->
@@ -15,11 +15,11 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.classes.searchPh' | translate">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une classe...">
       </div>
       
       <select class="form-select filter-select" [(ngModel)]="selectedFilter">
-        <option value="all">{{ 'admin.classes.filterFiliere' | translate }}</option>
+        <option value="all">Toutes les filières</option>
         <option value="SVT">SVT</option>
         <option value="Mathématiques">Mathématiques</option>
         <option value="Informatique">Informatique</option>
@@ -27,7 +27,7 @@
     </div>
 
     <button class="btn-primary" (click)="openModal()">
-      <i class="bi bi-plus-lg"></i> {{ 'admin.classes.btnAdd' | translate }}
+      <i class="bi bi-plus-lg"></i> Nouvelle Classe
     </button>
   </div>
 
@@ -36,11 +36,11 @@
     <table class="admin-table">
       <thead>
         <tr>
-          <th>{{ 'admin.classes.table.name' | translate }}</th>
-          <th>{{ 'admin.classes.table.filiere' | translate }}</th>
-          <th>{{ 'admin.classes.table.students' | translate }}</th>
-          <th>{{ 'admin.classes.table.teachers' | translate }}</th>
-          <th class="text-end">{{ 'admin.classes.table.actions' | translate }}</th>
+          <th>Nom de la Classe</th>
+          <th>Filière</th>
+          <th>Étudiants</th>
+          <th>Enseignants Affectés</th>
+          <th class="text-end">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -74,18 +74,18 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
       
       <div class="modal-header">
-        <h3>{{ editingId ? 'Modifier Classe' : ('admin.classes.modal.titleNew' | translate) }}</h3>
+        <h3>{{ editingId ? 'Modifier Classe' : ("Créer une Classe") }}</h3>
         <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-group">
-          <label>{{ 'admin.classes.modal.name' | translate }}</label>
+          <label>Nom (ex: SVT-4)</label>
           <input type="text" class="form-control" [(ngModel)]="newClass.nom" required placeholder="ex: SVT-4">
         </div>
 
         <div class="form-group">
-          <label>{{ 'admin.classes.modal.filiere' | translate }}</label>
+          <label>Filière</label>
           <select class="form-select" [(ngModel)]="newClass.filiere">
             <option value="SVT">SVT</option>
             <option value="Mathématiques">Mathématiques</option>
@@ -94,7 +94,7 @@
         </div>
 
         <div class="form-group mt-4">
-          <label class="mb-3"><i class="bi bi-person-video3"></i> {{ 'admin.classes.modal.teachers' | translate }}</label>
+          <label class="mb-3"><i class="bi bi-person-video3"></i> Enseignants affectés (optionnel)</label>
           <div class="checkbox-grid">
             <label class="checkbox-container" *ngFor="let t of availableTeachers">
               <input type="checkbox" [checked]="isTeacherSelected(t)" (change)="toggleTeacher(t)">
@@ -107,9 +107,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.classes.modal.btnCancel' | translate }}</button>
+        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
         <button class="btn-primary" (click)="saveClass()" [disabled]="!newClass.nom || !newClass.filiere">
-          {{ 'admin.classes.modal.btnSave' | translate }}
+          Enregistrer
         </button>
       </div>
 

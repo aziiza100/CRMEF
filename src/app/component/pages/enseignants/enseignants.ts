@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-enseignants-layout',
@@ -14,13 +15,26 @@ export class Enseignants {
   enseignantName = 'Prof. Mohammed Alaoui';
   currentLang = 'fr';
 
-  constructor(private translate: TranslateService, public router: Router) {
+  constructor(private translate: TranslateService, public router: Router, private api: ApiService) {
     const savedLang = localStorage.getItem('lang') || 'fr';
     this.currentLang = savedLang;
     this.translate.use(this.currentLang);
     document.documentElement.dir = this.currentLang === 'ar' ? 'rtl' : 'ltr';
   }
   
+  logout() {
+    this.api.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('crmef_admin_token');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.removeItem('crmef_admin_token');
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
   changeLang(lang: string) {
     this.translate.use(lang);
     this.currentLang = lang;

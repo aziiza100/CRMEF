@@ -15,7 +15,7 @@ interface Seance {
 
 interface JourEmploi {
   id: string;
-  nomKey: string; // ex: etudiant.emploi.days.lundi
+  nomKey: string; // nom affiché du jour
   seances: Seance[];
 }
 
@@ -34,7 +34,7 @@ export class AdminEmploiComponent {
   jours: JourEmploi[] = [
     {
       id: 'lundi',
-      nomKey: 'etudiant.emploi.days.lundi', // On réutilise les clés de traduction des étudiants
+      nomKey: 'Lundi',
       seances: [
         { id: 1, heureDebut: '08:00', heureFin: '10:00', matiere: 'Didactique des SVT', professeur: 'Pr. Alaoui', salle: 'Salle 4', type: 'cours' },
         { id: 2, heureDebut: '10:15', heureFin: '12:15', matiere: 'Didactique des SVT', professeur: 'Pr. Alaoui', salle: 'Labo 1', type: 'tp' },
@@ -43,15 +43,15 @@ export class AdminEmploiComponent {
     },
     {
       id: 'mardi',
-      nomKey: 'etudiant.emploi.days.mardi',
+      nomKey: 'Mardi',
       seances: [
         { id: 4, heureDebut: '08:00', heureFin: '12:00', matiere: 'TICE', professeur: 'Pr. Benjelloun', salle: 'Salle Info 2', type: 'tp' }
       ]
     },
-    { id: 'mercredi', nomKey: 'etudiant.emploi.days.mercredi', seances: [] },
-    { id: 'jeudi', nomKey: 'etudiant.emploi.days.jeudi', seances: [] },
-    { id: 'vendredi', nomKey: 'etudiant.emploi.days.vendredi', seances: [] },
-    { id: 'samedi', nomKey: 'etudiant.emploi.days.samedi', seances: [] }
+    { id: 'mercredi', nomKey: 'Mercredi', seances: [] },
+    { id: 'jeudi', nomKey: 'Jeudi', seances: [] },
+    { id: 'vendredi', nomKey: 'Vendredi', seances: [] },
+    { id: 'samedi', nomKey: 'Samedi', seances: [] }
   ];
 
   jourActif: JourEmploi = this.jours[0];
