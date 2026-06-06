@@ -208,6 +208,10 @@ export const routes: Routes = [
         loadComponent: () => import('./component/pages/admin/filieres/filieres').then(m => m.AdminFilieresComponent)
       },
       {
+        path: 'formations',
+        loadComponent: () => import('./component/pages/admin/formations/formations').then(m => m.AdminFormationsComponent)
+      },
+      {
         path: 'content',
         loadComponent: () => import('./component/pages/admin/content/content').then(m => m.AdminContentComponent)
       },

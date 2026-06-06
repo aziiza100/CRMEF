@@ -47,6 +47,13 @@ export class AdminComponent {
       labelAr: 'إدارة الشعب'
     },
     {
+      id: 'formations',
+      icon: 'bi-journal-bookmark-fill',
+      route: '/espace-admin/formations',
+      labelFr: 'Gestion Formations',
+      labelAr: 'إدارة التكوينات'
+    },
+    {
       id: 'content',
       icon: 'bi-newspaper',
       route: '/espace-admin/content',
@@ -81,14 +88,13 @@ export class AdminComponent {
   }
 
   prefetch(item: any) {
-    // Only prefetch filieres data to speed up first navigation to that page
+    // Only prefetch filieres or formations data to speed up first navigation to that page
     try {
       if (item && item.id === 'filieres') {
-        // fire-and-forget; component will still load its own copy
-        this.api.getFilieres().subscribe({
-          next: () => {},
-          error: () => {}
-        });
+        this.api.getFilieres().subscribe({ next: () => {}, error: () => {} });
+      }
+      if (item && item.id === 'formations') {
+        this.api.getFormations().subscribe({ next: () => {}, error: () => {} });
       }
     } catch (e) {
       // swallow errors; prefetch is optional

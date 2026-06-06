@@ -22,7 +22,7 @@ export interface Formation {
   id?: number;
   titre_fr: string;
   titre_ar: string;
-  type: 'primaire' | 'secondaire' | 'qualifiante';
+  type?: string;
   volume_horaire: number;
   description?: string;
   description_fr: string;
@@ -33,6 +33,7 @@ export interface Formation {
   objectifs_json?: any;
   debouches_json?: any;
   is_published: boolean;
+  filieres?: Filiere[];
 }
 
 export interface Filiere {
