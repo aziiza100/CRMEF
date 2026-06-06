@@ -1,14 +1,9 @@
-<div class="dashboard-wrapper">
-  <!-- Sidebar / Navigation Menu -->
-  <aside class="dashboard-sidebar">
-    <div class="sidebar-header">
-      <div class="user-avatar">
-        <i class="bi bi-person-fill"></i>
-      </div>
-      <div class="user-info">
-        <h3>{{ enseignantName }}</h3>
-        <p>{{ 'enseignant.role' | translate }}</p>
-      </div>
+<div class="enseignants-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Espace enseignant</p>
+      <h1>Mon espace pédagogique</h1>
+      <p class="subtitle">Vous êtes automatiquement affecté à vos classes. Vous pouvez consulter uniquement vos classes et leurs notes.</p>
     </div>
     <nav class="sidebar-nav">
       <ul>
@@ -34,34 +29,165 @@
     </nav>
   </aside>
 
-  <!-- Main Content Area -->
-  <main class="dashboard-main">
-    
-    <!-- Topbar -->
-    <header class="dashboard-topbar">
-      <div class="welcome-text" *ngIf="router.url === '/espace-enseignant'">
-        <h2>{{ 'enseignant.dashboard' | translate }}</h2>
-        <p>{{ 'enseignant.welcome' | translate }}</p>
-      </div>
-      <div class="welcome-text" *ngIf="router.url !== '/espace-enseignant'">
-        <!-- Titre vide pour garder la mise en page flex si besoin, ou on le laisse complètement disparaître -->
-      </div>
-      
-      <div class="topbar-actions">
-        <div class="search-bar" *ngIf="router.url === '/espace-enseignant'">
-          <i class="bi bi-search"></i>
-          <input type="text" [placeholder]="'enseignant.searchPlaceholder' | translate">
+  <section class="content-grid">
+    <article class="card summary-card">
+      <div class="summary-head">
+        <div>
+          <span class="label">Profil enseignant</span>
+          <h2>{{ teacher.name }}</h2>
+          <p class="small">{{ teacher.role }}</p>
         </div>
-        <button class="notification-btn" *ngIf="router.url === '/espace-enseignant'">
-          <i class="bi bi-bell"></i>
-          <span class="badge">3</span>
-        </button>
       </div>
-    </header>
 
-    <!-- Dashboard Content (Router Outlet) -->
-    <div class="dashboard-content">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>Classes attribuées</span>
+          <strong>{{ classes.length }}</strong>
+        </div>
+        <div class="stat-card">
+          <span>Élèves suivis</span>
+          <strong>{{ classes.reduce((acc, classe) => acc + classe.students.length, 0) }}</strong>
+        </div>
+        <div class="stat-card">
+          <span>Site principal</span>
+          <strong>{{ teacher.campus }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="activeSection === 'profil'" class="section-body">
+        <div class="profile-row">
+          <span>Email</span>
+          <strong>{{ teacher.email }}</strong>
+        </div>
+        <div class="profile-row">
+          <span>Téléphone</span>
+          <strong>{{ teacher.phone }}</strong>
+        </div>
+        <div class="profile-row">
+          <span>Bio</span>
+          <strong>{{ teacher.bio }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="activeSection === 'classes'" class="section-body classes-summary">
+        <div class="summary-block">
+          <span>Classe active</span>
+          <strong>{{ selectedClass?.name || 'Aucune classe' }}</strong>
+        </div>
+        <div class="summary-block">
+          <span>Module</span>
+          <strong>{{ selectedClass?.moduleName || '—' }}</strong>
+        </div>
+        <div class="summary-block">
+          <span>Élèves</span>
+          <strong>{{ selectedClass?.students?.length ?? 0 }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="card classes-card" *ngIf="activeSection === 'classes'">
+      <div class="classes-shell">
+        <aside class="classes-sidebar">
+          <div class="section-title">Classes assignées</div>
+          <div class="class-list">
+            <button
+              *ngFor="let classe of classes; trackBy: trackByClass"
+              type="button"
+              class="class-chip"
+              [class.selected]="classe.id === selectedClassId"
+              (click)="selectClass(classe.id)">
+              <span>{{ classe.name }}</span>
+              <small>{{ classe.formationType }}</small>
+            </button>
+          </div>
+        </aside>
+
+        <div class="class-detail" *ngIf="selectedClass; else noClass">
+          <div class="detail-header">
+            <div>
+              <span class="label">Détails de la classe</span>
+              <h2>{{ selectedClass.name }}</h2>
+              <p>{{ selectedClass.formationType }} — {{ selectedClass.site }}</p>
+            </div>
+            <div class="module-chip">{{ selectedClass.moduleName }}</div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-card">
+              <span class="mini-label">Élèves associés</span>
+              <ul>
+                <li *ngFor="let student of selectedClass.students">
+                  {{ student.name }} <small>{{ student.email }}</small>
+                </li>
+              </ul>
+            </div>
+
+            <div class="detail-card resources-panel">
+              <span class="mini-label">Ressources PDF</span>
+              <div class="resource-list">
+                <div class="resource-row" *ngFor="let resource of selectedClass.resources">
+                  <div>
+                    <strong>{{ resource.title }}</strong>
+                    <small>{{ resource.file }}</small>
+                  </div>
+                  <a href="#" class="download-link">Ouvrir</a>
+                </div>
+              </div>
+              <div class="resource-form">
+                <label>
+                  Nouveau support
+                  <input type="text" [(ngModel)]="newResourceTitle" placeholder="Titre du document" />
+                </label>
+                <label>
+                  Fichier PDF
+                  <input type="text" [(ngModel)]="newResourceFile" placeholder="fichier.pdf" />
+                </label>
+                <button class="secondary-button" type="button" (click)="addResource()">Ajouter</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="notes-panel">
+            <div class="section-title">Notes de la classe</div>
+            <div class="notes-table-wrap">
+              <table class="notes-table">
+                <thead>
+                  <tr>
+                    <th>Élève</th>
+                    <th>Email</th>
+                    <th>Note /20</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of selectedClass.students">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        max="20"
+                        [value]="selectedClass.notes.find(note => note.studentId === student.id)?.value ?? 0"
+                        (change)="updateNote(student.id, $any($event.target).value)"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="notes-summary">
+              <span>Moyenne de la classe</span>
+              <strong>{{ averageNote }}/20</strong>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noClass>
+          <div class="empty-state">
+            <p>Aucune classe affectée pour le moment.</p>
+          </div>
+        </ng-template>
+      </div>
+    </article>
+  </section>
 </div>
