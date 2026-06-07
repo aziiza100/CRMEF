@@ -28,7 +28,8 @@
 .toast-notification {
   position: fixed;
   top: 20px;
-  right: -300px; /* Hidden initially */
+  right: 20px;
+  transform: translateX(120%);
   background: #fff;
   padding: 15px 25px;
   border-radius: 12px;
@@ -39,11 +40,11 @@
   font-weight: 600;
   color: #1e293b;
   z-index: 9999;
-  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .toast-notification.show {
-  right: 20px;
+  transform: translateX(0);
 }
 
 .success-toast {

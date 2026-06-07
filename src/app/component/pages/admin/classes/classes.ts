@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService, Filiere } from '../../../../core/services/api.service';
 
 @Component({
   selector: 'app-admin-classes',
@@ -10,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './classes.html',
   styleUrls: ['./classes.css']
 })
-export class AdminClassesComponent {
+export class AdminClassesComponent implements OnInit {
   
   searchTerm = '';
   selectedFilter = 'all';
@@ -18,32 +19,78 @@ export class AdminClassesComponent {
   editingId: number | null = null;
   toastMessage = '';
   showToast = false;
+  isLoading = false;
+  isSaving = false;
 
   // Modèle de classe
   newClass = {
     nom: '',
-    filiere: '',
-    teachers: [] as string[]
+    filiere_id: null as number | null,
+    teachers: [] as number[]
   };
 
-  // Liste globale des professeurs pour les cases à cocher
-  availableTeachers = [
-    'Pr. Benjelloun (Informatique)',
-    'Pr. Idrissi (Sces de l\'Éducation)',
-    'Pr. Alaoui (SVT)',
-    'Pr. Cherkaoui (Mathématiques)'
-  ];
+  classes: any[] = [];
+  rawClasses: any[] = [];
+  filieres: Filiere[] = [];
+  teachersList: any[] = [];
 
-  classes = [
-    { id: 1, nom: 'SVT-4', filiere: 'SVT', studentsCount: 32, teachers: ['Pr. Alaoui', 'Pr. Idrissi'] },
-    { id: 2, nom: 'Math-1', filiere: 'Mathématiques', studentsCount: 28, teachers: ['Pr. Cherkaoui', 'Pr. Benjelloun'] },
-    { id: 3, nom: 'Info-2', filiere: 'Informatique', studentsCount: 25, teachers: ['Pr. Benjelloun'] }
-  ];
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.loadClasses();
+    this.loadFilieres();
+    this.loadTeachers();
+  }
+
+  loadClasses() {
+    this.isLoading = true;
+    this.api.getAdminClasses().subscribe({
+      next: (classes) => {
+        this.rawClasses = classes;
+        this.classes = classes.map((c: any) => ({
+          id: c.id,
+          nom: c.nom,
+          filiere_id: c.filiere_id,
+          filiere: c.filiere ? c.filiere.nom : '',
+          studentsCount: c.etudiants ? c.etudiants.length : 0,
+          teachers: c.enseignants ? Array.from(new Set(c.enseignants.map((e: any) => e.user ? e.user.name : '').filter((name: string) => !!name))) : []
+        }));
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.triggerToast(error.message || 'Impossible de charger les classes.');
+      }
+    });
+  }
+
+  loadFilieres() {
+    this.api.getFilieres().subscribe({
+      next: (filieres) => {
+        this.filieres = filieres;
+      },
+      error: (error) => {
+        this.triggerToast(error.message || 'Impossible de charger les filières.');
+      }
+    });
+  }
+
+  loadTeachers() {
+    this.api.getAdminEnseignants().subscribe({
+      next: (users) => {
+        this.teachersList = users.map((user: any) => ({
+          id: user.id,
+          nom: user.prenom && user.nom ? `${user.prenom} ${user.nom}` : user.nom || ''
+        }));
+      },
+      error: () => {}
+    });
+  }
 
   get filteredClasses() {
     return this.classes.filter(c => {
       const matchSearch = c.nom.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchFilter = this.selectedFilter === 'all' || c.filiere === this.selectedFilter;
+      const matchFilter = this.selectedFilter === 'all' || c.filiere_id == this.selectedFilter;
       return matchSearch && matchFilter;
     });
   }
@@ -53,12 +100,17 @@ export class AdminClassesComponent {
       this.editingId = cls.id;
       this.newClass = { 
         nom: cls.nom, 
-        filiere: cls.filiere, 
-        teachers: [...cls.teachers]
+        filiere_id: cls.filiere_id,
+        teachers: []
       };
+      
+      const originalClass = this.rawClasses.find((c: any) => c.id === cls.id);
+      if (originalClass && originalClass.enseignants) {
+        this.newClass.teachers = originalClass.enseignants.map((e: any) => e.id_enseignant);
+      }
     } else {
       this.editingId = null;
-      this.newClass = { nom: '', filiere: '', teachers: [] };
+      this.newClass = { nom: '', filiere_id: null, teachers: [] };
     }
     this.showModal = true;
   }
@@ -67,41 +119,93 @@ export class AdminClassesComponent {
     this.showModal = false;
   }
 
-  toggleTeacher(teacherName: string) {
-    const idx = this.newClass.teachers.indexOf(teacherName);
+  toggleTeacher(teacherId: number) {
+    const idx = this.newClass.teachers.indexOf(teacherId);
     if (idx > -1) {
       this.newClass.teachers.splice(idx, 1);
     } else {
-      this.newClass.teachers.push(teacherName);
+      this.newClass.teachers.push(teacherId);
     }
   }
 
-  isTeacherSelected(teacherName: string) {
-    return this.newClass.teachers.includes(teacherName);
+  isTeacherSelected(teacherId: number): boolean {
+    return this.newClass.teachers.includes(teacherId);
   }
 
   saveClass() {
-    if (this.editingId) {
-      const idx = this.classes.findIndex(c => c.id === this.editingId);
-      this.classes[idx] = { ...this.classes[idx], nom: this.newClass.nom, filiere: this.newClass.filiere, teachers: [...this.newClass.teachers] };
-    } else {
-      this.classes.unshift({
-        id: Date.now(),
-        nom: this.newClass.nom,
-        filiere: this.newClass.filiere,
-        studentsCount: 0, // Nouvelle classe = 0 étudiants
-        teachers: [...this.newClass.teachers]
-      });
+    if (!this.newClass.nom || !this.newClass.filiere_id) {
+      return;
     }
     
+    const isEdit = !!this.editingId;
+    const tempId = this.editingId || Date.now();
+    const selectedFiliere = this.filieres.find(f => f.id == this.newClass.filiere_id);
+    const filiereName = selectedFiliere ? selectedFiliere.nom : '';
+
+    const optimisticTeacherNames = this.newClass.teachers.map(tid => {
+      const t = this.teachersList.find(teacher => teacher.id == tid);
+      return t ? t.nom : '';
+    }).filter(Boolean);
+
+    const optimisticClass = {
+      id: tempId,
+      nom: this.newClass.nom,
+      filiere_id: this.newClass.filiere_id,
+      filiere: filiereName,
+      studentsCount: isEdit ? (this.classes.find(c => c.id === this.editingId)?.studentsCount || 0) : 0,
+      teachers: Array.from(new Set(optimisticTeacherNames))
+    };
+
+    const previousClasses = [...this.classes];
+
+    if (isEdit) {
+      const idx = this.classes.findIndex(c => c.id === this.editingId);
+      if (idx > -1) {
+        this.classes[idx] = optimisticClass;
+      }
+    } else {
+      this.classes.unshift(optimisticClass);
+    }
+
     this.closeModal();
-    this.triggerToast(this.editingId ? 'Classe mise à jour.' : 'Nouvelle classe créée.');
+    this.triggerToast(isEdit ? 'Classe mise à jour.' : 'Nouvelle classe créée.');
+
+    const payload = {
+      nom: this.newClass.nom,
+      filiere_id: Number(this.newClass.filiere_id),
+      enseignant_ids: this.newClass.teachers
+    };
+
+    const request$ = isEdit
+      ? this.api.updateAdminClass(this.editingId!, payload)
+      : this.api.createAdminClass(payload);
+
+    request$.subscribe({
+      next: () => {
+        this.loadClasses();
+      },
+      error: (error) => {
+        this.classes = previousClasses;
+        this.triggerToast(error.message || 'Erreur lors de l\'enregistrement de la classe.');
+      }
+    });
   }
 
   deleteClass(id: number) {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette classe ?")) {
+      const previousClasses = [...this.classes];
       this.classes = this.classes.filter(c => c.id !== id);
-      this.triggerToast('Classe supprimée.');
+
+      this.api.deleteAdminClass(id).subscribe({
+        next: () => {
+          this.triggerToast('Classe supprimée.');
+          this.loadClasses();
+        },
+        error: (error) => {
+          this.classes = previousClasses;
+          this.triggerToast(error.message || 'Erreur lors de la suppression de la classe.');
+        }
+      });
     }
   }
 

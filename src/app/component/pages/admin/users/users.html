@@ -29,8 +29,7 @@
       
       <select class="form-select filter-select" *ngIf="activeTab === 'etudiants'" [(ngModel)]="selectedFilter">
         <option value="all">Toutes les classes</option>
-        <option value="SVT-4">SVT-4</option>
-        <option value="Math-1">Math-1</option>
+        <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
       </select>
 
       <select class="form-select filter-select" *ngIf="activeTab === 'profs'" [(ngModel)]="selectedFilter">
@@ -54,7 +53,6 @@
           <th>Utilisateur</th>
           <th>CNE / Massar</th>
           <th>Classe</th>
-          <th>Statut</th>
           <th class="text-end">Actions</th>
         </tr>
       </thead>
@@ -71,11 +69,7 @@
           </td>
           <td class="fw-bold">{{ student.cne }}</td>
           <td><span class="badge-outline">{{ student.classe }}</span></td>
-          <td>
-            <span class="status-badge" [ngClass]="student.statut === 'actif' ? 'active' : 'blocked'">
-              {{ student.statut === 'actif' ? 'Actif' : 'Bloqué' }}
-            </span>
-          </td>
+          
           <td class="text-end">
             <button class="action-icon" (click)="openModal(student)"><i class="bi bi-pencil-square"></i></button>
             <button class="action-icon danger" (click)="deleteUser(student.id)"><i class="bi bi-trash"></i></button>
@@ -90,7 +84,6 @@
         <tr>
           <th>Utilisateur</th>
           <th>Matière enseignée</th>
-          <th>Statut</th>
           <th class="text-end">Actions</th>
         </tr>
       </thead>
@@ -116,11 +109,7 @@
               </div>
             </div>
           </td>
-          <td>
-            <span class="status-badge" [ngClass]="prof.statut === 'actif' ? 'active' : 'blocked'">
-              {{ prof.statut === 'actif' ? 'Actif' : 'Bloqué' }}
-            </span>
-          </td>
+         
           <td class="text-end">
             <button class="action-icon" (click)="openModal(prof)"><i class="bi bi-pencil-square"></i></button>
             <button class="action-icon danger" (click)="deleteUser(prof.id)"><i class="bi bi-trash"></i></button>
@@ -149,13 +138,7 @@
           </select>
         </div>
 
-        <div class="form-group" *ngIf="editingId">
-          <label>Statut</label>
-          <select class="form-select" [(ngModel)]="newUser.statut">
-            <option value="actif">Actif</option>
-            <option value="bloque">Bloqué</option>
-          </select>
-        </div>
+        
 
         <div class="form-group">
           <label>Prénom</label>
@@ -189,8 +172,7 @@
           <div class="form-group">
             <label>Affectation (Classe)</label>
             <select class="form-select" [(ngModel)]="newUser.classe">
-              <option value="SVT-4">SVT-4</option>
-              <option value="Math-1">Math-1</option>
+              <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
             </select>
           </div>
         </ng-container>
@@ -226,16 +208,6 @@
           <div class="form-group">
             <label>Téléphone</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.tele">
-          </div>
-          <div class="form-group">
-            <label>Classes enseignées</label>
-            <div class="checkbox-grid">
-              <label class="checkbox-container" *ngFor="let cls of availableClasses">
-                <input type="checkbox" [checked]="isProfClassSelected(cls)" (change)="toggleProfClass(cls)">
-                <span class="checkmark"></span>
-                {{ cls }}
-              </label>
-            </div>
           </div>
         </ng-container>
       </div>

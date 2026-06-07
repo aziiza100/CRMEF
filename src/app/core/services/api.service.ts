@@ -263,11 +263,64 @@ export class ApiService {
     }).pipe(catchError(this.handleError));
   }
 
+  getAdminStudents(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/students`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createAdminStudent(data: any): Observable<any> {
+    const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
+    return this.http.post<any>(`${this.baseUrl}/admin/students`, data, {
+      headers
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateAdminStudent(id: number, data: any): Observable<any> {
+    if (data instanceof FormData) {
+      data.append('_method', 'PUT');
+      const headers = this.getFormHeaders();
+      return this.http.post<any>(`${this.baseUrl}/admin/students/${id}`, data, {
+        headers
+      }).pipe(catchError(this.handleError));
+    }
+
+    const headers = this.getHeaders();
+    return this.http.put<any>(`${this.baseUrl}/admin/students/${id}`, data, {
+      headers
+    }).pipe(catchError(this.handleError));
+  }
+
   deleteAdminStudent(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/students/${id}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
+
+  getAdminClasses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/classes`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createAdminClass(data: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/classes`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateAdminClass(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/admin/classes/${id}`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteAdminClass(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/classes/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
 
   // ============================================================
   // FORMATIONS

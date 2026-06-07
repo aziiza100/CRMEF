@@ -16,7 +16,6 @@ type AdminUserForm = {
   grade: string;
   tele: string;
   classes: string[];
-  statut: string;
 };
 
 type EtudiantItem = {
@@ -27,7 +26,6 @@ type EtudiantItem = {
   cin?: string;
   tele?: string;
   classe: string;
-  statut: string;
   avatar: string;
 };
 
@@ -68,18 +66,13 @@ export class AdminUsersComponent implements OnInit {
     grade: '',
     tele: '',
     classes: [],
-    statut: 'actif'
   };
 
   // Liste des classes pour le sélecteur multiple
-  availableClasses = ['SVT-4', 'Math-1', 'Info-2'];
+  availableClasses: any[] = [];
   specialityFilters: string[] = [];
 
-  etudiants: EtudiantItem[] = [
-    { id: 1, nom: 'Ahmed Yassine', email: 'ahmed.yassine@gmail.com', cne: 'G123456789', classe: 'SVT-4', statut: 'actif', avatar: 'https://ui-avatars.com/api/?name=Ahmed+Yassine&background=random' },
-    { id: 2, nom: 'Fatima Zahra', email: 'fatima@gmail.com', cne: 'M987654321', classe: 'Math-1', statut: 'actif', avatar: 'https://ui-avatars.com/api/?name=Fatima+Zahra&background=random' },
-    { id: 3, nom: 'Karim Alaoui', email: 'karim@gmail.com', cne: 'K456123789', classe: 'SVT-4', statut: 'bloque', avatar: 'https://ui-avatars.com/api/?name=Karim+Alaoui&background=random' }
-  ];
+  etudiants: EtudiantItem[] = [];
 
   profs: Array<any> = [];
 
@@ -133,7 +126,6 @@ export class AdminUsersComponent implements OnInit {
         grade: user.grade || '',
         tele: user.tele || '',
         classes: user.classes ? [...user.classes] : [],
-        statut: user.actif || 'actif'
       };
       this.imagePreview = user.image_base64 || user.avatar || null;
       this.selectedImageFile = null;
@@ -142,7 +134,10 @@ export class AdminUsersComponent implements OnInit {
       }
     } else {
       this.editingId = null;
-      this.newUser = { role: this.activeTab === 'etudiants' ? 'student' : 'teacher', nom: '', prenom: '', email: '', cne: '', cin: '', classe: '', specialite: '', grade: '', tele: '', classes: [], statut: 'actif' };
+      this.newUser = { role: this.activeTab === 'etudiants' ? 'student' : 'teacher', nom: '', prenom: '', email: '', cne: '', cin: '', classe: '', specialite: '', grade: '', tele: '', classes: [] };
+      if (this.newUser.role === 'student' && this.availableClasses.length > 0) {
+        this.newUser.classe = this.availableClasses[0].nom;
+      }
       this.imagePreview = null;
       this.selectedImageFile = null;
       if (this.imageInput?.nativeElement) {
@@ -156,18 +151,7 @@ export class AdminUsersComponent implements OnInit {
     this.showModal = false;
   }
 
-  toggleProfClass(cls: string) {
-    const idx = this.newUser.classes.indexOf(cls);
-    if (idx > -1) {
-      this.newUser.classes.splice(idx, 1);
-    } else {
-      this.newUser.classes.push(cls);
-    }
-  }
 
-  isProfClassSelected(cls: string) {
-    return this.newUser.classes.includes(cls);
-  }
 
   triggerImageUpload() {
     if (this.imageInput?.nativeElement) {
@@ -201,10 +185,7 @@ export class AdminUsersComponent implements OnInit {
       grade: this.newUser.grade || 'Enseignant',
     };
 
-    if (this.editingId) {
-      payload.actif = this.newUser.statut;
-    }
-
+  
     if (this.selectedImageFile) {
       const formData = new FormData();
       Object.entries(payload).forEach(([key, value]) => {
@@ -220,7 +201,41 @@ export class AdminUsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadClasses();
+    this.loadEtudiants();
     this.loadEnseignants();
+  }
+
+  loadClasses() {
+    this.api.getAdminClasses().subscribe({
+      next: (classes) => {
+        this.availableClasses = classes;
+        if (!this.editingId && this.newUser.role === 'student' && this.availableClasses.length > 0) {
+          this.newUser.classe = this.availableClasses[0].nom;
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  loadEtudiants() {
+    this.api.getAdminStudents().subscribe({
+      next: (users) => {
+        this.etudiants = users.map((user: any) => {
+          return {
+            id: user.id,
+            nom: user.prenom && user.nom ? `${user.prenom} ${user.nom}` : user.nom || '',
+            email: user.email,
+            cne: user.etudiant?.cne || '',
+            cin: user.cin || '',
+            tele: user.tele || '',
+            classe: user.etudiant?.classe?.nom || '',
+            avatar: user.image_base64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.prenom || '')}+${encodeURIComponent(user.nom || '')}&background=0f172a&color=fff`
+          };
+        });
+      },
+      error: () => {}
+    });
   }
 
   loadEnseignants() {
@@ -240,8 +255,7 @@ export class AdminUsersComponent implements OnInit {
           tele: user.tele || '',
           specialite,
           grade: user.enseignant?.grade || '',
-          classes: [],
-          statut: user.actif || 'actif',
+          classes: user.enseignant?.classes ? Array.from(new Set(user.enseignant.classes.map((c: any) => c.nom))) : [],
           avatar: user.image_base64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.prenom || '')}+${encodeURIComponent(user.nom || '')}&background=0f172a&color=fff`
         };
       });
@@ -253,49 +267,57 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
-  saveUser() {
-    const fullName = `${this.newUser.prenom} ${this.newUser.nom}`.trim();
+  getStudentPayload() {
+    const matchedClass = this.availableClasses.find(c => c.nom === this.newUser.classe);
+    const classeId = matchedClass ? matchedClass.id : null;
 
+    const payload: any = {
+      email: this.newUser.email,
+      nom: this.newUser.nom,
+      prenom: this.newUser.prenom,
+      cne: this.newUser.cne,
+      cin: this.newUser.cin || null,
+      tele: this.newUser.tele || null,
+      classe_id: classeId,
+    };
+
+    return payload;
+  }
+
+  saveUser() {
     if (this.newUser.role === 'student') {
+      const payload = this.getStudentPayload();
+
       if (this.editingId) {
-        const idx = this.etudiants.findIndex(e => e.id === this.editingId);
-        this.etudiants[idx] = { ...this.etudiants[idx], nom: fullName || this.newUser.nom, email: this.newUser.email, cin: this.newUser.cin, tele: this.newUser.tele, cne: this.newUser.cne, classe: this.newUser.classe, statut: this.newUser.statut };
-        this.triggerToast('Étudiant mis à jour avec succès.');
-      } else {
-        this.etudiants.unshift({
-          id: Date.now(),
-          nom: fullName || this.newUser.nom,
-          email: this.newUser.email,
-          cin: this.newUser.cin,
-          tele: this.newUser.tele,
-          cne: this.newUser.cne,
-          classe: this.newUser.classe,
-          statut: this.newUser.statut,
-          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName || this.newUser.nom)}&background=random`
+        this.api.updateAdminStudent(this.editingId, payload).subscribe({
+          next: () => {
+            this.loadEtudiants();
+            this.triggerToast('Étudiant mis à jour avec succès.');
+            this.closeModal();
+          },
+          error: (err) => {
+            this.triggerToast(err.message || 'Erreur lors de la mise à jour de l’étudiant.');
+          }
         });
-        this.triggerToast('Nouvel étudiant ajouté.');
+      } else {
+        this.api.createAdminStudent(payload).subscribe({
+          next: (response) => {
+            this.loadEtudiants();
+            this.triggerToast(`Étudiant ajouté. Mot de passe généré : ${response.password}`);
+            this.closeModal();
+          },
+          error: (err) => {
+            this.triggerToast(err.message || 'Erreur lors de l’ajout de l’étudiant.');
+          }
+        });
       }
-      this.closeModal();
     } else {
       const payload = this.getTeacherPayload();
 
       if (this.editingId) {
         this.api.updateAdminEnseignant(this.editingId, payload).subscribe({
-          next: (response) => {
-            const updated = response.user || response;
-            const idx = this.profs.findIndex(p => p.id === this.editingId);
-            const updatedName = `${updated.prenom || this.newUser.prenom} ${updated.nom || this.newUser.nom}`.trim();
-            this.profs[idx] = {
-              ...this.profs[idx],
-              nom: updatedName,
-              email: updated.email,
-              cin: updated.cin || this.newUser.cin,
-              tele: updated.tele || this.newUser.tele,
-              specialite: updated.enseignant?.specialite || this.newUser.specialite,
-              grade: updated.enseignant?.grade || this.newUser.grade,
-              classes: [...this.newUser.classes],
-              statut: this.newUser.statut,
-            };
+          next: () => {
+            this.loadEnseignants();
             this.triggerToast('Enseignant mis à jour avec succès.');
             this.closeModal();
           },
@@ -306,20 +328,7 @@ export class AdminUsersComponent implements OnInit {
       } else {
         this.api.createAdminEnseignant(payload).subscribe({
           next: (response) => {
-            const user = response.user;
-            const enseignant = response.user?.enseignant || response.enseignant || {};
-            const newProf = {
-              id: user.id,
-              nom: `${user.prenom || this.newUser.prenom} ${user.nom || this.newUser.nom}`.trim(),
-              email: user.email,
-              specialite: enseignant.specialite || this.newUser.specialite,
-              grade: enseignant.grade || this.newUser.grade,
-              tele: user.tele || this.newUser.tele,
-              classes: [...this.newUser.classes],
-              statut: user.actif || this.newUser.statut || 'bloque',
-              avatar: user.image_base64 || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.prenom || this.newUser.prenom)}+${encodeURIComponent(user.nom || this.newUser.nom)}&background=0f172a&color=fff`
-            };
-            this.profs.unshift(newProf);
+            this.loadEnseignants();
             this.triggerToast(`Enseignant ajouté. Mot de passe généré : ${response.password}`);
             this.closeModal();
           },
@@ -339,7 +348,7 @@ export class AdminUsersComponent implements OnInit {
     if (this.activeTab === 'etudiants') {
       this.api.deleteAdminStudent(id).subscribe({
         next: () => {
-          this.etudiants = this.etudiants.filter(e => e.id !== id);
+          this.loadEtudiants();
           this.triggerToast('Étudiant supprimé avec succès.');
         },
         error: () => {
@@ -349,7 +358,7 @@ export class AdminUsersComponent implements OnInit {
     } else {
       this.api.deleteAdminEnseignant(id).subscribe({
         next: () => {
-          this.profs = this.profs.filter(p => p.id !== id);
+          this.loadEnseignants();
           this.triggerToast('Enseignant supprimé avec succès.');
         },
         error: () => {
