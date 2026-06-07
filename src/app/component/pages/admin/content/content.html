@@ -99,8 +99,11 @@
         <!-- Image & Status -->
         <div class="top-fields-grid">
           <div class="form-group">
-            <label><i class="bi bi-image"></i> URL de l'image (optionnel)</label>
-            <input type="text" class="form-control" [(ngModel)]="newArticle.imageUrl" placeholder="https://...">
+            <label><i class="bi bi-image"></i> Image de l'article (Fichier)</label>
+            <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+            <div class="mt-2" *ngIf="imagePreview">
+              <img [src]="imagePreview" style="max-height: 80px; border-radius: 4px;" alt="Aperçu">
+            </div>
           </div>
           <div class="form-group">
             <label><i class="bi bi-eye"></i> Statut de publication</label>
@@ -108,6 +111,18 @@
               <option value="published">🟢 Publié (Visible)</option>
               <option value="draft">⚪ Brouillon (Caché)</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Date & Heure -->
+        <div class="top-fields-grid mt-3">
+          <div class="form-group">
+            <label><i class="bi bi-calendar3"></i> Date de publication</label>
+            <input type="date" class="form-control" [(ngModel)]="newArticle.date" required>
+          </div>
+          <div class="form-group">
+            <label><i class="bi bi-clock"></i> Heure de publication</label>
+            <input type="time" class="form-control" [(ngModel)]="newArticle.heure">
           </div>
         </div>
 
@@ -147,9 +162,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
-        <button class="btn-primary" (click)="saveArticle()" [disabled]="!newArticle.titreFr || !newArticle.titreAr">
-          <i class="bi bi-check2"></i> Enregistrer
+        <button class="btn-cancel" (click)="closeModal()" [disabled]="isSaving">Annuler</button>
+        <button class="btn-primary" (click)="saveArticle()" [disabled]="!newArticle.titreFr || !newArticle.titreAr || isSaving">
+          <i class="bi" [ngClass]="isSaving ? 'bi-arrow-repeat spinner' : 'bi-check2'"></i> {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
         </button>
       </div>
 

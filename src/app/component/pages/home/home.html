@@ -148,61 +148,39 @@
         <p>actualités Récente</p>
       </div><!-- End Section Title -->
 
-      <div class="container"> 
+      <div class="container">        <div class="row">
 
-        <div class="row">
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+          <div *ngFor="let item of getLatestActualites(); let i = index" class="col-lg-4 col-md-6 d-flex align-items-stretch" [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="(i+1)*100">
             <div class="course-item">
-              <img src="assets/images/actualites/actualite1.jpg" class="img-fluid course-img" alt="...">
+              <img [src]="item.image" class="img-fluid course-img" alt="...">
               <div class="course-content">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">événements</p>
-                  <p class="price">6/5/2026</p>
+                  <p class="category">{{ item.category }}</p>
+                  <p class="price">{{ item.date }}</p>
                 </div>
 
-                <h3><a routerLink="actualites"> Formation à distance à l’usage du logiciel BIORENDER pour la conception des ressources pédagogiques numériques en Sciences de la Vie & de la Terre dans l’enseignement d’éveil scientifique au Primaire.</a></h3>
-                <p class="description">L'enseignement d’éveil scientifique au primaire repose souvent sur des concepts abstraits que les jeunes apprenants peinent à visualiser sans support adéquat....
+                <h3><a routerLink="actualites">{{ item.title }}</a></h3>
+                <p class="description">{{ item.description }}</p>
               </div>
             </div>
           </div> <!-- End Course Item-->
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-            <div class="course-item">
-              <img src="assets/images/actualites/actualite2.jpg" class="img-fluid course-img" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">concours</p>
-                  <p class="price">6/5/2026</p>
-                </div>
-
-                <h3><a routerLink="actualites">لائحة المترشحات والمترشحين المدعويين لاجتياز الاختبارات الشفوية والعملية لمباراة التبريز تخصص المعلوميات - دورة 2026</a></h3>
-                <p class="description">يمكنكم الاطلاع على نتائج الانتقاء عبر الرابط الرسمي لوزارة التربية الوطنية.</p>                         
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
-            <div class="course-item">
-              <img src="assets/images/actualites/actualite3.jpg" class="img-fluid course-img" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">événements</p>
-                  <p class="price">4/5/2026</p>
-                </div>
-
-                <h3><a routerLink="actualites"> المعرض الدولي للنشر والكتاب (SIEL)</a></h3>
-                <p class="description">
-يشهد المعرض الدولي للنشر والكتاب (SIEL) في دورته الـ31 بالرباط، المنعقد في الفترة من 30 أبريل إلى 10 مايو 2026، مشاركة وازنة وقوية للأساتذة المكونين والباحثين بالمركز الجهوي لمهن التربية والتكوين لجهة مراكش - آسفي، تماشياً مع اختيار الرباط عاصمة عالمية للكتاب. حضور بارز للأساتذة الباحثين في اللقاءات العلمية والقراءات الفكرية والثقافية وتتمثل مشاركة *الأستاذ الباحث عمر أوبلا* في دورة 2026 في :
-*المغرب المتعدد*
-*أسماء الأماكن الأمازيغية : قراءة في المعنى والذاكرة*
-الأحد 10 ماي 2026 بقاعة الشريف الادريسي - المعرض الدولي للكتاب، الرباط.
-تسهم هذه المشاركات في ترسيخ انفتاح الأساتذة الباحثين بالمركز الجهوي لمهن التربية والتكوين لجهة مراكش - آسفي على محيطهم الثقافي والاجتماعي خلال هذا الحدث الدولي
-                </p>
-                
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
+        </div>
+          <div class="row">
+                <div *ngFor="let item of getLatestActualites(); let i = index" class="col-lg-4 col-md-6 d-flex align-items-stretch" [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="(i+1)*100">
+                  <div class="course-item">
+                    <img [src]="item.image" class="img-fluid course-img" alt="...">
+                    <div class="course-content">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="category">{{ item.category }}</p>
+                        <p class="price">{{ item.date }}</p>
+                      </div>
+  
+                      <h3><a routerLink="actualites">{{ item.title }}</a></h3>
+                      <p class="description">{{ item.description }}</p>
+                    </div>
+                  </div>  
+                </div> <!-- End Course Item-->
 
         </div>
 

@@ -12,7 +12,7 @@
     <nav class="sidebar-nav">
       <ul>
         <li *ngFor="let item of menuItems">
-          <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="prefetch(item)">
+          <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="onNavItemClick(item)">
             <i class="bi" [ngClass]="item.icon"></i>
             <span class="nav-text">{{ currentLang === 'fr' ? item.labelFr : item.labelAr }}</span>
           </a>

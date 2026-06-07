@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ActualitesService } from '../../../core/services/actualites.service';
 
 interface Announcement {
   id: number;
@@ -10,6 +11,7 @@ interface Announcement {
   title: string;
   description: string;
   category: string;
+  image: string;
 }
 
 interface CalendarEvent {
@@ -21,6 +23,7 @@ interface CalendarEvent {
   location: string;
   description: string;
   category: string;
+  image: string;
 }
 
 interface Seminar {
@@ -33,6 +36,7 @@ interface Seminar {
   location: string;
   description: string;
   category: string;
+  image: string;
 }
 
 @Component({
@@ -52,7 +56,8 @@ export class ActualitesComponent implements OnInit {
       icon: 'bi-megaphone',
       title: 'Ouverture des inscriptions - Formations 2026/2027',
       description: 'Les inscriptions pour les programmes de formation 2026/2027 sont désormais ouvertes. Consultez les critères d\'admission et les modalités de candidature.',
-      category: 'Inscription'
+      category: 'Inscription',
+      image: 'assets/images/actualites/actualite1.jpg'
     },
     {
       id: 2,
@@ -60,7 +65,8 @@ export class ActualitesComponent implements OnInit {
       icon: 'bi-book',
       title: 'Nouvelle plateforme d\'e-learning disponible',
       description: 'Accédez à la nouvelle plateforme numérique du CRMEF avec des ressources pédagogiques enrichies et des outils de collaboration.',
-      category: 'Ressources'
+      category: 'Ressources',
+      image: 'assets/images/actualites/actualite2.jpg'
     },
     {
       id: 3,
@@ -68,7 +74,8 @@ export class ActualitesComponent implements OnInit {
       icon: 'bi-star',
       title: 'Prix d\'excellence - Appel à candidatures',
       description: 'Le CRMEF lance son programme de reconnaissance d\'excellence. Les candidatures sont acceptées jusqu\'au 30 juin 2026.',
-      category: 'Reconnaissance'
+      category: 'Reconnaissance',
+      image: 'assets/images/actualites/actualite3.jpg'
     },
     {
       id: 4,
@@ -76,7 +83,8 @@ export class ActualitesComponent implements OnInit {
       icon: 'bi-briefcase',
       title: 'Partenariat stratégique avec l\'Université de Marrakech',
       description: 'Signature d\'un accord de partenariat pour renforcer la recherche pédagogique et l\'innovation éducative.',
-      category: 'Partenariat'
+      category: 'Partenariat',
+      image: 'assets/images/actualites/actualite1.jpg'
     }
   ];
 
@@ -89,7 +97,8 @@ export class ActualitesComponent implements OnInit {
       title: 'Cérémonie de remise des diplômes - Promotion 2025/2026',
       location: 'Amphithéâtre central du CRMEF',
       description: 'Célébration de fin d\'année et remise des diplômes aux nouveaux enseignants formés.',
-      category: 'Cérémonie'
+      category: 'Cérémonie',
+      image: 'assets/images/actualites/actualite2.jpg'
     },
     {
       id: 2,
@@ -99,7 +108,8 @@ export class ActualitesComponent implements OnInit {
       title: 'Journée Portes Ouvertes',
       location: 'Campus principal',
       description: 'Venez découvrir nos installations, rencontrer nos formateurs et en savoir plus sur nos programmes.',
-      category: 'Campus'
+      category: 'Campus',
+      image: 'assets/images/actualites/actualite3.jpg'
     },
     {
       id: 3,
@@ -109,7 +119,8 @@ export class ActualitesComponent implements OnInit {
       title: 'Concours d\'Innovation Pédagogique',
       location: 'Salle de conférence',
       description: 'Compétition nationale pour récompenser les meilleures initiatives pédagogiques innovantes.',
-      category: 'Concours'
+      category: 'Concours',
+      image: 'assets/images/actualites/actualite1.jpg'
     },
     {
       id: 4,
@@ -119,7 +130,8 @@ export class ActualitesComponent implements OnInit {
       title: 'Rentrée académique 2026/2027',
       location: 'Tout le campus',
       description: 'Accueil de la nouvelle promotion d\'étudiants en formation initiale.',
-      category: 'Académique'
+      category: 'Académique',
+      image: 'assets/images/actualites/actualite2.jpg'
     }
   ];
 
@@ -133,7 +145,8 @@ export class ActualitesComponent implements OnInit {
       speaker: 'Pr. Ahmed Bennani',
       location: 'Salle des conférences A',
       description: 'Découvrez les dernières approches pédagogiques pour encourager l\'engagement et la collaboration entre apprenants.',
-      category: 'Pédagogie'
+      category: 'Pédagogie',
+      image: 'assets/images/actualites/actualite3.jpg'
     },
     {
       id: 2,
@@ -144,7 +157,8 @@ export class ActualitesComponent implements OnInit {
       speaker: 'Dr. Fatima Zahra Youssefi',
       location: 'Laboratoire informatique',
       description: 'Session pratique sur l\'utilisation des outils numériques pour enrichir l\'expérience pédagogique.',
-      category: 'Numérique'
+      category: 'Numérique',
+      image: 'assets/images/actualites/actualite1.jpg'
     },
     {
       id: 3,
@@ -155,7 +169,8 @@ export class ActualitesComponent implements OnInit {
       speaker: 'Pr. Mohamed Amine Khalid',
       location: 'Amphithéâtre principal',
       description: 'Conférence sur la gestion du stress et l\'amélioration du bien-être en contexte scolaire.',
-      category: 'Bien-être'
+      category: 'Bien-être',
+      image: 'assets/images/actualites/actualite2.jpg'
     },
     {
       id: 4,
@@ -166,13 +181,18 @@ export class ActualitesComponent implements OnInit {
       speaker: 'Pr. Khadija Al-Mansouri',
       location: 'Salle des conférences B',
       description: 'Stratégies pour créer des environnements d\'apprentissage inclusifs et accessibles à tous.',
-      category: 'Inclusion'
+      category: 'Inclusion',
+      image: 'assets/images/actualites/actualite3.jpg'
     }
   ];
 
-  constructor(private translate: TranslateService) {}
+  constructor(
+    public translate: TranslateService,
+    private actualitesService: ActualitesService
+  ) {}
 
   ngOnInit(): void {
+    this.actualitesService.loadActualites();
     // Animations au chargement
     if (typeof AOS !== 'undefined') {
       AOS.init();
@@ -183,7 +203,39 @@ export class ActualitesComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  getFilteredItems(): (Announcement | CalendarEvent | Seminar)[] {
+  getFilteredItems(): any[] {
+    // If we have actualites loaded from the service/API, use them
+    const apiActualites = this.actualitesService.publishedActualites();
+    if (apiActualites && apiActualites.length > 0) {
+      return apiActualites.filter(item => {
+        // Map database "type" to UI tabs
+        if (this.activeTab === 'all') return true;
+        if (this.activeTab === 'announcements') return item.type === 'annonces';
+        if (this.activeTab === 'events') return item.type === 'evenements';
+        if (this.activeTab === 'seminars') return item.type === 'actualites';
+        return true;
+      }).map(item => {
+        const titreParts = item.titre ? item.titre.split(' ||| ') : ['', ''];
+        const descParts = item.description ? item.description.split(' ||| ') : ['', ''];
+        
+        const titleAr = item.titre_arabe || titreParts[1] || titreParts[0];
+        const titleFr = item.titre || titreParts[0];
+        
+        const descAr = item.description_arabe || descParts[1] || descParts[0];
+        const descFr = item.description || descParts[0];
+
+        return {
+          id: item.id,
+          date: item.date,
+          category: item.type === 'annonces' ? 'Annonce' : (item.type === 'evenements' ? 'Événement' : 'Séminaire'),
+          title: this.translate.currentLang === 'ar' ? titleAr : titleFr,
+          description: this.translate.currentLang === 'ar' ? descAr : descFr,
+          image: item.image_base64 || 'assets/images/actualites/actualite1.jpg'
+        };
+      });
+    }
+
+    // Fallback to local mock data
     if (this.activeTab === 'all') {
       return [...this.announcements, ...this.events, ...this.seminars];
     } else if (this.activeTab === 'announcements') {
@@ -212,10 +264,7 @@ export class ActualitesComponent implements OnInit {
     return date.toLocaleDateString('fr-FR', options);
   }
 
-  onSubscribe(): void {
-    // Handle subscription
-    console.log('Subscribe clicked');
-  }
+  
 }
 
 declare var AOS: any;

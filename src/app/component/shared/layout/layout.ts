@@ -1,4 +1,4 @@
-import { Component, HostListener} from '@angular/core';
+import { Component, HostListener, OnInit} from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Header } from '../header/header';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './layout.html', 
   styleUrl: './layout.css',
 })
-export class Layout  {
+export class Layout implements OnInit {
   currentLang: 'fr' | 'ar' = 'fr';
 
  constructor(private translate: TranslateService) {
@@ -30,7 +30,9 @@ export class Layout  {
     this.currentLang === 'ar' ? 'rtl' : 'ltr';    
 }
 
-  
+  ngOnInit(): void {
+    this.toggleScrolled();
+  }
   
  
  
@@ -49,7 +51,16 @@ export class Layout  {
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     this.showScrollTop = window.scrollY > 100;
+    this.toggleScrolled();
   } 
+
+  private toggleScrolled(): void {
+    if (window.scrollY > 100) {
+      document.body.classList.add('scrolled');
+    } else {
+      document.body.classList.remove('scrolled');
+    }
+  }
    
 
   scrollToTop(event: Event): void {

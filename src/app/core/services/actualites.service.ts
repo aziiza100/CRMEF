@@ -7,33 +7,27 @@ import { ApiService, Actualite } from './api.service';
 const MOCK_ACTUALITES: Actualite[] = [
   {
     id: 1,
-    titre_fr: 'Formation à distance BIORENDER',
-    titre_ar: 'تكوين عن بعد BIORENDER',
-    description_fr: 'L\'enseignement d\'éveil scientifique au primaire repose souvent sur des concepts abstraits...',
-    description_ar: 'يعتمد تعليم الإيقاظ العلمي في الابتدائي على مفاهيم مجردة...',
-    categorie: 'événements',
+    titre: 'Formation à distance BIORENDER ||| تكوين عن بعد BIORENDER',
+    description: 'L\'enseignement d\'éveil scientifique au primaire repose souvent sur des concepts abstraits que les jeunes apprenants peinent à visualiser sans support adéquat... ||| يعتمد تعليم الإيقاظ العلمي في الابتدائي على مفاهيم مجردة وغالباً ما يصعب على المتعلمين الصغار تصورها بدون دعم مناسب...',
+    type: 'evenements',
     date: '2026-05-06',
     image_url: 'assets/images/actualites/actualite1.jpg',
     is_published: true
   },
   {
     id: 2,
-    titre_fr: 'Concours Agrégation Informatique 2026',
-    titre_ar: 'لائحة المترشحين لمباراة التبريز - المعلوميات 2026',
-    description_fr: 'Liste des candidats convoqués aux épreuves orales et pratiques du concours d\'agrégation.',
-    description_ar: 'يمكنكم الاطلاع على نتائج الانتقاء عبر الرابط الرسمي لوزارة التربية الوطنية.',
-    categorie: 'concours',
+    titre: 'Concours Agrégation Informatique 2026 ||| لائحة المترشحات والمترشحين المدعويين لاجtياز الاختبارات الشفوية والعملية لمباراة التبريز تخصص المعلوميات - دورة 2026',
+    description: 'Liste des candidats convoqués aux épreuves orales et pratiques du concours d\'agrégation. ||| يمكنكم الاطلاع على نتائج الانتقاء عبر الرابط الرسمي لوزارة التربية الوطنية.',
+    type: 'actualites',
     date: '2026-05-06',
     image_url: 'assets/images/actualites/actualite2.jpg',
     is_published: true
   },
   {
     id: 3,
-    titre_fr: 'Participation au Salon International du Livre',
-    titre_ar: 'المعرض الدولي للنشر والكتاب (SIEL)',
-    description_fr: 'Les professeurs-chercheurs du CRMEF participent au SIEL 2026 à Rabat.',
-    description_ar: 'يشهد المعرض الدولي مشاركة وازنة للأساتذة المكونين والباحثين بالمركز.',
-    categorie: 'événements',
+    titre: 'Participation au Salon International du Livre ||| المعرض الدولي للنشر والكتاب (SIEL)',
+    description: 'Les professeurs-chercheurs du CRMEF participent au SIEL 2026 à Rabat. ||| يشهد المعرض الدولي للنشر والكتاب (SIEL) في دورته الـ31 بالرباط، المنعقد في الفترة من 30 أبريل إلى 10 مايو 2026، مشاركة وازنة وقوية للأساتذة المكونين والباحثين بالمركز الجهوي لمهن التربية والتكوين لجهة مراكش - آسفي.',
+    type: 'evenements',
     date: '2026-05-04',
     image_url: 'assets/images/actualites/actualite3.jpg',
     is_published: true
@@ -55,7 +49,10 @@ export class ActualitesService {
   loading = computed(() => this._loading());
   error = computed(() => this._error());
   publishedActualites = computed(() => 
-    this._actualites().filter(a => a.is_published)
+    this._actualites().filter(a => {
+      const p = a.publie as any;
+      return p === undefined || p === null || (p !== false && p !== 0 && p !== '0');
+    })
   );
 
   constructor(private api: ApiService) {}
@@ -97,8 +94,8 @@ export class ActualitesService {
   /**
    * Get actualités by category
    */
-  getByCategory(categorie: string): Actualite[] {
-    return this.publishedActualites().filter(a => a.categorie === categorie);
+  getByCategory(type: string): Actualite[] {
+    return this.publishedActualites().filter(a => a.type === type);
   }
 
   /**

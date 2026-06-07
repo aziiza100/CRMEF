@@ -50,14 +50,14 @@
   top: 0;
   z-index: 9999;
   background:  #F9F9F9;
-  /* box-shadow: 0 7px 20px rgba(0,0,0,.12); */
+  transition: all 0.3s ease;
 }
 .header {
     z-index: 10000;
   color: var(--default-color);
   background-color: #F9F9F9;
   padding: 15px 0;
-  transition: all 0.5s;
+  transition: all 0.3s ease;
   /* z-index: 997; */
   position: sticky;
   top: 0;
@@ -132,8 +132,13 @@
   }
 }
 
+.scrolled .top-wrapper {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+}
+
 .scrolled .header {
-  box-shadow: 0px
+  background-color: #ffffff;
 }
 /* button style */
 .lang-switcher {

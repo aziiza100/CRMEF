@@ -101,6 +101,13 @@ export class AdminComponent {
     }
   }
 
+  onNavItemClick(item: any) {
+    this.prefetch(item);
+    if (item && item.id === 'content') {
+      window.dispatchEvent(new CustomEvent('admin-reset-content-tab'));
+    }
+  }
+
   logout() {
     this.api.logout().subscribe({
       next: () => {

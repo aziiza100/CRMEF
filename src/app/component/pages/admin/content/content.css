@@ -118,7 +118,17 @@
   display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s;
 }
 
-.large-modal { width: 100%; max-width: 900px; height: 90vh; display: flex; flex-direction: column; }
+.large-modal { 
+  width: 100%; 
+  max-width: 900px; 
+  height: 90vh; 
+  display: flex; 
+  flex-direction: column; 
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
 .modal-header { padding: 20px 25px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
 .modal-header h3 { margin: 0; font-size: 18px; font-weight: 700; color: #1e293b; }
 .close-btn { background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; }
@@ -164,4 +174,13 @@ textarea.form-control { resize: vertical; }
   .toolbar { flex-direction: column; align-items: stretch; }
   .toolbar-actions { flex-direction: column; }
   .search-box { width: 100%; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
 }

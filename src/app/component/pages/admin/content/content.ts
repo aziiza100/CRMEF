@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService, Actualite } from '../../../../core/services/api.service';
 
 @Component({
   selector: 'app-admin-content',
@@ -10,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './content.html',
   styleUrls: ['./content.css']
 })
-export class AdminContentComponent {
+export class AdminContentComponent implements OnInit {
   
   activeTab: 'actualites' | 'evenements' | 'annonces' = 'actualites';
   searchTerm = '';
@@ -19,6 +20,12 @@ export class AdminContentComponent {
   editingId: number | null = null;
   toastMessage = '';
   showToast = false;
+  isLoading = false;
+  isSaving = false;
+
+  // Selected file for upload
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
 
   // Modèle Bilingue de publication
   newArticle = {
@@ -26,39 +33,51 @@ export class AdminContentComponent {
     titreAr: '',
     descFr: '',
     descAr: '',
+    date: '',
+    heure: '',
     imageUrl: '',
     status: 'published' // published ou draft
   };
 
-  articles = [
-    { 
-      id: 1, 
-      type: 'actualites', 
-      titreFr: 'Nouveaux équipements pour la salle TICE', 
-      titreAr: 'معدات جديدة لقاعة الإعلاميات', 
-      date: '12 Nov 2023', 
-      status: 'published', 
-      imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=150&h=100&fit=crop' 
-    },
-    { 
-      id: 2, 
-      type: 'evenements', 
-      titreFr: 'Journée d\'intégration des nouveaux stagiaires', 
-      titreAr: 'يوم إدماج المتدربين الجدد', 
-      date: '05 Sep 2023', 
-      status: 'published', 
-      imageUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=150&h=100&fit=crop' 
-    },
-    { 
-      id: 3, 
-      type: 'annonces', 
-      titreFr: 'Dépôt des mémoires de fin de formation', 
-      titreAr: 'إيداع بحوث نهاية التكوين', 
-      date: 'Hier', 
-      status: 'draft', 
-      imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=150&h=100&fit=crop' 
-    }
-  ];
+  articles: any[] = [];
+
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.loadArticles();
+  }
+
+  loadArticles() {
+    this.isLoading = true;
+    this.api.getActualites().subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (res && res.data) {
+          this.articles = res.data.map((a: any) => this.mapArticle(a));
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.triggerToast('Erreur lors du chargement : ' + err.message);
+      }
+    });
+  }
+
+  mapArticle(a: any) {
+    const titreParts = a.titre ? a.titre.split(' ||| ') : ['', ''];
+    const descParts = a.description ? a.description.split(' ||| ') : ['', ''];
+    return {
+      id: a.id,
+      type: a.type || 'actualites',
+      titreFr: a.titre || titreParts[0] || '',
+      titreAr: a.titre_arabe || titreParts[1] || '',
+      descFr: a.description || descParts[0] || '',
+      descAr: a.description_arabe || descParts[1] || '',
+      date: a.date,
+      status: (a.publie === true || a.publie === 1 || a.publie === '1') ? 'published' : 'draft', 
+      imageUrl: a.image_base64 || 'assets/images/actualites/actualite1.jpg'
+    };
+  }
 
   get filteredArticles() {
     return this.articles.filter(a => {
@@ -74,6 +93,24 @@ export class AdminContentComponent {
     this.searchTerm = '';
   }
 
+  @HostListener('window:admin-reset-content-tab')
+  onResetTab() {
+    this.activeTab = 'actualites';
+    this.cdr.detectChanges();
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   openModal(article?: any) {
     if (article) {
       this.editingId = article.id;
@@ -82,55 +119,168 @@ export class AdminContentComponent {
         titreAr: article.titreAr, 
         descFr: article.descFr || '', 
         descAr: article.descAr || '', 
+        date: article.date || '',
+        heure: article.heure || '',
         imageUrl: article.imageUrl || '',
-        status: article.status
+        status: article.status || 'published'
       };
+      this.imagePreview = article.imageUrl;
     } else {
       this.editingId = null;
-      this.newArticle = { titreFr: '', titreAr: '', descFr: '', descAr: '', imageUrl: '', status: 'published' };
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const currentHeure = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      
+      this.newArticle = { 
+        titreFr: '', 
+        titreAr: '', 
+        descFr: '', 
+        descAr: '', 
+        date: today, 
+        heure: currentHeure, 
+        imageUrl: '', 
+        status: 'published' 
+      };
+      this.selectedFile = null;
+      this.imagePreview = null;
     }
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
+    this.selectedFile = null;
+    this.imagePreview = null;
+    this.editingId = null;
   }
 
   toggleStatus(article: any) {
-    article.status = article.status === 'published' ? 'draft' : 'published';
-    this.triggerToast(article.status === 'published' ? 'Article publié en ligne !' : 'Article passé en brouillon.');
+    const newStatus = article.status === 'published' ? 'draft' : 'published';
+    const isPublie = newStatus === 'published';
+    
+    this.api.updateActualite(article.id, { publie: isPublie }).subscribe({
+      next: () => {
+        article.status = newStatus;
+        this.triggerToast(`Statut mis à jour : ${newStatus === 'published' ? 'Publié' : 'Brouillon'}`);
+      },
+      error: (err) => {
+        this.triggerToast('Erreur lors de la modification du statut : ' + err.message);
+      }
+    });
   }
 
   saveArticle() {
-    if (this.editingId) {
-      const idx = this.articles.findIndex(a => a.id === this.editingId);
-      this.articles[idx] = { 
-        ...this.articles[idx], 
-        titreFr: this.newArticle.titreFr, 
-        titreAr: this.newArticle.titreAr, 
-        imageUrl: this.newArticle.imageUrl || 'https://placehold.co/150x100?text=Sans+Image', 
-        status: this.newArticle.status 
-      };
-    } else {
-      this.articles.unshift({
-        id: Date.now(),
-        type: this.activeTab,
-        titreFr: this.newArticle.titreFr,
-        titreAr: this.newArticle.titreAr,
-        date: 'Aujourd\'hui',
-        status: this.newArticle.status,
-        imageUrl: this.newArticle.imageUrl || 'https://placehold.co/150x100?text=Image'
-      });
+    if (!this.newArticle.titreFr || !this.newArticle.titreAr) {
+      return;
     }
+
+    const wasEditing = !!this.editingId;
+    this.isSaving = true;
+    const formData = new FormData();
+    formData.append('type', this.activeTab);
+    formData.append('titre', this.newArticle.titreFr);
+    formData.append('titre_arabe', this.newArticle.titreAr);
+    formData.append('description', this.newArticle.descFr);
+    formData.append('description_arabe', this.newArticle.descAr);
+    formData.append('date', this.newArticle.date);
     
-    this.closeModal();
-    this.triggerToast(this.editingId ? 'Modification sauvegardée.' : 'Publication réussie.');
+    if (this.newArticle.heure) {
+      formData.append('heure', this.newArticle.heure);
+    }
+
+    formData.append('publie', this.newArticle.status === 'published' ? '1' : '0');
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    const request$ = this.editingId
+      ? this.api.updateActualite(this.editingId, formData)
+      : this.api.createActualite(formData);
+
+    // Capture state to restore in case of failure
+    const prevTitreFr = this.newArticle.titreFr;
+    const prevTitreAr = this.newArticle.titreAr;
+    const prevDescFr = this.newArticle.descFr;
+    const prevDescAr = this.newArticle.descAr;
+    const prevDate = this.newArticle.date;
+    const prevHeure = this.newArticle.heure;
+    const prevStatus = this.newArticle.status;
+    const prevEditingId = this.editingId;
+    const prevSelectedFile = this.selectedFile;
+    const prevImagePreview = this.imagePreview;
+
+    // Close the modal window immediately
+    this.showModal = false;
+    this.triggerToast(wasEditing ? 'Modification en cours...' : 'Publication en cours...');
+
+    request$.subscribe({
+      next: (res) => {
+        this.isSaving = false;
+        this.selectedFile = null;
+        this.imagePreview = null;
+        this.editingId = null;
+
+        if (res && res.data) {
+          const mapped = this.mapArticle(res.data);
+          if (wasEditing) {
+            const index = this.articles.findIndex(a => a.id === mapped.id);
+            if (index !== -1) {
+              this.articles[index] = mapped;
+            }
+          } else {
+            // Prepend new article to display immediately
+            this.articles.unshift(mapped);
+          }
+        }
+
+        this.triggerToast(wasEditing ? 'Modification sauvegardée.' : 'Publication réussie.');
+        this.loadArticles(); // Silently sync background state
+      },
+      error: (err) => {
+        this.isSaving = false;
+        // Restore state so user doesn't lose inputs on error
+        this.editingId = prevEditingId;
+        this.newArticle = {
+          titreFr: prevTitreFr,
+          titreAr: prevTitreAr,
+          descFr: prevDescFr,
+          descAr: prevDescAr,
+          date: prevDate,
+          heure: prevHeure,
+          imageUrl: prevImagePreview || '',
+          status: prevStatus
+        };
+        this.selectedFile = prevSelectedFile;
+        this.imagePreview = prevImagePreview;
+        this.showModal = true;
+
+        this.triggerToast('Erreur d\'enregistrement : ' + err.message);
+      }
+    });
   }
 
   deleteArticle(id: number) {
     if (confirm("Supprimer définitivement cet article ?")) {
-      this.articles = this.articles.filter(a => a.id !== id);
+      const index = this.articles.findIndex(a => a.id === id);
+      if (index === -1) return;
+
+      const deletedArticle = this.articles[index];
+      
+      // Remove instantly from frontend list
+      this.articles.splice(index, 1);
       this.triggerToast('Article supprimé.');
+
+      this.api.deleteActualite(id).subscribe({
+        next: () => {
+          // Perfectly deleted in backend
+        },
+        error: (err) => {
+          // Restore if backend fails
+          this.articles.splice(index, 0, deletedArticle);
+          this.triggerToast('Erreur lors de la suppression : ' + err.message);
+        }
+      });
     }
   }
 

@@ -42,176 +42,29 @@
     </div>
   </div>
 
-  <!-- Announcements Section -->
-  <section class="announcements-section section-padding" *ngIf="activeTab === 'all' || activeTab === 'announcements'">
+  <!-- Actualites List Section -->
+  <section class="courses section-padding">
     <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">{{ 'actualites.announcements.title' | translate }}</h2>
-        <p class="section-subtitle">{{ 'actualites.announcements.subtitle' | translate }}</p>
-      </div>
-
-      <div class="announcements-grid">
+      <div class="row gy-4">
         <div 
-          *ngFor="let announcement of announcements; let i = index" 
-          class="announcement-card" 
-          [attr.data-aos]="'fade-up'" 
+          *ngFor="let item of getFilteredItems(); let i = index" 
+          class="col-lg-4 col-md-6 d-flex align-items-stretch" 
+          [attr.data-aos]="'zoom-in'" 
           [attr.data-aos-delay]="i * 100">
-          <div class="announcement-header">
-            <div class="announcement-icon">
-              <i [class]="'bi ' + announcement.icon"></i>
+          <div class="course-item">
+            <img [src]="item.image" class="img-fluid course-img" [alt]="item.title">
+            <div class="course-content">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="category">{{ item.category }}</p>
+                <p class="price">{{ formatDate(item.date) }}</p>
+              </div>
+              <h3><a [routerLink]="[]">{{ item.title }}</a></h3>
+              <p class="description">{{ item.description }}</p>
             </div>
-            <div class="announcement-meta">
-              <span class="announcement-date">{{ formatDate(announcement.date) }}</span>
-              <span class="announcement-category">{{ announcement.category }}</span>
-            </div>
-          </div>
-          <h3 class="announcement-title">{{ announcement.title }}</h3>
-          <p class="announcement-description">{{ announcement.description }}</p>
-          <a href="#" class="read-more">
-            {{ 'common.readMore' | translate }}
-            <i class="bi bi-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Events Section -->
-  <section class="events-section section-padding" [class.bg-light]="activeTab !== 'events' && activeTab !== 'all'" *ngIf="activeTab === 'all' || activeTab === 'events'">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">{{ 'actualites.events.title' | translate }}</h2>
-        <p class="section-subtitle">{{ 'actualites.events.subtitle' | translate }}</p>
-      </div>
-
-      <div class="events-grid">
-        <div 
-          *ngFor="let event of events; let i = index" 
-          class="event-card" 
-          [attr.data-aos]="'fade-up'" 
-          [attr.data-aos-delay]="i * 100">
-          <div class="event-date-badge">
-            <span class="event-day">{{ event.date | slice:8:10 }}</span>
-            <span class="event-month">{{ event.date | slice:5:7 }}</span>
-          </div>
-          <div class="event-content">
-            <div class="event-time">
-              <i class="bi bi-clock"></i> {{ event.time }}
-            </div>
-            <h3 class="event-title">{{ event.title }}</h3>
-            <p class="event-location">
-              <i class="bi bi-geo-alt"></i> {{ event.location }}
-            </p>
-            <p class="event-description">{{ event.description }}</p>
-            <button class="event-btn">
-              <i class="bi bi-calendar-check"></i> {{ 'common.register' | translate }}
-            </button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Seminars Section -->
-  <section class="seminars-section section-padding" *ngIf="activeTab === 'all' || activeTab === 'seminars'">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">{{ 'actualites.seminars.title' | translate }}</h2>
-        <p class="section-subtitle">{{ 'actualites.seminars.subtitle' | translate }}</p>
-      </div>
-
-      <div class="seminars-grid">
-        <div 
-          *ngFor="let seminar of seminars; let i = index" 
-          class="seminar-card" 
-          [attr.data-aos]="'fade-up'" 
-          [attr.data-aos-delay]="i * 100">
-          <div class="seminar-icon">
-            <i [class]="'bi ' + seminar.icon"></i>
-          </div>
-          <div class="seminar-content">
-            <h3 class="seminar-title">{{ seminar.title }}</h3>
-            <p class="seminar-speaker">
-              <strong>{{ 'common.speaker' | translate }}:</strong> {{ seminar.speaker }}
-            </p>
-            <div class="seminar-details">
-              <span class="detail-item">
-                <i class="bi bi-calendar3"></i> {{ formatDate(seminar.date) }}
-              </span>
-              <span class="detail-item">
-                <i class="bi bi-clock"></i> {{ seminar.time }}
-              </span>
-              <span class="detail-item">
-                <i class="bi bi-geo-alt"></i> {{ seminar.location }}
-              </span>
-            </div>
-            <p class="seminar-description">{{ seminar.description }}</p>
-            <button class="seminar-btn">
-              <i class="bi bi-ticket"></i> {{ 'common.register' | translate }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Highlights Section -->
-  <section class="highlights-section section-padding">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">{{ 'actualites.highlights.title' | translate }}</h2>
-        <p class="section-subtitle">{{ 'actualites.highlights.subtitle' | translate }}</p>
-      </div>
-
-      <div class="highlights-grid">
-        <div class="highlight-item" data-aos="fade-up" data-aos-delay="0">
-          <div class="highlight-icon">
-            <i class="bi bi-lightning"></i>
-          </div>
-          <h3>{{ 'actualites.highlights.h1' | translate }}</h3>
-          <p>{{ 'actualites.highlights.h1_desc' | translate }}</p>
-        </div>
-
-        <div class="highlight-item" data-aos="fade-up" data-aos-delay="100">
-          <div class="highlight-icon">
-            <i class="bi bi-people-circle"></i>
-          </div>
-          <h3>{{ 'actualites.highlights.h2' | translate }}</h3>
-          <p>{{ 'actualites.highlights.h2_desc' | translate }}</p>
-        </div>
-
-        <div class="highlight-item" data-aos="fade-up" data-aos-delay="200">
-          <div class="highlight-icon">
-            <i class="bi bi-calendar-check"></i>
-          </div>
-          <h3>{{ 'actualites.highlights.h3' | translate }}</h3>
-          <p>{{ 'actualites.highlights.h3_desc' | translate }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Subscribe Section -->
-  <section class="subscribe-section section-padding">
-    <div class="container">
-      <div class="subscribe-content" data-aos="fade-up">
-        <h2 class="subscribe-title">{{ 'actualites.subscribe.title' | translate }}</h2>
-        <p class="subscribe-subtitle">{{ 'actualites.subscribe.subtitle' | translate }}</p>
-        
-        <form class="subscribe-form" (ngSubmit)="onSubscribe()">
-          <div class="form-group">
-            <input 
-              type="email" 
-              class="form-control" 
-              placeholder="{{ 'actualites.subscribe.placeholder' | translate }}"
-              required>
-            <button type="submit" class="btn-subscribe">
-              {{ 'actualites.subscribe.button' | translate }}
-            </button>
-          </div>
-          <p class="privacy-note">{{ 'actualites.subscribe.privacy' | translate }}</p>
-        </form>
-      </div>
-    </div>
-  </section>
 </div>

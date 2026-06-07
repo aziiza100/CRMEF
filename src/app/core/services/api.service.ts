@@ -6,14 +6,19 @@ import { environment } from '../../../environments/environment';
 
 export interface Actualite {
   id?: number;
-  titre_fr: string;
-  titre_ar: string;
-  description_fr: string;
-  description_ar: string;
-  categorie: string;
   date: string;
+  heure?: string;
+  type: string;
+  description: string;
+  titre: string;
+  titre_arabe?: string;
+  description_arabe?: string;
+  publie?: boolean;
+  image_data?: string;
+  image_mime?: string;
+  image_base64?: string;
   image_url?: string;
-  is_published: boolean;
+  is_published?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -197,20 +202,30 @@ export class ApiService {
     }).pipe(catchError(this.handleError));
   }
 
-  createActualite(data: Partial<Actualite>): Observable<ApiResponse<Actualite>> {
-    return this.http.post<ApiResponse<Actualite>>(`${this.baseUrl}/actualites`, data, {
-      headers: this.getHeaders()
+  createActualite(data: any): Observable<ApiResponse<Actualite>> {
+    const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
+    return this.http.post<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites`, data, {
+      headers
     }).pipe(catchError(this.handleError));
   }
 
-  updateActualite(id: number, data: Partial<Actualite>): Observable<ApiResponse<Actualite>> {
-    return this.http.put<ApiResponse<Actualite>>(`${this.baseUrl}/actualites/${id}`, data, {
-      headers: this.getHeaders()
+  updateActualite(id: number, data: any): Observable<ApiResponse<Actualite>> {
+    if (data instanceof FormData) {
+      data.append('_method', 'PUT');
+      const headers = this.getFormHeaders();
+      return this.http.post<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites/${id}`, data, {
+        headers
+      }).pipe(catchError(this.handleError));
+    }
+
+    const headers = this.getHeaders();
+    return this.http.put<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites/${id}`, data, {
+      headers
     }).pipe(catchError(this.handleError));
   }
 
   deleteActualite(id: number): Observable<ApiResponse<null>> {
-    return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/actualites/${id}`, {
+    return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/admin/actualites/${id}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
