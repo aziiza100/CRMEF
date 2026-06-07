@@ -96,6 +96,14 @@ export class ApiService {
     });
   }
 
+  private getFormHeaders(): HttpHeaders {
+    const token = localStorage.getItem(this.tokenKey);
+    return new HttpHeaders({
+      'Accept': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    });
+  }
+
   private hasToken(): boolean {
     return !!localStorage.getItem(this.tokenKey);
   }
@@ -240,6 +248,12 @@ export class ApiService {
     }).pipe(catchError(this.handleError));
   }
 
+  deleteAdminStudent(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/students/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   // ============================================================
   // FORMATIONS
   // ============================================================
@@ -269,6 +283,65 @@ export class ApiService {
 
   deleteFormation(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/formations/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
+  // TEACHER / ENSEIGNANT
+  // ============================================================
+  getEnseignantProfile(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/enseignant`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateEnseignantProfile(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/enseignant`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateEnseignantPassword(currentPassword: string, password: string, passwordConfirmation: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/enseignant/password`, {
+      current_password: currentPassword,
+      password,
+      password_confirmation: passwordConfirmation
+    }, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  getAdminEnseignants(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/enseignants`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createAdminEnseignant(data: any): Observable<any> {
+    const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
+    return this.http.post<any>(`${this.baseUrl}/admin/enseignants`, data, {
+      headers
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateAdminEnseignant(id: number, data: any): Observable<any> {
+    if (data instanceof FormData) {
+      data.append('_method', 'PUT');
+      const headers = this.getFormHeaders();
+      return this.http.post<any>(`${this.baseUrl}/admin/enseignants/${id}`, data, {
+        headers
+      }).pipe(catchError(this.handleError));
+    }
+
+    const headers = this.getHeaders();
+    return this.http.put<any>(`${this.baseUrl}/admin/enseignants/${id}`, data, {
+      headers
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteAdminEnseignant(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/enseignants/${id}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }

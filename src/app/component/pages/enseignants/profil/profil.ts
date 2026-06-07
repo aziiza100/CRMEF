@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
 @Component({
   selector: 'app-enseignant-profil',
@@ -10,14 +11,17 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './profil.html',
   styleUrls: ['./profil.css']
 })
-export class ProfilComponent {
+export class ProfilComponent implements OnInit {
   
-  // Simulation des données de l'enseignant
+  constructor(private api: ApiService) {}
+
+  // Profil de l'enseignant
   profilInfo = {
     nom: 'Prof. Mohammed Alaoui',
     email: 'enseignant@crmef.ma',
     tel: '06 12 34 56 78',
     specialite: 'Didactique des Sciences (SVT)',
+    grade: 'Professeur Agrégé',
     bio: 'Professeur agrégé avec plus de 15 ans d\'expérience dans l\'enseignement secondaire et la formation des formateurs.',
     dateRejoindre: 'Septembre 2020',
     avatar: 'https://ui-avatars.com/api/?name=Mohammed+Alaoui&background=005E76&color=fff&size=150'
@@ -34,25 +38,63 @@ export class ProfilComponent {
   showProfileSuccess = false;
   showPwdSuccess = false;
 
+  ngOnInit() {
+    this.loadProfil();
+  }
+
+  loadProfil() {
+    this.api.getEnseignantProfile().subscribe({
+      next: (profile) => {
+        this.profilInfo.nom = profile.prenom && profile.nom ? `${profile.prenom} ${profile.nom}` : profile.nom ?? this.profilInfo.nom;
+        this.profilInfo.email = profile.email || this.profilInfo.email;
+        this.profilInfo.tel = profile.tele || this.profilInfo.tel;
+        this.profilInfo.specialite = profile.specialite || this.profilInfo.specialite;
+        this.profilInfo.bio = profile.bio || this.profilInfo.bio;
+        this.profilInfo.dateRejoindre = profile.created_at || this.profilInfo.dateRejoindre;
+        this.profilInfo.avatar = profile.image_base64 || this.profilInfo.avatar;
+      },
+      error: () => {
+        // Keep default values if profile load fails.
+      }
+    });
+  }
+
   sauvegarderProfil() {
-    // Simulation d'une requête API de sauvegarde
-    this.showProfileSuccess = true;
-    setTimeout(() => {
-      this.showProfileSuccess = false;
-    }, 3000);
+    const payload = {
+      nom: this.profilInfo.nom,
+      tele: this.profilInfo.tel,
+      specialite: this.profilInfo.specialite,
+      grade: this.profilInfo.grade,
+    };
+
+    this.api.updateEnseignantProfile(payload).subscribe({
+      next: () => {
+        this.showProfileSuccess = true;
+        setTimeout(() => {
+          this.showProfileSuccess = false;
+        }, 3000);
+      },
+      error: () => {
+        // garder la notification silencieuse, backend gère l'erreur
+      }
+    });
   }
 
   changerMotDePasse() {
-    if(this.passwordData.new && this.passwordData.new === this.passwordData.confirm) {
-      // Simulation d'une requête API
-      this.showPwdSuccess = true;
-      
-      // Reset form
-      this.passwordData = { current: '', new: '', confirm: '' };
-
-      setTimeout(() => {
-        this.showPwdSuccess = false;
-      }, 3000);
+    if (this.passwordData.new && this.passwordData.new === this.passwordData.confirm) {
+      this.api.updateEnseignantPassword(this.passwordData.current, this.passwordData.new, this.passwordData.confirm)
+        .subscribe({
+          next: () => {
+            this.showPwdSuccess = true;
+            this.passwordData = { current: '', new: '', confirm: '' };
+            setTimeout(() => {
+              this.showPwdSuccess = false;
+            }, 3000);
+          },
+          error: () => {
+            // backend error message is handled by global error handler
+          }
+        });
     }
   }
 

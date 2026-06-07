@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { ApiService } from '../../../core/services/api.service';
   templateUrl: './enseignants.html',
   styleUrls: ['./enseignants.css']
 })
-export class Enseignants {
+export class Enseignants implements OnInit {
   enseignantName = 'Prof. Mohammed Alaoui';
   currentLang = 'fr';
 
@@ -20,6 +20,22 @@ export class Enseignants {
     this.currentLang = savedLang;
     this.translate.use(this.currentLang);
     document.documentElement.dir = this.currentLang === 'ar' ? 'rtl' : 'ltr';
+  }
+
+  ngOnInit() {
+    this.loadEnseignantProfile();
+  }
+
+  private loadEnseignantProfile() {
+    this.api.getEnseignantProfile().subscribe({
+      next: (profile) => {
+        const name = profile.prenom && profile.nom ? `${profile.prenom} ${profile.nom}` : profile.nom ?? 'Enseignant';
+        this.enseignantName = `Prof. ${name}`;
+      },
+      error: () => {
+        // Keep placeholder name if profile cannot be loaded.
+      }
+    });
   }
   
   logout() {
