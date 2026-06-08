@@ -9,6 +9,12 @@
     <i class="bi bi-cloud-arrow-down-fill"></i> {{ 'telechargerCours.successMsg' | translate }}
   </div>
 
+  <!-- Error Alert -->
+  <div class="alert alert-danger border-0 rounded-4 shadow-sm mb-4 d-flex align-items-center" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+    <div>{{ errorMessage }}</div>
+  </div>
+
   <!-- Barre de filtres -->
   <div class="filter-bar card mb-4">
     <div class="card-body">
@@ -28,21 +34,29 @@
     </div>
   </div>
 
+  <!-- Loading indicator -->
+  <div class="text-center py-5" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2 text-muted fw-semibold">{{ 'notes.loading' | translate }}</p>
+  </div>
+
   <!-- Grille des cours -->
-  <div class="cours-grid" *ngIf="filteredCours.length > 0">
+  <div class="cours-grid" *ngIf="!isLoading && filteredCours.length > 0">
     <div class="cours-card" *ngFor="let cours of filteredCours">
       <div class="cours-format-icon">
-        <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>
+        <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
       </div>
       
       <div class="cours-content">
         <h3 class="cours-title">{{ cours.titre }}</h3>
-        <p class="cours-desc">{{ cours.description }}</p>
+        <p class="cours-desc">{{ cours.description || 'Aucune description disponible.' }}</p>
         
         <div class="cours-meta">
+          <span><i class="bi bi-journal-bookmark-fill"></i> {{ cours.module_nom }}</span>
           <span><i class="bi bi-person-fill"></i> {{ 'telechargerCours.by' | translate }}: {{ cours.auteur }}</span>
-          <span><i class="bi bi-calendar3"></i> {{ cours.dateAjout }}</span>
-          <span><i class="bi bi-hdd-fill"></i> {{ 'telechargerCours.size' | translate }}: {{ cours.taille }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ cours.created_at | date:'dd MMM yyyy' }}</span>
         </div>
       </div>
 
@@ -55,7 +69,7 @@
   </div>
 
   <!-- État vide -->
-  <div class="empty-state" *ngIf="filteredCours.length === 0">
+  <div class="empty-state" *ngIf="!isLoading && filteredCours.length === 0">
     <i class="bi bi-folder-x"></i>
     <p>{{ 'telechargerCours.empty' | translate }}</p>
   </div>

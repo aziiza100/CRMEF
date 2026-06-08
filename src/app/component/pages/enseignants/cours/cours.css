@@ -12,15 +12,16 @@
 }
 
 .page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #333;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
   margin: 0 0 5px 0;
+  letter-spacing: -0.5px;
 }
 
 .page-desc {
   font-size: 14px;
-  color: #6c757d;
+  color: #64748b;
   margin: 0;
 }
 
@@ -29,19 +30,19 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #198754;
+  background: #10b981;
   color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
-  box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
   transform: translateY(-100px);
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1050;
 }
 
 .toast-notification.show {
@@ -49,7 +50,129 @@
   opacity: 1;
 }
 
-/* Grid Layout */
+/* Section Header & Step Badge */
+.section-header {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: #005E76;
+  color: white;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+/* Grille des Cartes (Classes & Modules) */
+.classes-grid, .modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.class-card, .module-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.015);
+  border: 2px solid transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.class-card:hover, .module-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+  border-color: rgba(0, 94, 118, 0.2);
+}
+
+.class-card.active, .module-card.active {
+  border-color: #005E76;
+  background: #f0f7f9;
+}
+
+.class-icon, .module-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 94, 118, 0.08);
+  color: #005E76;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.class-card.active .class-icon, .module-card.active .module-icon {
+  background: #005E76;
+  color: #fff;
+}
+
+.class-info, .module-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.class-info h3, .module-info h3 {
+  margin: 0 0 3px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.class-info .level, .module-info .hours {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Empty Selection */
+.empty-selection {
+  background: #fff;
+  border: 2px dashed #e2e8f0;
+  color: #64748b;
+}
+
+.empty-icon-circle {
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 94, 118, 0.05);
+  color: #005E76;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Grid Layout for course management */
 .cours-grid {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
@@ -200,66 +323,6 @@
   word-break: break-all;
 }
 
-/* Classes Grid */
-.classes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.class-checkbox {
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #475569;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-  user-select: none;
-}
-
-.class-checkbox i {
-  color: #cbd5e1;
-  font-size: 16px;
-}
-
-.class-checkbox:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-}
-
-.class-checkbox.selected {
-  border-color: #005E76;
-  background: #f0f7f9;
-  color: #005E76;
-  font-weight: 600;
-}
-
-.class-checkbox.selected i {
-  color: #005E76;
-}
-
-/* Button Link Action */
-.btn-link-action {
-  background: transparent;
-  border: none;
-  color: #005E76;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.btn-link-action:hover {
-  text-decoration: underline;
-}
-
 /* Form Actions */
 .form-actions {
   display: flex;
@@ -280,16 +343,6 @@
   cursor: pointer;
   transition: all 0.3s;
   border: none;
-}
-
-.btn-draft {
-  background: #f1f5f9;
-  color: #475569;
-}
-
-.btn-draft:hover:not([disabled]) {
-  background: #e2e8f0;
-  color: #1e293b;
 }
 
 .btn-publish {
@@ -342,17 +395,6 @@ button[disabled] {
   border-radius: 8px;
   font-size: 13px;
   outline: none;
-}
-
-.filter-select {
-  padding: 10px 15px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #475569;
-  outline: none;
-  background: #fff;
-  min-width: 130px;
 }
 
 /* Cours List */
@@ -421,12 +463,11 @@ button[disabled] {
   flex-shrink: 0;
 }
 
-.bg-success-light { background: #ecfdf5; color: #10b981; }
-.bg-warning-light { background: #fffbeb; color: #f59e0b; }
+.bg-success-light { background: #fef2f2; color: #dc3545; } /* PDF color theme */
 
 .cours-item-content {
   flex: 1;
-  min-width: 0; /* for text truncation */
+  min-width: 0;
 }
 
 .cours-item-header {
@@ -446,15 +487,6 @@ button[disabled] {
   text-overflow: ellipsis;
   padding-inline-end: 10px;
 }
-
-.status-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-.status-pub { background: #10b981; color: #fff; }
-.status-draft { background: #f59e0b; color: #fff; }
 
 .cours-item-desc {
   font-size: 13px;
@@ -476,6 +508,14 @@ button[disabled] {
 
 .cours-item-meta i {
   margin-inline-end: 4px;
+}
+
+.cours-item-meta .meta-file {
+  font-weight: 500;
+}
+
+.cours-item-meta .meta-file:hover {
+  text-decoration: underline;
 }
 
 .cours-item-actions {
@@ -500,3 +540,9 @@ button[disabled] {
 
 .btn-action.edit:hover { background: #f0f7f9; color: #005E76; }
 .btn-action.delete:hover { background: #fef2f2; color: #ef4444; }
+
+@media (max-width: 768px) {
+  .classes-grid, .modules-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -450,6 +450,59 @@ export class ApiService {
     });
   }
 
+  getSupports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/supports`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  getSupportsForModule(moduleId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/modules/${moduleId}/supports`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  uploadSupport(moduleId: number, titre: string, description: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('titre', titre);
+    formData.append('description', description || '');
+    formData.append('fichier', file);
+    return this.http.post<any>(`${this.baseUrl}/modules/${moduleId}/supports`, formData, {
+      headers: this.getFormHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateSupport(moduleId: number, supportId: number, titre: string, description: string, file?: File | null): Observable<any> {
+    const formData = new FormData();
+    formData.append('titre', titre);
+    formData.append('description', description || '');
+    if (file) {
+      formData.append('fichier', file);
+    }
+    formData.append('_method', 'PUT'); // Laravel PUT method tunneling for FormData
+
+    return this.http.post<any>(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}`, formData, {
+      headers: this.getFormHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteSupport(moduleId: number, supportId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  downloadSupportFile(moduleId: number, supportId: number): Observable<Blob> {
+    const token = localStorage.getItem(this.tokenKey);
+    const headers = new HttpHeaders({
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    });
+    return this.http.get(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}/download`, {
+      headers,
+      responseType: 'blob'
+    });
+  }
+
   getStudentNotes(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/etudiant/notes`, {
       headers: this.getHeaders()
