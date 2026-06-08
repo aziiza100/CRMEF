@@ -5,6 +5,7 @@ import { Historique } from './composants/historique/historique';
 import { MissionsObjectifs } from './composants/missions-objectifs/missions-objectifs';
 import { Organigramme } from './composants/organigramme/organigramme';
 import { Partenaires } from './composants/partenaires/partenaires';
+import AOS from 'aos';
 
 @Component({
   selector: 'app-presentation',
@@ -13,4 +14,14 @@ import { Partenaires } from './composants/partenaires/partenaires';
   templateUrl: './presentation.html',
   styleUrl: './presentation.css',
 })
-export class Presentation {}
+export class Presentation {
+  ngOnInit(): void {
+    AOS.init({ once: true });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      AOS.refresh();
+    }, 100);
+  }
+}

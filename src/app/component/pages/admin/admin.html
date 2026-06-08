@@ -1,5 +1,7 @@
 <div class="admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
   
+  <div class="sidebar-overlay" *ngIf="isSidebarCollapsed" (click)="toggleSidebar()"></div>
+
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -39,7 +41,7 @@
         </button>
         <div class="search-bar">
           <i class="bi bi-search"></i>
-          <input type="text" placeholder="Rechercher...">
+          <input type="text" placeholder="Rechercher partout..." (input)="onSearchInput($event)">
         </div>
       </div>
       
@@ -50,11 +52,7 @@
           <span>{{ currentLang === 'fr' ? 'العربية' : 'Français' }}</span>
         </button>
 
-        <!-- Notifications -->
-        <button class="action-btn">
-          <i class="bi bi-bell-fill"></i>
-          <span class="badge">3</span>
-        </button>
+        <!-- Notifications removed -->
 
         <!-- Profile Menu -->
         <div class="profile-menu">

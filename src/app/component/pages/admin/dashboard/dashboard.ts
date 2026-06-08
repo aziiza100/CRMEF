@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { ApiService, DashboardStats } from '../../../../core/services/api.service';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -12,17 +14,32 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class AdminDashboardComponent {
   
+  isLoading = true;
+  error = '';
+
   stats = {
-    etudiants: 1250,
-    profs: 85,
-    classes: 42
+    etudiants: 0,
+    profs: 0,
+    classes: 0,
+    filieres: 0
   };
 
-  recentActivities = [
-    { type: 'user', message: 'Nouvel étudiant inscrit : Ahmed Yassine', time: 'Il y a 10 min' },
-    { type: 'class', message: 'Classe SVT-4 créée par Admin', time: 'Il y a 1 heure' },
-    { type: 'doc', message: 'Nouveau cours ajouté en Physique', time: 'Il y a 2 heures' },
-    { type: 'user', message: 'Professeur Idrissi a mis à jour ses notes', time: 'Hier' }
-  ];
+  recentActivities: { type: string, message: string, time: string }[] = [];
 
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.apiService.getDashboardStats().subscribe({
+      next: (data: DashboardStats) => {
+        this.stats = data.stats;
+        this.recentActivities = data.recentActivities;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Erreur lors du chargement des statistiques.';
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
 }

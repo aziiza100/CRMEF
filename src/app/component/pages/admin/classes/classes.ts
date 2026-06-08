@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Filiere } from '../../../../core/services/api.service';
+import { SearchService } from '../../../../core/services/search.service';
 
 @Component({
   selector: 'app-admin-classes',
@@ -34,9 +35,12 @@ export class AdminClassesComponent implements OnInit {
   filieres: Filiere[] = [];
   teachersList: any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private searchService: SearchService) {}
 
   ngOnInit() {
+    this.searchService.currentSearch$.subscribe((term: string) => {
+      this.searchTerm = term;
+    });
     this.loadClasses();
     this.loadFilieres();
     this.loadTeachers();
@@ -53,7 +57,7 @@ export class AdminClassesComponent implements OnInit {
           filiere_id: c.filiere_id,
           filiere: c.filiere ? c.filiere.nom : '',
           studentsCount: c.etudiants ? c.etudiants.length : 0,
-          teachers: c.enseignants ? Array.from(new Set(c.enseignants.map((e: any) => e.user ? e.user.name : '').filter((name: string) => !!name))) : []
+          teachers: c.enseignants ? Array.from(new Set(c.enseignants.map((e: any) => e.user ? `${e.user.nom} ${e.user.prenom}` : '').filter((name: string) => !!name.trim()))) : []
         }));
         this.isLoading = false;
       },

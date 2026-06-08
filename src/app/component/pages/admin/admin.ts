@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../../core/services/api.service';
+import { SearchService } from '../../../core/services/search.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -83,8 +84,16 @@ export class AdminComponent {
     }
   ];
 
-  constructor(public router: Router, private translate: TranslateService, private api: ApiService) {
-    this.currentLang = this.translate.currentLang || 'fr';
+  constructor(public router: Router, private translate: TranslateService, private api: ApiService, private searchService: SearchService) {
+    const savedLang = localStorage.getItem('lang') || 'fr';
+    this.currentLang = savedLang;
+    this.translate.use(this.currentLang);
+    document.documentElement.dir = this.currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = this.currentLang;
+  }
+
+  onSearchInput(event: any) {
+    this.searchService.updateSearch(event.target.value);
   }
 
   prefetch(item: any) {
@@ -130,6 +139,7 @@ export class AdminComponent {
     this.translate.use(this.currentLang);
     document.documentElement.dir = this.currentLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = this.currentLang;
+    localStorage.setItem('lang', this.currentLang);
   }
 }
 

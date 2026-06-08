@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../../core/services/api.service';
+import { SearchService } from '../../../../core/services/search.service';
 
 type AdminUserForm = {
   role: 'student' | 'teacher';
@@ -16,6 +17,7 @@ type AdminUserForm = {
   grade: string;
   tele: string;
   classes: string[];
+  password?: string;
 };
 
 type EtudiantItem = {
@@ -37,7 +39,7 @@ type EtudiantItem = {
   styleUrls: ['./users.css']
 })
 export class AdminUsersComponent implements OnInit {
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private searchService: SearchService) {}
 
   activeTab: 'etudiants' | 'profs' = 'etudiants';
   showModal = false;
@@ -126,6 +128,7 @@ export class AdminUsersComponent implements OnInit {
         grade: user.grade || '',
         tele: user.tele || '',
         classes: user.classes ? [...user.classes] : [],
+        password: '',
       };
       this.imagePreview = user.image_base64 || user.avatar || null;
       this.selectedImageFile = null;
@@ -134,7 +137,7 @@ export class AdminUsersComponent implements OnInit {
       }
     } else {
       this.editingId = null;
-      this.newUser = { role: this.activeTab === 'etudiants' ? 'student' : 'teacher', nom: '', prenom: '', email: '', cne: '', cin: '', classe: '', specialite: '', grade: '', tele: '', classes: [] };
+      this.newUser = { role: this.activeTab === 'etudiants' ? 'student' : 'teacher', nom: '', prenom: '', email: '', cne: '', cin: '', classe: '', specialite: '', grade: '', tele: '', classes: [], password: '' };
       if (this.newUser.role === 'student' && this.availableClasses.length > 0) {
         this.newUser.classe = this.availableClasses[0].nom;
       }
@@ -185,6 +188,10 @@ export class AdminUsersComponent implements OnInit {
       grade: this.newUser.grade || 'Enseignant',
     };
 
+    if (this.newUser.password) {
+      payload.password = this.newUser.password;
+    }
+
   
     if (this.selectedImageFile) {
       const formData = new FormData();
@@ -201,6 +208,9 @@ export class AdminUsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.searchService.currentSearch$.subscribe((term: string) => {
+      this.searchTerm = term;
+    });
     this.loadClasses();
     this.loadEtudiants();
     this.loadEnseignants();
@@ -281,6 +291,21 @@ export class AdminUsersComponent implements OnInit {
       classe_id: classeId,
     };
 
+    if (this.newUser.password) {
+      payload.password = this.newUser.password;
+    }
+
+    if (this.selectedImageFile) {
+      const formData = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value as string);
+        }
+      });
+      formData.append('image', this.selectedImageFile);
+      return formData;
+    }
+
     return payload;
   }
 
@@ -302,8 +327,10 @@ export class AdminUsersComponent implements OnInit {
       } else {
         this.api.createAdminStudent(payload).subscribe({
           next: (response) => {
+            if (response.password) {
+              alert(`Étudiant créé avec succès !\nLe mot de passe généré est : ${response.password}\nVeuillez le noter.`);
+            }
             this.loadEtudiants();
-            this.triggerToast(`Étudiant ajouté. Mot de passe généré : ${response.password}`);
             this.closeModal();
           },
           error: (err) => {
@@ -328,8 +355,10 @@ export class AdminUsersComponent implements OnInit {
       } else {
         this.api.createAdminEnseignant(payload).subscribe({
           next: (response) => {
+            if (response.password) {
+              alert(`Enseignant ajouté avec succès !\nMot de passe généré : ${response.password}\nVeuillez le noter.`);
+            }
             this.loadEnseignants();
-            this.triggerToast(`Enseignant ajouté. Mot de passe généré : ${response.password}`);
             this.closeModal();
           },
           error: () => {

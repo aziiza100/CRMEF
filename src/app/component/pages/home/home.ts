@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Actualites } from './composants/actualites/actualites';
 import { BanniereDynamique } from './composants/banniere-dynamique/banniere-dynamique';
@@ -33,15 +33,17 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    AOS.refresh();
-    new PureCounter();
+    setTimeout(() => {
+      AOS.refresh();
+      new PureCounter();
+    }, 100);
   }
 
-  getLatestActualites() {
+  latestActualites = computed(() => {
     const apiActualites = this.actualitesService.publishedActualites();
     if (apiActualites && apiActualites.length > 0) {
       // Get the latest 3 published actualites
-      return apiActualites.slice(0, 3).map(item => {
+      return apiActualites.slice(0, 3).map((item: any) => {
         const titreParts = item.titre ? item.titre.split(' ||| ') : ['', ''];
         const descParts = item.description ? item.description.split(' ||| ') : ['', ''];
         
@@ -89,5 +91,5 @@ export class Home implements OnInit, AfterViewInit {
         image: 'assets/images/actualites/actualite3.jpg'
       }
     ];
-  }
+  });
 }

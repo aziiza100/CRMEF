@@ -1,109 +1,136 @@
 <div class="admin-dashboard-page">
   
-  <div class="page-header">
-    <h2 class="page-title">Tableau de bord Administrateur</h2>
-    <p class="page-desc">Vue d'ensemble de l'établissement</p>
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Chargement des statistiques...</p>
   </div>
 
-  <div class="welcome-banner">
-    <div class="banner-content">
-      <h2>Bienvenue dans le panneau d'administration.</h2>
-      <p>Gérez l'ensemble de l'établissement depuis ce panneau de contrôle unifié.</p>
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error">
+    <i class="bi bi-exclamation-triangle"></i>
+    <p>{{ error }}</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading && !error">
+    <div class="page-header">
+      <h2 class="page-title">Tableau de bord Administrateur</h2>
+      <p class="page-desc">Vue d'ensemble de l'établissement</p>
     </div>
-    <div class="banner-illustration">
-      <i class="bi bi-shield-check"></i>
-    </div>
-  </div>
 
-  <!-- Key Metrics -->
-  <div class="section-title">
-    <h3>Statistiques globales</h3>
-  </div>
-
-  <div class="metrics-grid">
-    <div class="metric-card bg-blue">
-      <div class="metric-icon"><i class="bi bi-mortarboard-fill"></i></div>
-      <div class="metric-info">
-        <h3>{{ stats.etudiants }}</h3>
-        <p>Total étudiants</p>
+    <div class="welcome-banner">
+      <div class="banner-content">
+        <h2>Bienvenue dans le panneau d'administration.</h2>
+        <p>Gérez l'ensemble de l'établissement depuis ce panneau de contrôle unifié.</p>
+      </div>
+      <div class="banner-illustration">
+        <i class="bi bi-shield-check"></i>
       </div>
     </div>
 
-    <div class="metric-card bg-emerald">
-      <div class="metric-icon"><i class="bi bi-person-video3"></i></div>
-      <div class="metric-info">
-        <h3>{{ stats.profs }}</h3>
-        <p>Total Enseignants</p>
-      </div>
+    <!-- Key Metrics -->
+    <div class="section-title">
+      <h3>Statistiques globales</h3>
     </div>
 
-    <div class="metric-card bg-purple">
-      <div class="metric-icon"><i class="bi bi-diagram-3-fill"></i></div>
-      <div class="metric-info">
-        <h3>{{ stats.classes }}</h3>
-        <p>Total Classes actives</p>
+    <div class="metrics-grid">
+      <div class="metric-card bg-blue">
+        <div class="metric-icon"><i class="bi bi-mortarboard-fill"></i></div>
+        <div class="metric-info">
+          <h3>{{ stats.etudiants }}</h3>
+          <p>Total étudiants</p>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Lower Section -->
-  <div class="dashboard-grid">
-    
-    <!-- Quick Actions -->
-    <div class="card">
-      <div class="card-header">
-        <h3><i class="bi bi-lightning-charge-fill"></i> Actions Rapides</h3>
+      <div class="metric-card bg-emerald">
+        <div class="metric-icon"><i class="bi bi-person-video3"></i></div>
+        <div class="metric-info">
+          <h3>{{ stats.profs }}</h3>
+          <p>Total Enseignants</p>
+        </div>
       </div>
-      <div class="card-body">
-        <div class="quick-actions-grid">
-          <button class="action-btn">
-            <div class="icon-wrapper bg-blue-light"><i class="bi bi-person-plus-fill"></i></div>
-            <span>Ajouter un étudiant</span>
-          </button>
-          
-          <button class="action-btn">
-            <div class="icon-wrapper bg-emerald-light"><i class="bi bi-person-badge-fill"></i></div>
-            <span>Ajouter un enseignant</span>
-          </button>
 
-          <button class="action-btn">
-            <div class="icon-wrapper bg-purple-light"><i class="bi bi-folder-plus"></i></div>
-            <span>Créer une classe</span>
-          </button>
+      <div class="metric-card bg-purple">
+        <div class="metric-icon"><i class="bi bi-diagram-3-fill"></i></div>
+        <div class="metric-info">
+          <h3>{{ stats.classes }}</h3>
+          <p>Total Classes actives</p>
+        </div>
+      </div>
 
-          <a routerLink="/espace-admin/filieres" class="action-btn">
-            <div class="icon-wrapper bg-emerald-light"><i class="bi bi-bookmarks-fill"></i></div>
-            <span>Gérer les filières</span>
-          </a>
+      <div class="metric-card bg-cyan" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+        <div class="metric-icon"><i class="bi bi-bookmarks-fill"></i></div>
+        <div class="metric-info">
+          <h3>{{ stats.filieres }}</h3>
+          <p>Total Filières</p>
         </div>
       </div>
     </div>
 
-    <!-- Recent Activity -->
-    <div class="card">
-      <div class="card-header">
-        <h3><i class="bi bi-activity"></i> Activité Récente</h3>
-      </div>
-      <div class="card-body p-0">
-        <ul class="activity-list">
-          <li *ngFor="let act of recentActivities">
-            <div class="act-icon" 
-                 [class.bg-blue]="act.type === 'user'"
-                 [class.bg-purple]="act.type === 'class'"
-                 [class.bg-emerald]="act.type === 'doc'">
-              <i class="bi" 
-                 [ngClass]="{'bi-person': act.type === 'user', 'bi-diagram-3': act.type === 'class', 'bi-file-earmark': act.type === 'doc'}">
-              </i>
-            </div>
-            <div class="act-content">
-              <p>{{ act.message }}</p>
-              <span>{{ act.time }}</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <!-- Lower Section -->
+    <div class="dashboard-grid">
+      
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="bi bi-lightning-charge-fill"></i> Actions Rapides</h3>
+        </div>
+        <div class="card-body">
+          <div class="quick-actions-grid">
+            <button class="action-btn" routerLink="/espace-admin/users">
+              <div class="icon-wrapper bg-blue-light"><i class="bi bi-person-plus-fill"></i></div>
+              <span>Ajouter un étudiant</span>
+            </button>
+            
+            <button class="action-btn" routerLink="/espace-admin/users">
+              <div class="icon-wrapper bg-emerald-light"><i class="bi bi-person-badge-fill"></i></div>
+              <span>Ajouter un enseignant</span>
+            </button>
 
-  </div>
+            <button class="action-btn" routerLink="/espace-admin/classes">
+              <div class="icon-wrapper bg-purple-light"><i class="bi bi-folder-plus"></i></div>
+              <span>Gérer les classes</span>
+            </button>
+
+            <button class="action-btn" routerLink="/espace-admin/filieres">
+              <div class="icon-wrapper bg-emerald-light"><i class="bi bi-bookmarks-fill"></i></div>
+              <span>Gérer les filières</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="bi bi-activity"></i> Activité Récente</h3>
+        </div>
+        <div class="card-body p-0">
+          <ul class="activity-list">
+            <!-- Empty state -->
+            <li class="empty-activities" *ngIf="recentActivities.length === 0">
+              Aucune activité récente.
+            </li>
+            
+            <li class="activity-item" *ngFor="let act of recentActivities">
+              <div class="activity-icon" [ngClass]="act.type">
+                <i class="bi" [ngClass]="{
+                  'bi-person-plus': act.type === 'user',
+                  'bi-diagram-3': act.type === 'class',
+                  'bi-file-earmark-text': act.type === 'doc',
+                  'bi-bell': act.type !== 'user' && act.type !== 'class' && act.type !== 'doc'
+                }"></i>
+              </div>
+              <div class="activity-content">
+                <p class="activity-text">{{ act.message }}</p>
+                <span class="activity-time">{{ act.time }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
 
 </div>

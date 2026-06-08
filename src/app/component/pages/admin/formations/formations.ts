@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApiService, Formation, Filiere } from '../../../../core/services/api.service';
+import { SearchService } from '../../../../core/services/search.service';
 
 @Component({
   selector: 'app-admin-formations',
@@ -381,9 +382,12 @@ export class AdminFormationsComponent implements OnInit {
   formations: Formation[] = [];
   filieres: Filiere[] = [];
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private router: Router, private searchService: SearchService) {}
 
   ngOnInit(): void {
+    this.searchService.currentSearch$.subscribe((term: string) => {
+      this.searchTerm = term;
+    });
     this.loadFormations();
     this.loadFilieres();
   }

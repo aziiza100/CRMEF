@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, shareReplay } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface Actualite {
@@ -69,10 +69,17 @@ export interface AuthResponse {
 }
 
 export interface DashboardStats {
-  total_actualites: number;
-  total_formations: number;
-  total_contents: number;
-  last_update: string;
+  stats: {
+    etudiants: number;
+    profs: number;
+    classes: number;
+    filieres: number;
+  };
+  recentActivities: {
+    type: string;
+    message: string;
+    time: string;
+  }[];
 }
 
 @Injectable({
@@ -86,6 +93,17 @@ export class ApiService {
   // Auth state
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  // ============================================================
+  // CACHES (RxJS shareReplay)
+  // ============================================================
+  private dashboardCache$: Observable<DashboardStats> | null = null;
+  private actualitesCache$: Observable<ApiResponse<Actualite[]>> | null = null;
+  private filieresCache$: Observable<Filiere[]> | null = null;
+  private adminStudentsCache$: Observable<any[]> | null = null;
+  private adminClassesCache$: Observable<any[]> | null = null;
+  private formationsCache$: Observable<Formation[]> | null = null;
+  private adminEnseignantsCache$: Observable<any[]> | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -181,19 +199,31 @@ export class ApiService {
   // ============================================================
   // DASHBOARD
   // ============================================================
-  getDashboardStats(): Observable<ApiResponse<DashboardStats>> {
-    return this.http.get<ApiResponse<DashboardStats>>(`${this.baseUrl}/dashboard/stats`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+  getDashboardStats(): Observable<DashboardStats> {
+    if (!this.dashboardCache$) {
+      this.dashboardCache$ = this.http.get<DashboardStats>(`${this.baseUrl}/admin`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.dashboardCache$;
   }
 
   // ============================================================
   // ACTUALITÉS
   // ============================================================
   getActualites(): Observable<ApiResponse<Actualite[]>> {
-    return this.http.get<ApiResponse<Actualite[]>>(`${this.baseUrl}/actualites`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.actualitesCache$) {
+      this.actualitesCache$ = this.http.get<ApiResponse<Actualite[]>>(`${this.baseUrl}/actualites`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.actualitesCache$;
   }
 
   getActualiteById(id: number): Observable<ApiResponse<Actualite>> {
@@ -206,7 +236,10 @@ export class ApiService {
     const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
     return this.http.post<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.actualitesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateActualite(id: number, data: any): Observable<ApiResponse<Actualite>> {
@@ -221,22 +254,34 @@ export class ApiService {
     const headers = this.getHeaders();
     return this.http.put<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites/${id}`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.actualitesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteActualite(id: number): Observable<ApiResponse<null>> {
     return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/admin/actualites/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.actualitesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   // ============================================================
   // FILIÈRES
   // ============================================================
   getFilieres(): Observable<Filiere[]> {
-    return this.http.get<Filiere[]>(`${this.baseUrl}/admin/filieres`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.filieresCache$) {
+      this.filieresCache$ = this.http.get<Filiere[]>(`${this.baseUrl}/admin/filieres`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.filieresCache$;
   }
 
   getFiliere(id: number): Observable<Filiere> {
@@ -248,32 +293,50 @@ export class ApiService {
   createFiliere(data: Partial<Filiere> & { formation_ids?: number[] }): Observable<Filiere> {
     return this.http.post<Filiere>(`${this.baseUrl}/admin/filieres`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.filieresCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateFiliere(id: number, data: Partial<Filiere> & { formation_ids?: number[] }): Observable<Filiere> {
     return this.http.put<Filiere>(`${this.baseUrl}/admin/filieres/${id}`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.filieresCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteFiliere(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/filieres/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.filieresCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   getAdminStudents(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/admin/students`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.adminStudentsCache$) {
+      this.adminStudentsCache$ = this.http.get<any[]>(`${this.baseUrl}/admin/students`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.adminStudentsCache$;
   }
 
   createAdminStudent(data: any): Observable<any> {
     const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
     return this.http.post<any>(`${this.baseUrl}/admin/students`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminStudentsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateAdminStudent(id: number, data: any): Observable<any> {
@@ -288,37 +351,58 @@ export class ApiService {
     const headers = this.getHeaders();
     return this.http.put<any>(`${this.baseUrl}/admin/students/${id}`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminStudentsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteAdminStudent(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/students/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminStudentsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   getAdminClasses(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/admin/classes`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.adminClassesCache$) {
+      this.adminClassesCache$ = this.http.get<any[]>(`${this.baseUrl}/admin/classes`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.adminClassesCache$;
   }
 
   createAdminClass(data: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/admin/classes`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminClassesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateAdminClass(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/admin/classes/${id}`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminClassesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteAdminClass(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/classes/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminClassesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
 
@@ -326,9 +410,15 @@ export class ApiService {
   // FORMATIONS
   // ============================================================
   getFormations(): Observable<Formation[]> {
-    return this.http.get<Formation[]>(`${this.baseUrl}/admin/formations`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.formationsCache$) {
+      this.formationsCache$ = this.http.get<Formation[]>(`${this.baseUrl}/admin/formations`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.formationsCache$;
   }
 
   getFormationByType(type: string): Observable<Formation> {
@@ -340,19 +430,28 @@ export class ApiService {
   createFormation(data: Partial<Formation> & { filiere_ids?: number[] }): Observable<Formation> {
     return this.http.post<Formation>(`${this.baseUrl}/admin/formations`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.formationsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateFormation(id: number, data: Partial<Formation> & { filiere_ids?: number[] }): Observable<Formation> {
     return this.http.put<Formation>(`${this.baseUrl}/admin/formations/${id}`, data, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.formationsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteFormation(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/formations/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.formationsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   // ============================================================
@@ -381,16 +480,25 @@ export class ApiService {
   }
 
   getAdminEnseignants(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/admin/enseignants`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    if (!this.adminEnseignantsCache$) {
+      this.adminEnseignantsCache$ = this.http.get<any[]>(`${this.baseUrl}/admin/enseignants`, {
+        headers: this.getHeaders()
+      }).pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+    }
+    return this.adminEnseignantsCache$;
   }
 
   createAdminEnseignant(data: any): Observable<any> {
     const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
     return this.http.post<any>(`${this.baseUrl}/admin/enseignants`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminEnseignantsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   updateAdminEnseignant(id: number, data: any): Observable<any> {
@@ -405,13 +513,19 @@ export class ApiService {
     const headers = this.getHeaders();
     return this.http.put<any>(`${this.baseUrl}/admin/enseignants/${id}`, data, {
       headers
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminEnseignantsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   deleteAdminEnseignant(id: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/admin/enseignants/${id}`, {
       headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
+    }).pipe(
+      tap(() => { this.adminEnseignantsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
   }
 
   // ============================================================

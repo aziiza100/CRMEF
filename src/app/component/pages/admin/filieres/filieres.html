@@ -80,24 +80,24 @@
           <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" placeholder="Description de la filière..."></textarea>
         </div>
 
-        <div class="form-group" *ngIf="editingId">
-          <label>Formations associées</label>
-          <div *ngIf="formations.length; else noFormationOptions">
+        <div class="form-group mt-3">
+          <label class="fw-bold mb-2">Formations associées</label>
+          <div *ngIf="formations.length; else noFormationOptions" class="checkbox-grid">
             <div class="form-check" *ngFor="let formation of formations">
               <input
-                class="form-check-input"
+                class="form-check-input custom-checkbox"
                 type="checkbox"
                 [checked]="isFormationSelected(formation.id!)"
                 (change)="toggleFormationSelection(formation.id!)"
                 [id]="'formation-' + formation.id"
               />
-              <label class="form-check-label" [for]="'formation-' + formation.id">
+              <label class="form-check-label ms-2" [for]="'formation-' + formation.id">
                 {{ formation.type }}<span *ngIf="formation.description || formation.description_fr"> - {{ formation.description || formation.description_fr }}</span>
               </label>
             </div>
           </div>
           <ng-template #noFormationOptions>
-            <p class="text-muted">Aucune formation disponible pour lier à cette filière.</p>
+            <p class="text-muted fst-italic">Aucune formation disponible pour lier à cette filière.</p>
           </ng-template>
         </div>
       </div>

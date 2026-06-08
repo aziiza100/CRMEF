@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActualitesService } from '../../../core/services/actualites.service';
+import AOS from 'aos';
 
 interface Announcement {
   id: number;
@@ -46,8 +47,16 @@ interface Seminar {
   templateUrl: './actualites.html',
   styleUrls: ['./actualites.css']
 })
-export class ActualitesComponent implements OnInit {
-  activeTab: string = 'all';
+export class ActualitesComponent implements OnInit, AfterViewInit {
+  activeTabSignal = signal('all');
+
+  get activeTab() {
+    return this.activeTabSignal();
+  }
+
+  set activeTab(val: string) {
+    this.activeTabSignal.set(val);
+  }
   
   announcements: Announcement[] = [
     {
@@ -194,27 +203,32 @@ export class ActualitesComponent implements OnInit {
   ngOnInit(): void {
     this.actualitesService.loadActualites();
     // Animations au chargement
-    if (typeof AOS !== 'undefined') {
-      AOS.init();
-    }
+    AOS.init({ once: true });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      AOS.refresh();
+    }, 100);
   }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  getFilteredItems(): any[] {
+  filteredItems = computed(() => {
     // If we have actualites loaded from the service/API, use them
     const apiActualites = this.actualitesService.publishedActualites();
     if (apiActualites && apiActualites.length > 0) {
       return apiActualites.filter(item => {
         // Map database "type" to UI tabs
-        if (this.activeTab === 'all') return true;
-        if (this.activeTab === 'announcements') return item.type === 'annonces';
-        if (this.activeTab === 'events') return item.type === 'evenements';
-        if (this.activeTab === 'seminars') return item.type === 'actualites';
+        const tab = this.activeTabSignal();
+        if (tab === 'all') return true;
+        if (tab === 'announcements') return item.type === 'annonces';
+        if (tab === 'events') return item.type === 'evenements';
+        if (tab === 'seminars') return item.type === 'actualites';
         return true;
-      }).map(item => {
+      }).map((item: any) => {
         const titreParts = item.titre ? item.titre.split(' ||| ') : ['', ''];
         const descParts = item.description ? item.description.split(' ||| ') : ['', ''];
         
@@ -236,17 +250,18 @@ export class ActualitesComponent implements OnInit {
     }
 
     // Fallback to local mock data
-    if (this.activeTab === 'all') {
+    const tab = this.activeTabSignal();
+    if (tab === 'all') {
       return [...this.announcements, ...this.events, ...this.seminars];
-    } else if (this.activeTab === 'announcements') {
+    } else if (tab === 'announcements') {
       return this.announcements;
-    } else if (this.activeTab === 'events') {
+    } else if (tab === 'events') {
       return this.events;
-    } else if (this.activeTab === 'seminars') {
+    } else if (tab === 'seminars') {
       return this.seminars;
     }
     return [];
-  }
+  });
 
   getIconClass(item: any): string {
     if ('speaker' in item) return 'icon-seminar';
@@ -267,4 +282,3 @@ export class ActualitesComponent implements OnInit {
   
 }
 
-declare var AOS: any;
