@@ -60,12 +60,16 @@ export class ProfilComponent implements OnInit {
   }
 
   sauvegarderProfil() {
-    const payload = {
+    const payload: any = {
       nom: this.profilInfo.nom,
       tele: this.profilInfo.tel,
       specialite: this.profilInfo.specialite,
       grade: this.profilInfo.grade,
     };
+
+    if (this.profilInfo.avatar && this.profilInfo.avatar.startsWith('data:image/')) {
+      payload.image = this.profilInfo.avatar;
+    }
 
     this.api.updateEnseignantProfile(payload).subscribe({
       next: () => {

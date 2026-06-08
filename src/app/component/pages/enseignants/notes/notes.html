@@ -5,16 +5,28 @@
   </div>
 
   <!-- Toast Notification -->
-  <div class="toast-notification success-toast" [class.show]="showSuccess">
-    <i class="bi bi-check-circle-fill"></i> {{ 'notes.successMsg' | translate }}
+  <div class="toast-notification success-toast" [class.show]="showSuccess" *ngIf="successMessage">
+    <i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}
   </div>
 
-  <!-- Grille des Classes (Master) -->
+  <!-- Error Alert -->
+  <div class="alert alert-danger border-0 rounded-4 shadow-sm mb-4 d-flex align-items-center" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+    <div>{{ errorMessage }}</div>
+  </div>
+
+  <!-- 1. Selection de la Classe (Master Grid) -->
+  <div class="section-header mb-3 mt-4">
+    <h3 class="section-title">
+      <span class="step-badge">1</span>
+      {{ 'notes.selectClasse' | translate }}
+    </h3>
+  </div>
   <div class="classes-grid mb-4">
     <div class="class-card" 
          *ngFor="let classe of classes" 
          [class.active]="selectedClasseId === classe.id"
-         (click)="selectClasse(classe)">
+         (click)="selectedClasseId = classe.id; onClasseChange()">
       <div class="class-icon">
         <i class="bi bi-people-fill"></i>
       </div>
@@ -25,70 +37,122 @@
     </div>
   </div>
 
-  <!-- État vide si non sélectionné -->
-  <div class="empty-selection" *ngIf="!canShowTable">
-    <i class="bi bi-pencil-square"></i>
-    <p>{{ 'notes.emptySelection' | translate }}</p>
+  <!-- 2. Selection du Module (Only if Classe is Selected) -->
+  <div *ngIf="selectedClasseId">
+    <div class="section-header mb-3 mt-4 animate-fade-in">
+      <h3 class="section-title">
+        <span class="step-badge">2</span>
+        {{ 'notes.selectModule' | translate }}
+      </h3>
+    </div>
+    <div class="modules-grid mb-4 animate-fade-in">
+      <div class="module-card" 
+           *ngFor="let module of availableModules" 
+           [class.active]="selectedModuleId === module.id"
+           (click)="selectedModuleId = module.id; onModuleChange()">
+        <div class="module-icon">
+          <i class="bi bi-journal-code"></i>
+        </div>
+        <div class="module-info">
+          <h3>{{ module.nom }}</h3>
+          <p class="hours">{{ module.masse_horraire }} {{ 'notes.hours' | translate }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Tableau de saisie -->
-  <div class="card notes-card" *ngIf="canShowTable && currentClasse">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table mb-0">
-          <thead>
-            <tr>
-              <th width="30%">{{ 'notes.table.name' | translate }}</th>
-              <th width="15%">{{ 'notes.table.cin' | translate }}</th>
-              <th width="20%">{{ 'notes.table.noteExam' | translate }}</th>
-              <th width="20%">{{ 'notes.table.noteActivite' | translate }}</th>
-              <th width="15%">{{ 'notes.table.moyenGeneral' | translate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let student of currentClasse.etudiants">
-              <td>
-                <div class="student-profile">
-                  <img [src]="student.avatar" alt="Avatar" class="student-avatar">
-                  <span class="student-name">{{ student.nom }} {{ student.prenom }}</span>
-                </div>
-              </td>
-              <td><span class="cin-badge">{{ student.cin }}</span></td>
-              <td>
-                <div class="note-input-wrapper">
-                  <input type="number" 
-                         class="form-control note-input" 
-                         [(ngModel)]="student.noteExam" 
-                         (ngModelChange)="validateAndCalculate(student, 'noteExam')"
-                         min="0" max="20" step="0.25"
-                         placeholder="--">
-                </div>
-              </td>
-              <td>
-                <div class="note-input-wrapper">
-                  <input type="number" 
-                         class="form-control note-input" 
-                         [(ngModel)]="student.noteActivite" 
-                         (ngModelChange)="validateAndCalculate(student, 'noteActivite')"
-                         min="0" max="20" step="0.25"
-                         placeholder="--">
-                </div>
-              </td>
-              <td>
-                <div class="moyen-badge" [ngClass]="{'moyen-valid': student.moyenGeneral !== null && student.moyenGeneral >= 10, 'moyen-fail': student.moyenGeneral !== null && student.moyenGeneral < 10}">
-                  {{ student.moyenGeneral !== null ? (student.moyenGeneral | number:'1.2-2') : '--' }}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Empty Selection State -->
+  <div class="empty-selection rounded-4 p-5 text-center mt-4 border border-dashed" *ngIf="!selectedClasseId || !selectedModuleId">
+    <div class="empty-icon-circle mb-3">
+      <i class="bi bi-journal-arrow-up text-primary fs-1"></i>
+    </div>
+    <p class="text-muted fw-semibold mb-0">{{ 'notes.emptySelection' | translate }}</p>
+  </div>
+
+  <!-- 3. Note Management Card (Only if both selected) -->
+  <div class="card notes-card border-0 shadow-sm rounded-4 mt-4 overflow-hidden animate-fade-in" *ngIf="selectedClasseId && selectedModuleId">
+    <div class="card-header bg-white py-4 px-4 border-bottom d-flex align-items-center justify-content-between">
+      <h3 class="card-title m-0 fs-5 fw-bold text-dark d-flex align-items-center">
+        <i class="bi bi-file-earmark-pdf-fill text-danger me-2 fs-4"></i>
+        {{ 'notes.noteStatus' | translate }}
+      </h3>
+      <span class="badge bg-light text-primary border border-primary-subtle py-2 px-3 rounded-pill fw-semibold" *ngIf="currentClasse">
+        {{ currentClasse.nom }}
+      </span>
+    </div>
+    
+    <div class="card-body p-4 bg-light-subtle">
+      
+      <!-- Loading indicator -->
+      <div class="text-center py-5" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted fw-semibold">{{ 'notes.loading' | translate }}</p>
+      </div>
+
+      <div *ngIf="!isLoading">
+        <!-- Note Already Exists -->
+        <div class="note-status-box success-box d-flex flex-column flex-md-row align-items-md-center justify-content-between p-4 bg-white border border-success-subtle rounded-4 shadow-sm" *ngIf="currentNote">
+          <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="pdf-file-icon-circle me-3 bg-danger-subtle p-3 rounded-3">
+              <i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i>
+            </div>
+            <div class="pdf-file-details">
+              <h4 class="m-0 fs-6 fw-bold text-dark text-break">{{ currentNote.nom_fichier }}</h4>
+              <p class="m-0 text-muted small mt-1">
+                {{ 'notes.uploadedOn' | translate }} {{ currentNote.updated_at | date:'dd/MM/yyyy HH:mm' }}
+              </p>
+            </div>
+          </div>
+          
+          <div class="action-buttons d-flex gap-2">
+            <button class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="downloadNote()">
+              <i class="bi bi-download"></i> {{ 'notes.download' | translate }}
+            </button>
+            <button class="btn btn-danger rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="deleteNote()">
+              <i class="bi bi-trash-fill"></i> {{ 'notes.delete' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Note Does Not Exist (Show Upload UI) -->
+        <div class="upload-area rounded-4 border-2 border-dashed bg-white p-5 text-center shadow-sm" *ngIf="!currentNote">
+          
+          <!-- Dropzone input -->
+          <div class="upload-dropzone" *ngIf="!selectedFile">
+            <input type="file" id="fileInput" class="d-none" accept="application/pdf" (change)="onFileSelected($event)">
+            <label for="fileInput" class="upload-label cursor-pointer d-flex flex-column align-items-center">
+              <div class="upload-icon-circle mb-3 bg-primary-subtle p-3 rounded-circle text-primary">
+                <i class="bi bi-cloud-arrow-up-fill fs-2"></i>
+              </div>
+              <h4 class="fs-6 fw-bold text-dark">{{ 'notes.uploadTitle' | translate }}</h4>
+              <p class="text-muted small mb-0">{{ 'notes.uploadSubtitle' | translate }}</p>
+            </label>
+          </div>
+
+          <!-- File Selected, Ready to Upload -->
+          <div class="selected-file-box p-3 bg-light rounded-4 border border-light-subtle d-flex align-items-center justify-content-between animate-fade-in" *ngIf="selectedFile">
+            <div class="d-flex align-items-center text-truncate">
+              <div class="bg-danger-subtle p-2 rounded-3 text-danger me-3">
+                <i class="bi bi-file-earmark-pdf-fill fs-3"></i>
+              </div>
+              <span class="fw-bold text-dark text-truncate max-w-350">{{ nomFichier }}</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="uploadNote()" [disabled]="isUploading">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="isUploading"></span>
+                <i class="bi bi-send-fill" *ngIf="!isUploading"></i> {{ 'notes.publish' | translate }}
+              </button>
+              <button class="btn btn-outline-secondary rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" (click)="selectedFile = null; nomFichier = ''" [disabled]="isUploading">
+                <i class="bi bi-x fs-5"></i>
+              </button>
+            </div>
+          </div>
+          
+        </div>
       </div>
       
-      <div class="card-footer text-end p-4 bg-white border-top">
-        <button class="btn-save" (click)="saveNotes()">
-          <i class="bi bi-save2-fill"></i> {{ 'notes.btnSave' | translate }}
-        </button>
-      </div>
     </div>
   </div>
 

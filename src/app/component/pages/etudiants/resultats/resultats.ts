@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
-interface ResultatModule {
-  matiere: string;
-  noteActivite: number;
-  noteExam: number;
-  moyenne: number;
-  isValide: boolean;
+interface MappedModule {
+  id: number;
+  nom: string;
+  masse_horraire: number;
+  enseignant: {
+    id: number;
+    nom: string;
+    prenom: string;
+  } | null;
+  note: any | null;
+  isAvailable: boolean;
 }
 
 @Component({
@@ -17,22 +23,90 @@ interface ResultatModule {
   templateUrl: './resultats.html',
   styleUrls: ['./resultats.css']
 })
-export class EtudiantResultatsComponent {
-  
-  // Statistiques globales
-  moyenneGenerale = 14.25;
-  modulesValides = 5;
-  totalModules = 6;
-  rangClasse = '4ème';
+export class EtudiantResultatsComponent implements OnInit {
+  studentProfile: any = null;
+  classNotes: any[] = [];
+  mappedModules: MappedModule[] = [];
+  isLoading = false;
+  errorMessage = '';
 
-  // Détail des notes par module
-  resultats: ResultatModule[] = [
-    { matiere: 'Didactique des SVT', noteActivite: 15.5, noteExam: 14.0, moyenne: 14.75, isValide: true },
-    { matiere: 'Sciences de l\'Éducation', noteActivite: 13.0, noteExam: 16.5, moyenne: 14.75, isValide: true },
-    { matiere: 'Législation Scolaire', noteActivite: 16.0, noteExam: 15.0, moyenne: 15.50, isValide: true },
-    { matiere: 'TICE', noteActivite: 18.0, noteExam: 17.5, moyenne: 17.75, isValide: true },
-    { matiere: 'Planification', noteActivite: 12.0, noteExam: 14.0, moyenne: 13.00, isValide: true },
-    { matiere: 'Recherche Action', noteActivite: 11.0, noteExam: 8.5, moyenne: 9.75, isValide: false }
-  ];
+  constructor(private apiService: ApiService) {}
 
+  ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    this.apiService.getEtudiantProfile().subscribe({
+      next: (profile) => {
+        this.studentProfile = profile;
+        
+        // Fetch published notes for this student's class
+        this.apiService.getStudentNotes().subscribe({
+          next: (notes) => {
+            this.classNotes = notes;
+            this.mapModulesAndNotes();
+            this.isLoading = false;
+          },
+          error: (err) => {
+            this.errorMessage = err.message || 'Erreur lors du chargement des notes.';
+            this.isLoading = false;
+          }
+        });
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Erreur lors du chargement de votre profil.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  mapModulesAndNotes() {
+    const modules = this.studentProfile?.classe?.modules || [];
+    this.mappedModules = modules.map((module: any) => {
+      const note = this.classNotes.find(n => n.module_id === module.id);
+      return {
+        id: module.id,
+        nom: module.nom,
+        masse_horraire: module.masse_horraire,
+        enseignant: module.enseignant,
+        note: note || null,
+        isAvailable: !!note
+      };
+    });
+  }
+
+  get totalModules(): number {
+    return this.mappedModules.length;
+  }
+
+  get publishedNotesCount(): number {
+    return this.mappedModules.filter(m => m.isAvailable).length;
+  }
+
+  downloadNote(module: MappedModule) {
+    if (!module.isAvailable || !module.note) return;
+    
+    const classeId = this.studentProfile?.classe?.id;
+    if (!classeId) return;
+
+    this.apiService.downloadNoteFile(classeId, module.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = module.note.nom_fichier || `${module.nom}_Note.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du téléchargement de la note.';
+      }
+    });
+  }
 }

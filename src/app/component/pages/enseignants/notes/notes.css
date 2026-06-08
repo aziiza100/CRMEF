@@ -12,15 +12,16 @@
 }
 
 .page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #333;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
   margin: 0 0 5px 0;
+  letter-spacing: -0.5px;
 }
 
 .page-desc {
   font-size: 14px;
-  color: #6c757d;
+  color: #64748b;
   margin: 0;
 }
 
@@ -29,19 +30,19 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #198754;
+  background: #10b981;
   color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
-  box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
   transform: translateY(-100px);
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1050;
 }
 
 [dir="rtl"] .toast-notification {
@@ -54,67 +55,106 @@
   opacity: 1;
 }
 
-/* Grille des Cartes (Classes) */
-.classes-grid {
+/* Section Header & Step Badge */
+.section-header {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: #005E76;
+  color: white;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+[dir="rtl"] .step-badge {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/* Grille des Cartes (Classes & Modules) */
+.classes-grid, .modules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
 }
 
-.class-card {
+.class-card, .module-card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.015);
   border: 2px solid transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.class-card:hover {
+.class-card:hover, .module-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.04);
   border-color: rgba(0, 94, 118, 0.2);
 }
 
-.class-card.active {
+.class-card.active, .module-card.active {
   border-color: #005E76;
   background: #f0f7f9;
 }
 
-.class-icon {
-  width: 50px;
-  height: 50px;
+.class-icon, .module-icon {
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
-  background: rgba(0, 94, 118, 0.1);
+  background: rgba(0, 94, 118, 0.08);
   color: #005E76;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 22px;
   flex-shrink: 0;
+  transition: all 0.25s ease;
 }
 
-.class-card.active .class-icon {
+.class-card.active .class-icon, .module-card.active .module-icon {
   background: #005E76;
   color: #fff;
 }
 
-.class-info {
+.class-info, .module-info {
   flex: 1;
+  min-width: 0;
 }
 
-.class-info h3 {
+.class-info h3, .module-info h3 {
   margin: 0 0 3px 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #1e293b;
+  text-truncate: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.class-info .level {
+.class-info .level, .module-info .hours {
   font-size: 12px;
   color: #64748b;
   margin: 0;
@@ -122,188 +162,108 @@
 
 /* Empty Selection */
 .empty-selection {
-  text-align: center;
-  padding: 80px 20px;
-  background: rgba(255,255,255,0.5);
-  border-radius: 12px;
-  border: 2px dashed #cbd5e1;
-  color: #94a3b8;
-}
-
-.empty-selection i {
-  font-size: 45px;
-  margin-bottom: 15px;
-  display: block;
-}
-
-.empty-selection p {
-  font-size: 15px;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Notes Table */
-.notes-card {
-  animation: fadeIn 0.4s ease-out;
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  margin: 0;
-  border-collapse: collapse;
-}
-
-.table th {
-  padding: 15px 25px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-  font-weight: 600;
-  border-bottom: 1px solid #e2e8f0;
-  background: #f8fafc;
-}
-
-[dir="rtl"] .table th {
-  text-align: right;
-}
-[dir="ltr"] .table th {
-  text-align: left;
-}
-
-.table td {
-  padding: 12px 25px;
-  vertical-align: middle;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.table tbody tr:hover {
-  background: #fcfcfc;
-}
-
-.student-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.student-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.student-name {
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 14px;
-}
-
-.cin-badge {
-  background: #f1f5f9;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-family: monospace;
-  font-size: 13px;
+  background: #fff;
+  border: 2px dashed #e2e8f0;
   color: #64748b;
 }
 
-.note-input-wrapper {
-  max-width: 120px;
-}
-
-.note-input {
-  font-weight: 700;
+.empty-icon-circle {
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 94, 118, 0.05);
   color: #005E76;
-  text-align: center;
-  padding: 8px 10px;
-}
-
-/* Masquer les flèches d'input number */
-.note-input::-webkit-outer-spin-button,
-.note-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.note-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.moyen-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 14px;
-  background: #f1f5f9;
-  color: #64748b;
-  min-width: 60px;
-  text-align: center;
-}
-
-.moyen-valid {
-  background: #ecfdf5;
-  color: #10b981;
-}
-
-.moyen-fail {
-  background: #fef2f2;
-  color: #ef4444;
-}
-
-/* Save Button */
-.btn-save {
-  background: #005E76;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+}
+
+/* Notes Card styling */
+.notes-card {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.035) !important;
+}
+
+/* Note status box styling */
+.note-status-box {
+  border: 1px solid #d1fae5;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.pdf-file-icon-circle {
+  transition: transform 0.25s ease;
+}
+
+.note-status-box:hover .pdf-file-icon-circle {
+  transform: scale(1.05);
+}
+
+.pdf-file-details h4 {
+  color: #1e293b;
+  font-size: 15px;
+}
+
+/* Drag and Drop area */
+.upload-area {
+  border-color: #cbd5e1 !important;
+  background-color: #f8fafc !important;
+  transition: all 0.25s ease;
+}
+
+.upload-area:hover {
+  border-color: #005E76 !important;
+  background-color: #f0f7f9 !important;
+}
+
+.upload-icon-circle {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 94, 118, 0.08);
+  color: #005E76;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+.upload-area:hover .upload-icon-circle {
+  transform: translateY(-5px);
+}
+
+.cursor-pointer {
   cursor: pointer;
-  transition: all 0.3s;
 }
 
-.btn-save:hover {
-  background: #004b5e;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 94, 118, 0.2);
+.max-w-250 {
+  max-width: 250px;
 }
 
-/* Bootstrap grid utils for forms */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -10px;
-  margin-left: -10px;
+.max-w-350 {
+  max-width: 350px;
 }
 
-[dir="rtl"] .row {
-  margin-right: -10px;
-  margin-left: -10px;
+.selected-file-box {
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
 }
 
-.col-md-5 {
-  flex: 0 0 auto;
-  width: 41.66666667%;
-  padding-right: 10px;
-  padding-left: 10px;
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 @media (max-width: 768px) {
-  .col-md-5 {
-    width: 100%;
+  .classes-grid, .modules-grid {
+    grid-template-columns: 1fr;
   }
-}
-
-.align-items-end {
-  align-items: flex-end;
+  .note-status-box {
+    text-align: center;
+  }
+  .note-status-box .action-buttons {
+    width: 100%;
+    justify-content: center;
+    margin-top: 15px;
+  }
 }

@@ -898,8 +898,8 @@
     }
   },
   "notes": {
-    "pageTitle": "إدخال النقط",
-    "pageDesc": "تسجيل وإدارة نقط طلابك.",
+    "pageTitle": "تدبير النقط",
+    "pageDesc": "قم بإيداع، الاطلاع، وحذف بيانات النقط بصيغة PDF لكل قسم ومجزوءة.",
     "selectClassPh": "اختر القسم",
     "btnSave": "حفظ النقط",
     "successMsg": "تم حفظ النقط بنجاح!",
@@ -910,7 +910,18 @@
       "noteActivite": "نقطة الأنشطة",
       "moyenGeneral": "المعدل العام"
     },
-    "emptySelection": "يرجى تحديد قسم لبدء إدخال النقط."
+    "emptySelection": "يرجى اختيار القسم والمجزوءة لعرض أو نشر بيان النقط.",
+    "selectClasse": "اختر القسم",
+    "selectModule": "اختر المجزوءة",
+    "hours": "ساعة",
+    "noteStatus": "حالة بيان النقط (PDF)",
+    "loading": "جاري التحميل...",
+    "uploadedOn": "تم النشر في",
+    "download": "تحميل PDF",
+    "delete": "حذف",
+    "uploadTitle": "اسحب وأسقط بيان النقط بصيغة PDF هنا",
+    "uploadSubtitle": "أو انقر لتصفح ملفاتك (الحد الأقصى 10 ميجابايت)",
+    "publish": "نشر بيان النقط"
   },
   "telechargerCours": {
     "pageTitle": "مكتبة الدروس",

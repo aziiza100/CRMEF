@@ -880,8 +880,8 @@
     }
   },
   "notes": {
-    "pageTitle": "Saisie des Notes",
-    "pageDesc": "Enregistrez et gérez les notes de vos étudiants.",
+    "pageTitle": "Gérer les Notes",
+    "pageDesc": "Déposez, consultez et supprimez les fiches de notes au format PDF pour chaque classe et module.",
     "selectClassPh": "Sélectionner une classe",
     "btnSave": "Enregistrer les notes",
     "successMsg": "Les notes ont été enregistrées avec succès !",
@@ -892,7 +892,18 @@
       "noteActivite": "Note Activité",
       "moyenGeneral": "Moyen Général"
     },
-    "emptySelection": "Veuillez sélectionner une classe pour commencer la saisie."
+    "emptySelection": "Veuillez sélectionner une classe et un module pour afficher ou publier la note.",
+    "selectClasse": "Sélectionner une classe",
+    "selectModule": "Sélectionner un module",
+    "hours": "Heures",
+    "noteStatus": "Statut de la note (PDF)",
+    "loading": "Chargement...",
+    "uploadedOn": "Déposé le",
+    "download": "Télécharger PDF",
+    "delete": "Supprimer",
+    "uploadTitle": "Glissez-déposez la fiche de notes PDF ici",
+    "uploadSubtitle": "ou cliquez pour parcourir (Max 10 Mo)",
+    "publish": "Publier la note"
   },
   "telechargerCours": {
     "pageTitle": "Bibliothèque des Cours",

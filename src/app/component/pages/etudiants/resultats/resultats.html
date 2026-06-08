@@ -4,66 +4,109 @@
     <p class="page-desc">{{ 'etudiant.resultats.pageDesc' | translate }}</p>
   </div>
 
-  <!-- Résumé (Cartes de statistiques) -->
-  <div class="stats-grid mb-4">
-    <div class="stat-card primary-gradient">
-      <div class="stat-icon"><i class="bi bi-award"></i></div>
-      <div class="stat-info">
-        <h3>{{ 'etudiant.resultats.moyenne' | translate }}</h3>
-        <div class="stat-value">{{ moyenneGenerale }} <span>/20</span></div>
-      </div>
-    </div>
-    
-    <div class="stat-card success-gradient">
-      <div class="stat-icon"><i class="bi bi-check2-all"></i></div>
-      <div class="stat-info">
-        <h3>{{ 'etudiant.resultats.modulesValid' | translate }}</h3>
-        <div class="stat-value">{{ modulesValides }} <span>/ {{ totalModules }}</span></div>
-      </div>
-    </div>
-
-    <div class="stat-card warning-gradient">
-      <div class="stat-icon"><i class="bi bi-trophy"></i></div>
-      <div class="stat-info">
-        <h3>{{ 'etudiant.resultats.rang' | translate }}</h3>
-        <div class="stat-value">{{ rangClasse }}</div>
-      </div>
-    </div>
+  <!-- Error Alert -->
+  <div class="alert alert-danger border-0 rounded-4 shadow-sm mb-4 d-flex align-items-center" *ngIf="errorMessage">
+    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+    <div>{{ errorMessage }}</div>
   </div>
 
-  <!-- Tableau détaillé des notes -->
-  <div class="resultats-card">
-    <div class="card-header">
-      <i class="bi bi-table"></i>
-      <h3>{{ 'etudiant.resultats.details' | translate }}</h3>
+  <!-- Loading indicator -->
+  <div class="text-center py-5" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-    
-    <div class="table-responsive">
-      <table class="table custom-table">
-        <thead>
-          <tr>
-            <th>{{ 'etudiant.resultats.matiere' | translate }}</th>
-            <th class="text-center">{{ 'etudiant.resultats.noteActivite' | translate }}</th>
-            <th class="text-center">{{ 'etudiant.resultats.noteExam' | translate }}</th>
-            <th class="text-center">{{ 'etudiant.resultats.moyModule' | translate }}</th>
-            <th class="text-center">{{ 'etudiant.resultats.statut' | translate }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let res of resultats" class="res-row">
-            <td class="fw-bold">{{ res.matiere }}</td>
-            <td class="text-center">{{ res.noteActivite | number:'1.2-2' }}</td>
-            <td class="text-center">{{ res.noteExam | number:'1.2-2' }}</td>
-            <td class="text-center fw-bold text-primary">{{ res.moyenne | number:'1.2-2' }}</td>
-            <td class="text-center">
-              <span class="status-badge" [ngClass]="res.isValide ? 'badge-success' : 'badge-danger'">
-                <i class="bi" [ngClass]="res.isValide ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
-                {{ (res.isValide ? 'etudiant.resultats.valide' : 'etudiant.resultats.nonValide') | translate }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <p class="mt-2 text-muted fw-semibold">Chargement des bulletins de notes...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="animate-fade-in">
+    <!-- Résumé (Cartes de statistiques) -->
+    <div class="stats-grid mb-4">
+      <div class="stat-card primary-gradient">
+        <div class="stat-icon"><i class="bi bi-mortarboard-fill"></i></div>
+        <div class="stat-info">
+          <h3>{{ 'etudiant.profil.classe' | translate }}</h3>
+          <div class="stat-value fs-5 mt-1 text-truncate" style="max-width: 200px;">{{ studentProfile?.classe?.nom || 'Non affecté' }}</div>
+          <p class="m-0 text-white-50 small mt-1 text-truncate" style="max-width: 200px;">{{ studentProfile?.classe?.filiere }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card success-gradient">
+        <div class="stat-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+        <div class="stat-info">
+          <h3>Bulletins publiés</h3>
+          <div class="stat-value">{{ publishedNotesCount }} <span>/ {{ totalModules }}</span></div>
+        </div>
+      </div>
+
+      <div class="stat-card warning-gradient">
+        <div class="stat-icon"><i class="bi bi-book-half"></i></div>
+        <div class="stat-info">
+          <h3>Total modules</h3>
+          <div class="stat-value">{{ totalModules }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau détaillé des notes / bulletins -->
+    <div class="resultats-card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+      <div class="card-header bg-white py-4 px-4 border-bottom d-flex align-items-center">
+        <i class="bi bi-journal-check text-primary fs-4 me-2"></i>
+        <h3 class="m-0 fs-5 fw-bold text-dark">{{ 'etudiant.resultats.details' | translate }}</h3>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="table custom-table mb-0">
+          <thead>
+            <tr>
+              <th width="40%">{{ 'etudiant.resultats.matiere' | translate }}</th>
+              <th width="30%">{{ 'etudiant.emploi.prof' | translate }}</th>
+              <th width="15%" class="text-center">Statut</th>
+              <th width="15%" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mod of mappedModules" class="res-row">
+              <td>
+                <div class="module-title-wrapper">
+                  <span class="fw-bold text-dark fs-6">{{ mod.nom }}</span>
+                  <span class="d-block text-muted small mt-1">
+                    {{ mod.masse_horraire }}h volume horaire
+                  </span>
+                </div>
+              </td>
+              <td>
+                <div class="teacher-info d-flex align-items-center" *ngIf="mod.enseignant">
+                  <div class="teacher-avatar-circle bg-light p-2 rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                    <i class="bi bi-person text-secondary"></i>
+                  </div>
+                  <span class="text-secondary small">{{ mod.enseignant.prenom }} {{ mod.enseignant.nom }}</span>
+                </div>
+                <span class="text-muted small" *ngIf="!mod.enseignant">Non assigné</span>
+              </td>
+              <td class="text-center">
+                <span class="status-badge" [ngClass]="mod.isAvailable ? 'badge-success' : 'badge-danger'">
+                  <i class="bi" [ngClass]="mod.isAvailable ? 'bi-check-circle-fill' : 'bi-dash-circle-fill'"></i>
+                  {{ mod.isAvailable ? 'Disponible' : 'Non disponible' }}
+                </span>
+              </td>
+              <td class="text-center">
+                <button class="btn btn-primary rounded-pill btn-sm px-3 d-inline-flex align-items-center gap-1" 
+                        *ngIf="mod.isAvailable" 
+                        (click)="downloadNote(mod)">
+                  <i class="bi bi-download"></i> Télécharger
+                </button>
+                <span class="text-muted small" *ngIf="!mod.isAvailable">--</span>
+              </td>
+            </tr>
+            <tr *ngIf="mappedModules.length === 0">
+              <td colspan="4" class="text-center py-5 text-muted fw-semibold">
+                <i class="bi bi-journal-x fs-1 d-block mb-3 text-secondary"></i>
+                Aucun module affecté à votre classe.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 

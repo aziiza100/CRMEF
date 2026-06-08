@@ -1,24 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
-interface StudentNote {
+interface Module {
   id: number;
   nom: string;
-  prenom: string;
-  cin: string;
-  avatar: string;
-  noteExam: number | null;
-  noteActivite: number | null;
-  moyenGeneral: number | null;
+  masse_horraire: number;
 }
 
 interface Classe {
-  id: string;
+  id: number;
   nom: string;
   niveau: string;
-  etudiants: StudentNote[];
+  modules: Module[];
 }
 
 @Component({
@@ -28,72 +24,162 @@ interface Classe {
   templateUrl: './notes.html',
   styleUrls: ['./notes.css']
 })
-export class NotesComponent {
+export class NotesComponent implements OnInit {
+  classes: Classe[] = [];
+  selectedClasseId: number | null = null;
+  selectedModuleId: number | null = null;
   
-  classes: Classe[] = [
-    {
-      id: 'SVT-1',
-      nom: 'SVT-1',
-      niveau: '1ère Année Qualifiant',
-      etudiants: [
-        { id: 1, nom: 'El Fassi', prenom: 'Youssef', cin: 'AE12345', avatar: 'https://ui-avatars.com/api/?name=Youssef+El+Fassi&background=random', noteExam: null, noteActivite: null, moyenGeneral: null },
-        { id: 2, nom: 'Bennani', prenom: 'Amina', cin: 'CD98765', avatar: 'https://ui-avatars.com/api/?name=Amina+Bennani&background=random', noteExam: null, noteActivite: null, moyenGeneral: null },
-        { id: 3, nom: 'Chraibi', prenom: 'Omar', cin: 'BK45678', avatar: 'https://ui-avatars.com/api/?name=Omar+Chraibi&background=random', noteExam: null, noteActivite: null, moyenGeneral: null }
-      ]
-    },
-    {
-      id: 'PC-1',
-      nom: 'PC-1',
-      niveau: '1ère Année Qualifiant',
-      etudiants: [
-        { id: 4, nom: 'Tahiri', prenom: 'Khadija', cin: 'X112233', avatar: 'https://ui-avatars.com/api/?name=Khadija+Tahiri&background=random', noteExam: null, noteActivite: null, moyenGeneral: null },
-        { id: 5, nom: 'Amrani', prenom: 'Hassan', cin: 'Z998877', avatar: 'https://ui-avatars.com/api/?name=Hassan+Amrani&background=random', noteExam: null, noteActivite: null, moyenGeneral: null }
-      ]
-    }
-  ];
+  currentNote: any = null;
+  selectedFile: File | null = null;
+  nomFichier: string = '';
 
-  selectedClasseId: string = '';
-  showSuccess = false;
+  isLoading: boolean = false;
+  isUploading: boolean = false;
+  showSuccess: boolean = false;
+  successMessage: string = '';
+  errorMessage: string = '';
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.loadEnseignantProfile();
+  }
+
+  loadEnseignantProfile() {
+    this.isLoading = true;
+    this.apiService.getEnseignantProfile().subscribe({
+      next: (profile) => {
+        this.classes = profile.classes || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Erreur lors du chargement des classes.';
+        this.isLoading = false;
+      }
+    });
+  }
 
   get currentClasse(): Classe | undefined {
     return this.classes.find(c => c.id === this.selectedClasseId);
   }
 
-  get canShowTable(): boolean {
-    return this.selectedClasseId !== '';
+  get availableModules(): Module[] {
+    return this.currentClasse ? this.currentClasse.modules : [];
   }
 
-  selectClasse(classe: Classe) {
-    this.selectedClasseId = classe.id;
+  onClasseChange() {
+    this.selectedModuleId = null;
+    this.currentNote = null;
+    this.selectedFile = null;
+    this.nomFichier = '';
+    this.errorMessage = '';
   }
 
-  saveNotes() {
-    if (this.currentClasse) {
-      // Simulation API Call
-      console.log('Sauvegarde des notes pour', this.currentClasse.nom);
-      console.log(this.currentClasse.etudiants);
-      
-      this.showSuccess = true;
-      setTimeout(() => {
-        this.showSuccess = false;
-      }, 3000);
-    }
-  }
-
-  validateAndCalculate(student: StudentNote, field: 'noteExam' | 'noteActivite') {
-    let value = student[field];
+  onModuleChange() {
+    this.currentNote = null;
+    this.selectedFile = null;
+    this.nomFichier = '';
+    this.errorMessage = '';
     
-    // Validation
-    if (value !== null) {
-      if (value < 0) student[field] = 0;
-      if (value > 20) student[field] = 20;
+    if (this.selectedClasseId && this.selectedModuleId) {
+      this.loadNoteStatus();
     }
+  }
 
-    // Calculation
-    if (student.noteExam !== null && student.noteActivite !== null) {
-      student.moyenGeneral = (student.noteExam + student.noteActivite) / 2;
-    } else {
-      student.moyenGeneral = null;
+  loadNoteStatus() {
+    if (!this.selectedClasseId || !this.selectedModuleId) return;
+    this.isLoading = true;
+    this.apiService.getNoteForClassAndModule(this.selectedClasseId, this.selectedModuleId).subscribe({
+      next: (note) => {
+        this.currentNote = note;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.currentNote = null;
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        this.errorMessage = 'Veuillez sélectionner un fichier PDF uniquement.';
+        this.selectedFile = null;
+        this.nomFichier = '';
+        return;
+      }
+      this.selectedFile = file;
+      this.nomFichier = file.name;
+      this.errorMessage = '';
     }
+  }
+
+  uploadNote() {
+    if (!this.selectedClasseId || !this.selectedModuleId || !this.selectedFile) return;
+
+    this.isUploading = true;
+    this.errorMessage = '';
+    this.apiService.uploadNote(this.selectedClasseId, this.selectedModuleId, this.selectedFile).subscribe({
+      next: (response) => {
+        this.isUploading = false;
+        this.showSuccess = true;
+        this.successMessage = response.message || 'Note enregistrée avec succès.';
+        this.selectedFile = null;
+        this.nomFichier = '';
+        this.loadNoteStatus();
+        setTimeout(() => {
+          this.showSuccess = false;
+        }, 3000);
+      },
+      error: (err) => {
+        this.isUploading = false;
+        this.errorMessage = err.message || 'Erreur lors de l\'enregistrement de la note.';
+      }
+    });
+  }
+
+  deleteNote() {
+    if (!this.selectedClasseId || !this.selectedModuleId) return;
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette note ?')) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.apiService.deleteNote(this.selectedClasseId, this.selectedModuleId).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.showSuccess = true;
+        this.successMessage = response.message || 'Note supprimée avec succès.';
+        this.currentNote = null;
+        setTimeout(() => {
+          this.showSuccess = false;
+        }, 3000);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.message || 'Erreur lors de la suppression de la note.';
+      }
+    });
+  }
+
+  downloadNote() {
+    if (!this.selectedClasseId || !this.selectedModuleId) return;
+    
+    this.apiService.downloadNoteFile(this.selectedClasseId, this.selectedModuleId).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = this.currentNote?.nom_fichier || 'note.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du téléchargement de la note.';
+      }
+    });
   }
 }

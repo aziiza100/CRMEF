@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
 interface Student {
   id: number;
@@ -13,7 +14,7 @@ interface Student {
 }
 
 interface Classe {
-  id: string;
+  id: any;
   nom: string;
   niveau: string;
   etudiants: Student[];
@@ -26,39 +27,33 @@ interface Classe {
   templateUrl: './classes.html',
   styleUrls: ['./classes.css']
 })
-export class ClassesComponent {
-  
-  // Simulation de la base de données des classes et étudiants
-  classes: Classe[] = [
-    {
-      id: 'SVT-1',
-      nom: 'SVT-1',
-      niveau: '1ère Année Qualifiant',
-      etudiants: [
-        { id: 1, nom: 'El Fassi', prenom: 'Youssef', cin: 'AE12345', email: 'y.elfassi@crmef.ma', avatar: 'https://ui-avatars.com/api/?name=Youssef+El+Fassi&background=random' },
-        { id: 2, nom: 'Bennani', prenom: 'Amina', cin: 'CD98765', email: 'a.bennani@crmef.ma', avatar: 'https://ui-avatars.com/api/?name=Amina+Bennani&background=random' },
-        { id: 3, nom: 'Chraibi', prenom: 'Omar', cin: 'BK45678', email: 'o.chraibi@crmef.ma', avatar: 'https://ui-avatars.com/api/?name=Omar+Chraibi&background=random' }
-      ]
-    },
-    {
-      id: 'PC-1',
-      nom: 'PC-1',
-      niveau: '1ère Année Qualifiant',
-      etudiants: [
-        { id: 4, nom: 'Tahiri', prenom: 'Khadija', cin: 'X112233', email: 'k.tahiri@crmef.ma', avatar: 'https://ui-avatars.com/api/?name=Khadija+Tahiri&background=random' },
-        { id: 5, nom: 'Amrani', prenom: 'Hassan', cin: 'Z998877', email: 'h.amrani@crmef.ma', avatar: 'https://ui-avatars.com/api/?name=Hassan+Amrani&background=random' }
-      ]
-    },
-    {
-      id: 'MATH-2',
-      nom: 'Math-2',
-      niveau: '2ème Année Qualifiant',
-      etudiants: [] // Classe vide pour tester
-    }
-  ];
-
+export class ClassesComponent implements OnInit {
+  classes: Classe[] = [];
   selectedClasse: Classe | null = null;
   searchTerm: string = '';
+  isLoading = false;
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.loadClasses();
+  }
+
+  loadClasses() {
+    this.isLoading = true;
+    this.api.getEnseignantProfile().subscribe({
+      next: (profile) => {
+        this.classes = profile.classes || [];
+        this.isLoading = false;
+        if (this.classes.length > 0) {
+          this.selectClasse(this.classes[0]);
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
+  }
 
   selectClasse(classe: Classe) {
     this.selectedClasse = classe;
@@ -76,8 +71,8 @@ export class ClassesComponent {
     return this.selectedClasse.etudiants.filter(student => 
       student.nom.toLowerCase().includes(term) ||
       student.prenom.toLowerCase().includes(term) ||
-      student.cin.toLowerCase().includes(term) ||
-      student.email.toLowerCase().includes(term)
+      (student.cin && student.cin.toLowerCase().includes(term)) ||
+      (student.email && student.email.toLowerCase().includes(term))
     );
   }
 

@@ -415,6 +415,54 @@ export class ApiService {
   }
 
   // ============================================================
+  // NOTES & STUDENT
+  // ============================================================
+  getNoteForClassAndModule(classeId: number, moduleId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/notes/${classeId}/${moduleId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  uploadNote(classeId: number, moduleId: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('classe_id', classeId.toString());
+    formData.append('module_id', moduleId.toString());
+    formData.append('fichier', file);
+    return this.http.post<any>(`${this.baseUrl}/enseignant/notes`, formData, {
+      headers: this.getFormHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteNote(classeId: number, moduleId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/enseignant/notes/${classeId}/${moduleId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  downloadNoteFile(classeId: number, moduleId: number): Observable<Blob> {
+    const token = localStorage.getItem(this.tokenKey);
+    const headers = new HttpHeaders({
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    });
+    return this.http.get(`${this.baseUrl}/notes/${classeId}/${moduleId}/download`, {
+      headers,
+      responseType: 'blob'
+    });
+  }
+
+  getStudentNotes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/etudiant/notes`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  getEtudiantProfile(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/etudiant`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
   // SITE CONTENT
   // ============================================================
   getAllContent(): Observable<ApiResponse<SiteContent[]>> {
