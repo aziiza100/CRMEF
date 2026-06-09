@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule , RouterOutlet, TranslateModule, Header, Navbar, Footer],
+  imports: [CommonModule , RouterOutlet, TranslateModule, Header, Footer],
   templateUrl: './layout.html', 
   styleUrl: './layout.css',
 })

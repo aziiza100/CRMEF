@@ -1,7 +1,7 @@
-<nav id="navmenu" class="navmenu">
+<nav id="navmenu" class="navmenu" [class.mobile-nav-active]="isMenuOpen">
   <ul>
-    <li >
-      <a routerLink="/home" routerLinkActive="active"  >{{ 'nav.home' | translate }}</a>
+    <li>
+      <a routerLink="/home" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.home' | translate }}</a>
       <!-- <ul class="dropdown-menu">
         <li><a routerLink="/home/presentation-crmef">presentation-crmef</a></li>
         <li><a routerLink="/home/message-directeur">message-directeur</a></li>
@@ -10,7 +10,7 @@
       </ul> -->
     </li> 
     <li class="dropdown"> 
-      <a routerLink="/presentation" routerLinkActive="active">{{ 'nav.presentation' | translate }}</a>
+      <a routerLink="/presentation" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.presentation' | translate }}</a>
      <!-- <ul class="dropdown-menu">
         <li><a routerLink="/presentation/Historique">Historique</a></li>
         <li><a routerLink="/presentation/Missions-objectifs">Missions et objectifs</a></li>
@@ -19,7 +19,7 @@
       </ul> -->
     </li>
   <li class="dropdown">
-  <a routerLink="/formations" routerLinkActive="active">{{ 'nav.formations' | translate }}</a>
+  <a routerLink="/formations" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.formations' | translate }}</a>
 
   <!-- <ul class="dropdown-menu"> -->
 
@@ -91,9 +91,9 @@
 
   </ul> -->
 </li>
-    <li><a routerLink="/actualites" routerLinkActive="active">{{ 'nav.actualites' | translate }}</a></li>
-    <li><a routerLink="/espace-pedagogique" routerLinkActive="active">{{ 'nav.pedagogique' | translate }}</a></li>  
-    <li><a routerLink="/contact" routerLinkActive="active">{{ 'nav.contact' | translate }}</a></li>
+    <li><a routerLink="/actualites" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.actualites' | translate }}</a></li>
+    <li><a routerLink="/espace-pedagogique" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.pedagogique' | translate }}</a></li>  
+    <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{ 'nav.contact' | translate }}</a></li>
  
   </ul> 
  

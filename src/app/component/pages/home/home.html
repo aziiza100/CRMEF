@@ -1,13 +1,3 @@
-<!-- <p>page d’accueil works!</p>
-<div>
-
-    <app-presentation-crmef></app-presentation-crmef>
-    <app-message-directeur></app-message-directeur>
-    <app-actualites></app-actualites>
-    <app-banniere-dynamique></app-banniere-dynamique>
-</div>
-      -->
-
     <main class="main">
     <!-- Hero Section -->
 
@@ -152,38 +142,22 @@
 
           <div *ngFor="let item of latestActualites(); let i = index" class="col-lg-4 col-md-6 d-flex align-items-stretch" [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="(i+1)*100">
             <div class="course-item">
-              <img [src]="item.image" class="img-fluid course-img" alt="...">
+              <a [routerLink]="['/actualites', item.id]" style="cursor: pointer; color: inherit; text-decoration: none;">
+                <img [src]="item.image" class="img-fluid course-img" alt="...">
+              </a>
               <div class="course-content">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <p class="category">{{ item.category }}</p>
                   <p class="price">{{ item.date }}</p>
                 </div>
 
-                <h3><a routerLink="actualites">{{ item.title }}</a></h3>
+                <h3><a [routerLink]="['/actualites', item.id]">{{ item.title }}</a></h3>
                 <p class="description">{{ item.description }}</p>
               </div>
             </div>
           </div> <!-- End Course Item-->
 
         </div>
-          <div class="row">
-                <div *ngFor="let item of latestActualites(); let i = index" class="col-lg-4 col-md-6 d-flex align-items-stretch" [attr.data-aos]="'zoom-in'" [attr.data-aos-delay]="(i+1)*100">
-                  <div class="course-item">
-                    <img [src]="item.image" class="img-fluid course-img" alt="...">
-                    <div class="course-content">
-                      <div class="d-flex justify-content-between align-items-center mb-3">
-                        <p class="category">{{ item.category }}</p>
-                        <p class="price">{{ item.date }}</p>
-                      </div>
-  
-                      <h3><a routerLink="actualites">{{ item.title }}</a></h3>
-                      <p class="description">{{ item.description }}</p>
-                    </div>
-                  </div>  
-                </div> <!-- End Course Item-->
-
-        </div>
-
       </div>
 
     </section><!-- /Actualites Section -->
@@ -203,34 +177,42 @@
             <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
 
              <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-               <i class="bi bi-book"></i>
-                  <h4>Cours</h4>
-                  <p>Téléchargement des supports pédagogiques.</p>
-                </div>
+                <a routerLink="/espace-pedagogique" style="text-decoration: none; color: inherit; display: block;">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                 <i class="bi bi-book"></i>
+                    <h4>Cours</h4>
+                    <p>Téléchargement des supports pédagogiques.</p>
+                  </div>
+                </a>
               </div><!-- End Icon Box -->
 
               <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                  <i class="bi bi-mortarboard-fill"></i>
-                  <h4>Formations</h4>
-                  <p>Filières, modules et conditions d’accès.</p>
-                </div>
+                <a routerLink="/formations" style="text-decoration: none; color: inherit; display: block;">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <h4>Formations</h4>
+                    <p>Filières, modules et conditions d’accès.</p>
+                  </div>
+                </a>
               </div><!-- End Icon Box -->
 
               <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                  <i class="bi bi-newspaper"></i>
-                  <h4>Actualités</h4>
-                  <p>Annonces officielles et événements.</p>
-                </div>
+                <a routerLink="/actualites" style="text-decoration: none; color: inherit; display: block;">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                    <i class="bi bi-newspaper"></i>
+                    <h4>Actualités</h4>
+                    <p>Annonces officielles et événements.</p>
+                  </div>
+                </a>
               </div><!-- End Icon Box -->
               <div class="col-xl-3 col-lg-6 col-md-6">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                    <i class="bi bi-pin-map-fill"></i>
-                    <h4>Contact</h4>
-                    <p>Adresse, téléphone et formulaire.</p>
-                </div>
+                <a routerLink="/contact" style="text-decoration: none; color: inherit; display: block;">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                      <i class="bi bi-pin-map-fill"></i>
+                      <h4>Contact</h4>
+                      <p>Adresse, téléphone et formulaire.</p>
+                  </div>
+                </a>
                </div><!-- End Icon Box -->
             </div>
           </div>
@@ -239,21 +221,21 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                   <div class="features-item">
                     <i class="bi bi-book-half"  style="color: #ffbb2c;"></i>
-                    <h3><a routerLink="espace-pedagogique" class="stretched-link">Espace-pedagogique</a></h3>
+                    <h3><a routerLink="/espace-pedagogique" class="stretched-link">Espace-pedagogique</a></h3>
                   </div>
                 </div><!-- End Feature Item -->
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                   <div class="features-item">
                     <i class="bi bi-mortarboard" style="color: #5578ff;"></i>
-                    <h3><a routerLink="espace-enseignant" class="stretched-link">Espace-enseignant</a></h3>
+                    <h3><a routerLink="/login" class="stretched-link">Espace-enseignant</a></h3>
                   </div>
                 </div><!-- End Feature Item -->
 
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                   <div class="features-item">
                     <i class="bi bi-backpack" style="color: #e80368;"></i>
-                    <h3><a routerLink="espace-etudiant" class="stretched-link">Espace-etudiant</a></h3>
+                    <h3><a routerLink="/login" class="stretched-link">Espace-etudiant</a></h3>
                   </div>
                 </div><!-- End Feature Item -->
             </div>

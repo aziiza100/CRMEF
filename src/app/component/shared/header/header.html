@@ -1,41 +1,39 @@
 <header class="top-wrapper" >
   
   <section id="header" class="header d-flex align-items-center sticky-top">
-     <div class="container-fluid container-xl position-relative ">
+     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a routerLink="/home" class="logo d-flex align-items-center me-auto">
+      <a routerLink="/home" class="logo d-flex align-items-center">
         <img src="assets/logo-crmef.png" alt="logo">
-        <h1 class="sitename"> {{ 'header.title' | translate }}</h1>
+        <h1 class="sitename d-none d-lg-block"> {{ 'header.title' | translate }}</h1>
       </a>
-      <!-- <div class="logo d-flex align-items-center me-auto"> -->
-     
-    
-  
-  <!-- </div> -->
-    </div>
-    <div class="header-actions d-flex align-items-center gap-3">
-      <a routerLink="/login" class="btn-connexion">
-        <i class="bi bi-person-circle"></i> {{ 'header.login' | translate }}
-      </a>
-      <div class="lang-switcher d-flex align-items-center gap-2">
-      <button
-        class="lang-btn"
-        [class.active-lang]="currentLang === 'fr'"
-        (click)="changeLang('fr')">
-        FR
-      </button>
-
-      <button
-        class="lang-btn"
-        [class.active-lang]="currentLang === 'ar'"
-        (click)="changeLang('ar')">
-        AR
-      </button>
-
+      
+      <div class="header-actions d-flex align-items-center justify-content-end flex-grow-1 gap-2 gap-md-3">
+        <a routerLink="/login" class="btn-connexion">
+          <i class="bi bi-person-circle d-none d-md-inline"></i> <span>{{ 'header.login' | translate }}</span>
+        </a>
+        <div class="lang-switcher d-flex align-items-center gap-1 gap-md-2 m-0">
+          <button
+            class="lang-btn"
+            [class.active-lang]="currentLang === 'fr'"
+            (click)="changeLang('fr')">
+            FR
+          </button>
+          <button
+            class="lang-btn"
+            [class.active-lang]="currentLang === 'ar'"
+            (click)="changeLang('ar')">
+            AR
+          </button>
+        </div>
+        
+        <!-- Mobile Nav Toggle -->
+        <i class="mobile-nav-toggle bi bi-list fs-3 ms-1 ms-md-2 d-xl-none" (click)="toggleMobileMenu()" style="cursor: pointer; color: #005E76;"></i>
       </div>
+
     </div>
   </section>
    
-    <app-navbar></app-navbar> 
+  <app-navbar [isMenuOpen]="isMobileMenuOpen" (closeMenuEvent)="closeMobileMenu()"></app-navbar> 
 
 </header>
