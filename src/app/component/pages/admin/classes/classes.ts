@@ -34,6 +34,12 @@ export class AdminClassesComponent implements OnInit {
   rawClasses: any[] = [];
   filieres: Filiere[] = [];
   teachersList: any[] = [];
+  showStudentsModal = false;
+  selectedStudents: any[] = [];
+  selectedClassName = '';
+  selectedStudent: any = null;
+  showStudentDetail = false;
+  studentFilter = '';
 
   constructor(private api: ApiService, private searchService: SearchService) {}
 
@@ -117,6 +123,126 @@ export class AdminClassesComponent implements OnInit {
       this.newClass = { nom: '', filiere_id: null, teachers: [] };
     }
     this.showModal = true;
+  }
+
+  openStudentsModal(cls: any) {
+    const originalClass = this.rawClasses.find((c: any) => c.id === cls.id);
+    if (originalClass && originalClass.etudiants && originalClass.etudiants.length > 0) {
+      this.selectedStudents = originalClass.etudiants.map((u: any) => {
+        const user = u.user || u;
+        return {
+          id: u.id || user.id,
+          prenom: u.prenom || user.prenom || '',
+          nom: u.nom || user.nom || '',
+          email: u.email || user.email || '',
+          cin_user: user.cin || user.cin || '',
+          cne: u.cne || (u.etudiant ? u.etudiant.cne : '') || '',
+          matricule: u.matricule || (u.etudiant ? u.etudiant.matricule : '') || '',
+          telephone: u.tele || user.tele || user.telephone || '',
+          avatar: user.image_base64 || user.avatar || this.getStudentAvatarUrl(user),
+          role: user.role || null,
+          created_at: user.created_at || u.created_at || null,
+          raw: u
+        };
+      });
+      this.selectedClassName = cls.nom;
+      this.selectedStudent = null;
+      this.showStudentDetail = false;
+      this.showStudentsModal = true;
+      return;
+    }
+
+    // Fallback: fetch all students and filter by class
+    this.api.getAdminStudents().subscribe({
+      next: (users) => {
+        const students = users.filter((u: any) => {
+          const c = u.etudiant?.classe;
+          return (c && (c.id === cls.id || c.nom === cls.nom));
+        }).map((u: any) => {
+          const user = u.user || u;
+          return {
+            id: u.id,
+            prenom: user.prenom || '',
+            nom: user.nom || '',
+            email: user.email || user.email || '',
+            cin_user: user.cin || '',
+            cne: u.etudiant?.cne || '',
+            matricule: u.etudiant?.matricule || u.matricule || '',
+            telephone: user.tele || u.tele || '',
+            avatar: user.image_base64 || user.avatar || this.getStudentAvatarUrl(user),
+            role: user.role || null,
+            created_at: user.created_at || u.created_at || null,
+            raw: u
+          };
+        });
+        this.selectedStudents = students;
+        this.selectedClassName = cls.nom;
+        this.selectedStudent = null;
+        this.showStudentDetail = false;
+        this.showStudentsModal = true;
+      },
+      error: () => {
+        this.selectedStudents = [];
+        this.selectedClassName = cls.nom;
+        this.showStudentsModal = true;
+      }
+    });
+  }
+
+  showStudentDetailFor(s: any) {
+    this.selectedStudent = s;
+    this.showStudentDetail = true;
+  }
+
+  backToStudentsList() {
+    this.showStudentDetail = false;
+    this.selectedStudent = null;
+  }
+
+  closeStudentsModal() {
+    this.showStudentsModal = false;
+    this.selectedStudents = [];
+    this.selectedClassName = '';
+    this.selectedStudent = null;
+    this.showStudentDetail = false;
+  }
+
+  getStudentAvatarUrl(user: any) {
+    const firstName = encodeURIComponent(user.prenom || '');
+    const lastName = encodeURIComponent(user.nom || '');
+    const name = `${firstName}+${lastName}`.trim();
+    return `https://ui-avatars.com/api/?name=${name || 'Etudiant'}&background=0f172a&color=fff&size=128`;
+  }
+
+  get filteredStudents() {
+    const filter = this.studentFilter.trim().toLowerCase();
+    if (!filter) {
+      return this.selectedStudents;
+    }
+    return this.selectedStudents.filter((s: any) => {
+      return [
+        s.prenom,
+        s.nom,
+        s.email,
+        s.cne,
+        s.cin_user
+      ].some((value: any) => value && value.toString().toLowerCase().includes(filter));
+    });
+  }
+
+  getInitials(s: any) {
+    const n = (s.prenom || '') + ' ' + (s.nom || '');
+    return n.split(' ').map((p: string) => p.charAt(0)).join('').substring(0,2).toUpperCase();
+  }
+
+  viewStudent(s: any) {
+    // placeholder: could open a detailed student view
+    this.triggerToast(`Ouvrir profil: ${s.prenom || ''} ${s.nom || ''}`);
+  }
+
+  editStudent(s: any) {
+    // placeholder: could navigate to student edit form
+    this.triggerToast(`Modifier étudiant: ${s.prenom || ''} ${s.nom || ''}`);
   }
 
   closeModal() {

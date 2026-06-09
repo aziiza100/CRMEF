@@ -11,6 +11,9 @@
   <div class="toast-notification pwd-toast" [class.show]="showPwdSuccess">
     <i class="bi bi-shield-check"></i> {{ 'profil.pwdSuccessMsg' | translate }}
   </div>
+  <div class="toast-notification pwd-error-toast" [class.show]="showPwdError">
+    <i class="bi bi-exclamation-circle-fill"></i> {{ pwdErrorMsg }}
+  </div>
 
   <div class="profil-grid">
     

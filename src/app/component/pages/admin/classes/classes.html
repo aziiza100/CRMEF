@@ -46,7 +46,7 @@
           <td class="fw-bold fs-5">{{ cls.nom }}</td>
           <td><span class="badge-outline-blue">{{ cls.filiere }}</span></td>
           <td>
-            <div class="students-count">
+            <div class="students-count" (click)="openStudentsModal(cls)" style="cursor: pointer;">
               <i class="bi bi-people-fill"></i> {{ cls.studentsCount }}
             </div>
           </td>
@@ -114,3 +114,108 @@
   </div>
 
 </div>
+
+  <!-- Students List Modal -->
+  <div class="modal-overlay" *ngIf="showStudentsModal" (click)="closeStudentsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3>Étudiants</h3>
+          <p class="modal-subtitle">Classe {{ selectedClassName }} · {{ selectedStudents.length }} étudiant{{ selectedStudents.length > 1 ? 's' : '' }}</p>
+        </div>
+        <button class="close-btn" (click)="closeStudentsModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body students-modal-body">
+        <div class="student-filter-bar" *ngIf="selectedStudents.length > 0">
+          <input type="text" class="form-control student-filter-input" placeholder="Rechercher un étudiant..."
+            [(ngModel)]="studentFilter" />
+        </div>
+        <div *ngIf="selectedStudents.length === 0" class="empty-state">
+          <i class="bi bi-emoji-frown"></i>
+          <div>Aucun étudiant dans cette classe.</div>
+        </div>
+
+        <div *ngIf="selectedStudents.length > 0" class="students-detail-layout">
+          <div class="students-list-panel">
+            <div class="students-grid-summary">
+              <div class="student-summary" *ngFor="let s of filteredStudents" [class.active]="selectedStudent?.id === s.id" (click)="showStudentDetailFor(s)">
+                <div class="student-card-header">
+                  <div class="student-avatar small-avatar">
+                    <img *ngIf="s.avatar; else initials" [src]="s.avatar" alt="avatar">
+                    <ng-template #initials>{{ getInitials(s) }}</ng-template>
+                  </div>
+                  <div>
+                    <div class="name">{{ s.prenom }} {{ s.nom }}</div>
+                    <div class="meta text-muted">{{ s.email || 'Email non renseigné' }}</div>
+                  </div>
+                </div>
+                <div class="student-card-body student-card-compact">
+                  <div class="student-data small">
+                    <span>CNE</span>
+                    <strong>{{ s.cne || '-' }}</strong>
+                  </div>
+                  <div class="student-data small">
+                    <span>CIN</span>
+                    <strong>{{ s.cin_user || '-' }}</strong>
+                  </div>
+                </div>
+                <div class="student-card-footer">
+                  <button class="btn-primary-outline">Voir détail</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="student-detail-card" *ngIf="selectedStudent; else noStudentSelected">
+              <div class="detail-header">
+                <div class="student-avatar detail-avatar">
+                  <img [src]="selectedStudent.avatar" alt="Avatar {{ selectedStudent.prenom }}">
+                </div>
+                <div>
+                  <div class="name detail-name">{{ selectedStudent.prenom }} {{ selectedStudent.nom }}</div>
+                  <div class="meta">{{ selectedStudent.email || 'Email non renseigné' }}</div>
+                </div>
+              </div>
+
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span>Classe</span>
+                  <strong>{{ selectedClassName }}</strong>
+                </div>
+                <div class="detail-item">
+                  <span>CNE</span>
+                  <strong>{{ selectedStudent.cne || '-' }}</strong>
+                </div>
+                <div class="detail-item">
+                  <span>CIN</span>
+                  <strong>{{ selectedStudent.cin_user || '-' }}</strong>
+                </div>
+                <div class="detail-item">
+                  <span>Téléphone</span>
+                  <strong>{{ selectedStudent.telephone || '-' }}</strong>
+                </div>
+                <div class="detail-item">
+                  <span>Inscription</span>
+                  <strong>{{ selectedStudent.created_at ? (selectedStudent.created_at | date:'shortDate') : '-' }}</strong>
+                </div>
+              </div>
+
+              <button class="btn-primary-outline mt-4" (click)="backToStudentsList()">Retour à la liste</button>
+            </div>
+            <ng-template #noStudentSelected>
+              <div class="student-detail-empty">
+                <div class="detail-empty-title">Aucun étudiant sélectionné</div>
+                <div class="detail-empty-text">Cliquez sur une fiche à gauche pour afficher son profil.</div>
+              </div>
+            </ng-template>
+          </div>
+          <div *ngIf="selectedStudents.length > 0 && filteredStudents.length === 0" class="empty-state">
+            <i class="bi bi-search"></i>
+            <div>Aucun résultat pour "{{ studentFilter }}".</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeStudentsModal()">Fermer</button>
+      </div>
+    </div>
+  </div>

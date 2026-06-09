@@ -49,6 +49,16 @@ export interface Filiere {
   formations?: Formation[];
 }
 
+export interface Module {
+  id?: number;
+  nom: string;
+  masse_horraire: number;
+  filieres?: Filiere[];
+  classes?: any[];
+  enseignant_id?: number;
+  enseignant?: any;
+}
+
 export interface SiteContent {
   section: string;
   key: string;
@@ -378,6 +388,12 @@ export class ApiService {
     return this.adminClassesCache$;
   }
 
+  getAdminClass(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/admin/classes/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   createAdminClass(data: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/admin/classes`, data, {
       headers: this.getHeaders()
@@ -452,6 +468,71 @@ export class ApiService {
       tap(() => { this.formationsCache$ = null; this.dashboardCache$ = null; }),
       catchError(this.handleError)
     );
+  }
+
+  // ============================================================
+  // MODULES
+  getModules(): Observable<Module[]> {
+    return this.http.get<Module[]>(`${this.baseUrl}/admin/modules`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createModule(filiereId: number, data: { nom: string; masse_horraire: number; enseignant_id: number; classe_id?: number; module_id?: number }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/filieres/${filiereId}/modules`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteModule(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/modules/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateModule(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/admin/modules/${id}`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  assignModuleToClasse(classeId: number, data: { module_id: number; id_enseignant: number }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/classes/${classeId}/modules`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
+  // EMPLOI DU TEMPS
+  // ============================================================
+  getEmploiForClass(classeId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/admin/classes/${classeId}/emploi`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  getStudentEmploi(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/etudiant/emploi`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  createSeance(classeId: number, data: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/classes/${classeId}/emploi`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  updateSeance(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/admin/emploi/${id}`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  deleteSeance(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/admin/emploi/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
   }
 
   // ============================================================
@@ -576,6 +657,16 @@ export class ApiService {
     }).pipe(catchError(this.handleError));
   }
 
+  changeEtudiantPassword(currentPassword: string, password: string, password_confirmation: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/etudiant/password`, {
+      current_password: currentPassword,
+      password,
+      password_confirmation
+    }, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   // ============================================================
   // SITE CONTENT
   // ============================================================
@@ -608,6 +699,84 @@ export class ApiService {
 
   updateTranslations(lang: 'fr' | 'ar', data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/translations/${lang}`, { translations: data }, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
+  // COURSE SUPPORTS (SUPPORTS DE COURS)
+  // ============================================================
+  
+  /**
+   * Get all supports (course documents) for the authenticated teacher
+   */
+  getEnseignantSupports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/enseignant/supports`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Get all supports for a specific module
+   */
+  getSupportsForModule(moduleId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/modules/${moduleId}/supports`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Get a specific support (without binary data)
+   */
+  getSupport(moduleId: number, supportId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Download a support file
+   */
+  downloadSupport(moduleId: number, supportId: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}/download`, {
+      headers: this.getHeaders(),
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Create a new support (upload PDF file)
+   */
+  createSupport(moduleId: number, titre: string, description: string, fichier: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('titre', titre);
+    formData.append('description', description);
+    formData.append('fichier', fichier);
+
+    return this.http.post<any>(`${this.baseUrl}/modules/${moduleId}/supports`, formData, {
+      headers: this.getFormHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Update a support record (with optional file replacement)
+   */
+  updateSupport(moduleId: number, supportId: number, titre?: string, description?: string, fichier?: File): Observable<any> {
+    const formData = new FormData();
+    if (titre) formData.append('titre', titre);
+    if (description) formData.append('description', description);
+    if (fichier) formData.append('fichier', fichier);
+
+    return this.http.put<any>(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}`, formData, {
+      headers: this.getFormHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Delete a support
+   */
+  deleteSupport(moduleId: number, supportId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
@@ -659,6 +828,7 @@ export class ApiService {
       errorMessage = 'Impossible de contacter le serveur. Vérifiez que Laravel est démarré.';
     }
     console.error('API Error:', error);
-    return throwError(() => new Error(errorMessage));
+    // Return the original error to preserve error.error.errors for validation errors
+    return throwError(() => error);
   }
 }

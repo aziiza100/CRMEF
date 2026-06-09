@@ -162,6 +162,20 @@
 
         <!-- Champs Spécifiques Étudiant -->
         <ng-container *ngIf="newUser.role === 'student'">
+          <div class="form-group avatar-upload-group">
+            <label>Photo</label>
+            <div class="avatar-upload" (click)="triggerImageUpload()" role="button" tabindex="0">
+              <img *ngIf="imagePreview; else placeholderAvatar" [src]="imagePreview" alt="Photo étudiant">
+              <ng-template #placeholderAvatar>
+                <div class="avatar-placeholder">
+                  <i class="bi bi-camera"></i>
+                  <span>Ajouter une photo</span>
+                </div>
+              </ng-template>
+            </div>
+            <input #imageInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
+            <p class="avatar-hint">Cliquez sur l'image pour charger ou changer la photo.</p>
+          </div>
           <div class="form-group">
             <label>CIN</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.cin">

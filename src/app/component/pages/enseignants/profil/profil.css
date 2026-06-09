@@ -54,6 +54,11 @@
   box-shadow: 0 5px 15px rgba(13, 202, 240, 0.3);
 }
 
+.pwd-error-toast {
+  background: #dc3545;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
 .toast-notification.show {
   transform: translateY(0);
   opacity: 1;

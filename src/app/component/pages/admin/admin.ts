@@ -55,6 +55,13 @@ export class AdminComponent {
       labelAr: 'إدارة التكوينات'
     },
     {
+      id: 'modules',
+      icon: 'bi-layers-fill',
+      route: '/espace-admin/modules',
+      labelFr: 'Gestion Modules',
+      labelAr: 'إدارة الوحدات'
+    },
+    {
       id: 'content',
       icon: 'bi-newspaper',
       route: '/espace-admin/content',

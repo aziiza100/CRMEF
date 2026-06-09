@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 interface Cours {
   id: number;
@@ -11,6 +14,7 @@ interface Cours {
   statut: 'Publié' | 'Brouillon';
   date: string;
   fichier: string | null;
+  module_id?: number;
 }
 
 @Component({
@@ -21,8 +25,11 @@ interface Cours {
   styleUrls: ['./cours.css']
 })
 export class CoursComponent implements OnInit {
-  // Liste des classes disponibles pour l'affectation
-  availableClasses = ['SVT-1', 'SVT-2', 'PC-1', 'PC-2', 'Maths-1', 'Maths-2'];
+  private apiService: ApiService = inject(ApiService);
+  
+  // Liste des classes disponibles pour l'affectation (chargée du backend)
+  availableClasses: string[] = [];
+  classesData: any[] = [];
   
   // Modèle pour le nouveau cours
   nouveauCours = {
@@ -33,27 +40,8 @@ export class CoursComponent implements OnInit {
     nomFichier: ''
   };
 
-  // Liste des cours existants (mock)
-  coursPublies: Cours[] = [
-    {
-      id: 1,
-      titre: 'Didactique des SVT - Chapitre 1',
-      description: 'Introduction aux concepts fondamentaux de la didactique.',
-      classes: ['SVT-1', 'SVT-2'],
-      statut: 'Publié',
-      date: '2023-10-15',
-      fichier: 'didactique_chap1.pdf'
-    },
-    {
-      id: 2,
-      titre: 'TP : Écologie pratique',
-      description: 'Guide pour les sorties écologiques avec les élèves.',
-      classes: ['SVT-2'],
-      statut: 'Brouillon',
-      date: '2023-11-02',
-      fichier: null
-    }
-  ];
+  // Liste des cours existants (chargés du backend)
+  coursPublies: Cours[] = [];
 
   // Propriétés de filtrage et d'UI
   recherche = '';
@@ -62,15 +50,74 @@ export class CoursComponent implements OnInit {
   modeEdition = false;
   coursEditeId: number | null = null;
   showSuccessToast = false;
+  isLoading = true;
+  fileErrorMessage = '';
+  submissionErrors: string[] = [];
 
   ngOnInit() {
-    this.appliquerFiltres();
+    this.chargerClassesEnseignant();
+    this.chargerSupportsEnseignant();
   }
 
-  // Gérer la sélection du fichier (simulation)
+  /**
+   * Charger les classes affectées à l'enseignant connecté depuis le backend
+   */
+  chargerClassesEnseignant() {
+    this.apiService.getEnseignantProfile().subscribe({
+      next: (profile: any) => {
+        const classes = profile.classes ?? profile.enseignant?.classes ?? [];
+        if (classes && classes.length > 0) {
+          this.classesData = classes;
+          this.availableClasses = classes.map((classe: any) => classe.nom || classe.nom_classe || classe.designation || 'Classe inconnue');
+        } else {
+          this.availableClasses = [];
+        }
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des classes', err);
+        this.availableClasses = [];
+        this.isLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Charger les supports (documents de cours) de l'enseignant depuis le backend
+   */
+  chargerSupportsEnseignant() {
+    this.apiService.getEnseignantSupports().subscribe({
+      next: (supports: any[]) => {
+        this.coursPublies = supports.map((support: any) => ({
+          id: support.id,
+          titre: support.titre,
+          description: support.description || '',
+          classes: support.classes || [],
+          statut: 'Publié',
+          date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          fichier: support.nom_fichier || support.titre,
+          module_id: support.id_module // Stocker le module ID pour la suppression
+        }));
+        this.appliquerFiltres();
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des supports', err);
+        this.coursPublies = [];
+      }
+    });
+  }
+
+  // Gérer la sélection du fichier
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
+      if (file.type !== 'application/pdf') {
+        this.fileErrorMessage = 'Veuillez sélectionner un fichier PDF.';
+        this.nouveauCours.fichier = null;
+        this.nouveauCours.nomFichier = '';
+        return;
+      }
+      this.fileErrorMessage = '';
       this.nouveauCours.fichier = file;
       this.nouveauCours.nomFichier = file.name;
     }
@@ -102,38 +149,98 @@ export class CoursComponent implements OnInit {
   soumettreCours(statut: 'Publié' | 'Brouillon') {
     if (!this.nouveauCours.titre) return;
 
-    if (this.modeEdition && this.coursEditeId) {
-      // Modification
-      const index = this.coursPublies.findIndex(c => c.id === this.coursEditeId);
-      if (index > -1) {
-        this.coursPublies[index] = {
-          ...this.coursPublies[index],
-          titre: this.nouveauCours.titre,
-          description: this.nouveauCours.description,
-          classes: [...this.nouveauCours.classesSelectionnees],
-          statut: statut,
-          fichier: this.nouveauCours.nomFichier || this.coursPublies[index].fichier
-        };
-      }
-      this.modeEdition = false;
-      this.coursEditeId = null;
-    } else {
-      // Ajout
-      const newId = Math.max(...this.coursPublies.map(c => c.id), 0) + 1;
-      this.coursPublies.unshift({
-        id: newId,
-        titre: this.nouveauCours.titre,
-        description: this.nouveauCours.description,
-        classes: [...this.nouveauCours.classesSelectionnees],
-        statut: statut,
-        date: new Date().toISOString().split('T')[0],
-        fichier: this.nouveauCours.nomFichier || null
-      });
+    if (!this.nouveauCours.fichier) {
+      alert('Veuillez sélectionner un fichier PDF');
+      return;
     }
 
-    this.reinitialiserFormulaire();
-    this.appliquerFiltres();
-    this.afficherToast();
+    if (this.nouveauCours.fichier.type !== 'application/pdf') {
+      alert('Le fichier doit être un PDF.');
+      return;
+    }
+
+    // Pour les classes sélectionnées, créer un support pour chaque module enseigné dans ces classes
+    this.creerSupportsClasses();
+  }
+
+  /**
+   * Créer des supports pour les classes sélectionnées
+   * Pour chaque classe, on crée un support pour chaque module de l'enseignant dans cette classe
+   */
+  private creerSupportsClasses() {
+    if (this.nouveauCours.classesSelectionnees.length === 0) {
+      alert('Veuillez sélectionner au moins une classe');
+      return;
+    }
+
+    // Collecter tous les modules uniques des classes sélectionnées
+    const modulesIds = new Set<number>();
+    const missingModuleClasses: string[] = [];
+
+    this.classesData.forEach((classe: any) => {
+      const classLabel = classe.nom || classe.nom_classe || classe.designation || 'Classe inconnue';
+      if (this.nouveauCours.classesSelectionnees.includes(classLabel)) {
+        const modules = classe.modules ?? classe.modules_list ?? [];
+        if (!modules || modules.length === 0) {
+          missingModuleClasses.push(classLabel);
+          return;
+        }
+
+        modules.forEach((module: any) => {
+          const moduleId = module.id ?? module.module_id ?? module.id_module ?? module.moduleId;
+          if (typeof moduleId === 'number') {
+            modulesIds.add(moduleId);
+          } else {
+            console.warn(`Module sans identifiant trouvé pour la classe ${classLabel}`, module);
+          }
+        });
+      }
+    });
+
+    if (missingModuleClasses.length > 0) {
+      alert(`Aucun module trouvé pour les classes suivantes : ${missingModuleClasses.join(', ')}`);
+      return;
+    }
+
+    if (modulesIds.size === 0) {
+      alert('Aucun module valide trouvé pour les classes sélectionnées');
+      return;
+    }
+
+    const requests = Array.from(modulesIds).map((moduleId) =>
+      this.apiService.createSupport(
+        moduleId,
+        this.nouveauCours.titre,
+        this.nouveauCours.description,
+        this.nouveauCours.fichier!
+      ).pipe(
+        catchError((err: any) => {
+          console.error(`Erreur lors de la création du support pour module ${moduleId}:`, err);
+          return of({ success: false, moduleId, error: err });
+        })
+      )
+    );
+
+    forkJoin(requests).subscribe((results) => {
+      const successResults = results.filter((result: any) => result && result.success !== false);
+      const failedResults = results.filter((result: any) => result && result.success === false);
+
+      if (successResults.length > 0) {
+        this.reinitialiserFormulaire();
+        this.appliquerFiltres();
+        this.chargerSupportsEnseignant();
+        this.afficherToast();
+      }
+
+      if (failedResults.length > 0) {
+        this.submissionErrors = failedResults.map((result: any) => {
+          const moduleId = result.moduleId;
+          const message = result.error?.message || result.error?.statusText || 'Erreur inconnue';
+          return `Module ${moduleId} : ${message}`;
+        });
+        alert(`Certains supports n’ont pas pu être ajoutés :\n${this.submissionErrors.join('\n')}`);
+      }
+    });
   }
 
   // Éditer un cours
@@ -152,10 +259,20 @@ export class CoursComponent implements OnInit {
   }
 
   // Supprimer un cours
-  supprimerCours(id: number) {
-    if(confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
-      this.coursPublies = this.coursPublies.filter(c => c.id !== id);
-      this.appliquerFiltres();
+  supprimerCours(cours: Cours) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce document de cours ?')) {
+      if (cours.id && cours.module_id) {
+        this.apiService.deleteSupport(cours.module_id, cours.id).subscribe({
+          next: () => {
+            this.coursPublies = this.coursPublies.filter(c => c.id !== cours.id);
+            this.appliquerFiltres();
+          },
+          error: (err: any) => {
+            console.error('Erreur lors de la suppression du support', err);
+            alert('Erreur lors de la suppression du support');
+          }
+        });
+      }
     }
   }
 

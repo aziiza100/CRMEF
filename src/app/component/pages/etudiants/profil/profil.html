@@ -10,7 +10,8 @@
   </div>
   
   <div class="alert alert-danger d-flex align-items-center" *ngIf="showError">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ 'etudiant.profil.errorMsg' | translate }}
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage || ('etudiant.profil.errorMsg' | translate) }}
   </div>
 
   <div class="profil-grid">

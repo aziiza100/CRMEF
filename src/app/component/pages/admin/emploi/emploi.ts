@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
 interface Seance {
   id: number;
   heureDebut: string;
   heureFin: string;
-  matiere: string;
+  matiere: string; // module name
+  moduleId?: number;
   professeur: string;
   salle: string;
-  type: 'cours' | 'td' | 'tp';
 }
 
 interface JourEmploi {
@@ -28,26 +29,12 @@ interface JourEmploi {
 })
 export class AdminEmploiComponent {
   
-  classes = ['SVT-4', 'Math-1', 'Info-2'];
-  selectedClass = 'SVT-4';
+  classes: string[] = [];
+  selectedClass = '';
 
   jours: JourEmploi[] = [
-    {
-      id: 'lundi',
-      nomKey: 'Lundi',
-      seances: [
-        { id: 1, heureDebut: '08:00', heureFin: '10:00', matiere: 'Didactique des SVT', professeur: 'Pr. Alaoui', salle: 'Salle 4', type: 'cours' },
-        { id: 2, heureDebut: '10:15', heureFin: '12:15', matiere: 'Didactique des SVT', professeur: 'Pr. Alaoui', salle: 'Labo 1', type: 'tp' },
-        { id: 3, heureDebut: '14:00', heureFin: '16:00', matiere: 'Sciences de l\'Éducation', professeur: 'Pr. Idrissi', salle: 'Amphi A', type: 'cours' }
-      ]
-    },
-    {
-      id: 'mardi',
-      nomKey: 'Mardi',
-      seances: [
-        { id: 4, heureDebut: '08:00', heureFin: '12:00', matiere: 'TICE', professeur: 'Pr. Benjelloun', salle: 'Salle Info 2', type: 'tp' }
-      ]
-    },
+    { id: 'lundi', nomKey: 'Lundi', seances: [] },
+    { id: 'mardi', nomKey: 'Mardi', seances: [] },
     { id: 'mercredi', nomKey: 'Mercredi', seances: [] },
     { id: 'jeudi', nomKey: 'Jeudi', seances: [] },
     { id: 'vendredi', nomKey: 'Vendredi', seances: [] },
@@ -61,24 +48,83 @@ export class AdminEmploiComponent {
   toastMessage = '';
   showToast = false;
 
-  newSeance: Omit<Seance, 'id'> = {
+  newSeance: Omit<Seance, 'id'> & { moduleId?: number } = {
     heureDebut: '08:00',
     heureFin: '10:00',
     matiere: '',
+    moduleId: undefined,
     professeur: '',
-    salle: '',
-    type: 'cours'
+    salle: ''
   };
 
-  professeurs = ['Pr. Alaoui', 'Pr. Idrissi', 'Pr. Benjelloun', 'Pr. Cherkaoui'];
+  modulesForClass: Array<{ id: number; nom: string; pivot?: { id_enseignant?: number } }> = [];
+
+  professeurs: string[] = [];
+  enseignantsMap: { [id: number]: string } = {};
+
+  constructor(private api: ApiService) {
+    // load classes from API
+    this.api.getAdminClasses().subscribe({
+      next: (classes: any[]) => {
+        // map to display names
+        this.classes = classes.map((c: any) => c.nom);
+        this.selectedClass = this.classes[0] ?? '';
+        if (this.selectedClass) {
+          this.loadEmploiForSelectedClass();
+        }
+      },
+      error: () => {
+        // fallback to defaults
+        this.classes = ['SVT-4', 'Math-1', 'Info-2'];
+        this.selectedClass = this.classes[0];
+      }
+    });
+    // load enseignants to populate professeurs list
+    this.api.getAdminEnseignants().subscribe({ next: (ens: any[]) => { 
+      this.professeurs = ens.map((e:any) => (e.enseignant?.id_enseignant ? (e.user?.nom ? (e.user.nom + ' ' + e.user.prenom) : (e.nom + ' ' + e.prenom)) : e.nom + ' ' + e.prenom));
+      // build id->name map
+      ens.forEach((e:any) => {
+        const id = e.enseignant?.id_enseignant ?? null;
+        const name = e.user?.nom ? (e.user.nom + ' ' + (e.user.prenom ?? '')) : ((e.nom ?? '') + ' ' + (e.prenom ?? ''));
+        if (id) this.enseignantsMap[id] = name.trim();
+      });
+    } });
+  }
 
   selectJour(jour: JourEmploi) {
     this.jourActif = jour;
   }
 
   onClassChange() {
-    // Dans une vraie app, cela chargerait l'emploi du temps de la classe sélectionnée depuis l'API
-    this.triggerToast(`Emploi du temps de la classe ${this.selectedClass} chargé.`);
+    this.loadEmploiForSelectedClass();
+  }
+
+  loadEmploiForSelectedClass() {
+    // find class id by name
+    this.api.getAdminClasses().subscribe({ next: (classes: any[]) => {
+      const cls = classes.find((c:any) => c.nom === this.selectedClass);
+      if (!cls) return;
+      this.api.getEmploiForClass(cls.id).subscribe({ next: (res: any) => {
+        // clear days
+        this.jours.forEach(d => d.seances = []);
+        (res.seances || []).forEach((s:any) => {
+          const jour = this.jours.find(d => d.id === (s.jour || '').toLowerCase()) || this.jours[0];
+          jour.seances.push({ id: s.id, heureDebut: this.formatTime(s.heureDebut), heureFin: this.formatTime(s.heureFin), matiere: s.matiere || '', moduleId: s.module_id ?? null, professeur: s.professeur || '', salle: s.salle || '' });
+        });
+        this.jours.forEach(d => d.seances.sort((a,b) => a.heureDebut.localeCompare(b.heureDebut)));
+        this.jourActif = this.jours[0];
+      }, error: (err: any) => this.triggerToast(err?.message || 'Impossible de charger l\'emploi du temps') });
+    }});
+  }
+
+  private formatTime(t: string | null | undefined): string {
+    if (!t) return '';
+    // expected formats: '09:00:00.0000000' or '09:00:00' or '09:00'
+    const m = String(t).trim();
+    // take first 5 characters if looks like HH:MM
+    const hhmm = m.match(/^(\d{1,2}:\d{2})/)?.[1];
+    if (hhmm) return hhmm;
+    return m;
   }
 
   openModal(seance?: Seance) {
@@ -88,15 +134,40 @@ export class AdminEmploiComponent {
         heureDebut: seance.heureDebut,
         heureFin: seance.heureFin,
         matiere: seance.matiere,
+        moduleId: seance.moduleId,
         professeur: seance.professeur,
-        salle: seance.salle,
-        type: seance.type
+        salle: seance.salle
       };
     } else {
       this.editingId = null;
-      this.newSeance = { heureDebut: '08:00', heureFin: '10:00', matiere: '', professeur: '', salle: '', type: 'cours' };
+      this.newSeance = { heureDebut: '08:00', heureFin: '10:00', matiere: '', moduleId: undefined, professeur: '', salle: '' };
     }
+    // load modules for selected class
+    this.api.getAdminClasses().subscribe({ next: (classes: any[]) => {
+      const cls = classes.find((c:any) => c.nom === this.selectedClass);
+      if (!cls) return;
+      this.api.getAdminClass(cls.id).subscribe({ next: (res: any) => {
+        this.modulesForClass = (res.modules || []).map((m:any) => ({ id: m.id, nom: m.nom, pivot: m.pivot || {} }));
+        // if editing and moduleId set, find professor from pivot
+        if (this.newSeance.moduleId) {
+          const mod = this.modulesForClass.find(m => m.id === this.newSeance.moduleId);
+          if (mod && mod.pivot && mod.pivot.id_enseignant) {
+            this.newSeance.professeur = this.enseignantsMap[mod.pivot.id_enseignant] ?? this.newSeance.professeur;
+          }
+        }
+      }});
+    }});
     this.showModal = true;
+  }
+
+  onModuleChange() {
+    const modId = Number(this.newSeance.moduleId);
+    const mod = this.modulesForClass.find(m => Number(m.id) === modId);
+    if (mod && mod.pivot && mod.pivot.id_enseignant) {
+      this.newSeance.professeur = this.enseignantsMap[mod.pivot.id_enseignant] ?? this.newSeance.professeur;
+    } else {
+      this.newSeance.professeur = '';
+    }
   }
 
   closeModal() {
@@ -104,24 +175,41 @@ export class AdminEmploiComponent {
   }
 
   saveSeance() {
-    if (this.editingId) {
-      const idx = this.jourActif.seances.findIndex(s => s.id === this.editingId);
-      this.jourActif.seances[idx] = { id: this.editingId, ...this.newSeance };
-    } else {
-      this.jourActif.seances.push({ id: Date.now(), ...this.newSeance });
-      // Tri par heure de début
-      this.jourActif.seances.sort((a, b) => a.heureDebut.localeCompare(b.heureDebut));
-    }
-    
-    this.closeModal();
-    this.triggerToast(this.editingId ? 'Séance mise à jour.' : 'Séance ajoutée.');
+    // find class id
+    this.api.getAdminClasses().subscribe({ next: (classes: any[]) => {
+      const cls = classes.find((c:any) => c.nom === this.selectedClass);
+      if (!cls) return this.triggerToast('Classe introuvable');
+
+      const payload: any = {
+        jour: this.jourActif.id,
+        heureDebut: this.newSeance.heureDebut,
+        heureFin: this.newSeance.heureFin,
+        module_id: this.newSeance.moduleId ?? null,
+        salle: this.newSeance.salle
+      };
+
+      if (this.editingId) {
+        this.api.updateSeance(this.editingId, payload).subscribe({ next: (res: any) => {
+          this.loadEmploiForSelectedClass();
+          this.closeModal();
+          this.triggerToast('Séance mise à jour.');
+        }, error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible de mettre à jour la séance') });
+      } else {
+        this.api.createSeance(cls.id, payload).subscribe({ next: (res: any) => {
+          this.loadEmploiForSelectedClass();
+          this.closeModal();
+          this.triggerToast('Séance ajoutée.');
+        }, error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible d\'ajouter la séance') });
+      }
+    }});
   }
 
   deleteSeance(id: number) {
-    if (confirm("Supprimer cette séance ?")) {
-      this.jourActif.seances = this.jourActif.seances.filter(s => s.id !== id);
+    if (!confirm("Supprimer cette séance ?")) return;
+    this.api.deleteSeance(id).subscribe({ next: () => {
+      this.loadEmploiForSelectedClass();
       this.triggerToast('Séance supprimée.');
-    }
+    }, error: (err) => this.triggerToast(err?.message || 'Impossible de supprimer la séance') });
   }
 
   triggerToast(msg: string) {

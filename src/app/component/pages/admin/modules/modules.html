@@ -1,0 +1,130 @@
+<div class="admin-modules-page">
+  <div class="page-header">
+    <h2 class="page-title">Gestion des Modules</h2>
+    <p class="page-desc">Créez et gérez les modules, en choisissant la filière, la classe et l’enseignant affecté.</p>
+  </div>
+
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-actions toolbar-actions--with-filter">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher un module..." />
+      </div>
+
+      <div class="select-filter">
+        <select class="form-select" [(ngModel)]="selectedClasseId">
+          <option [ngValue]="null">Toutes les classes</option>
+          <option *ngFor="let classe of classes" [ngValue]="classe.id">{{ classe.nom }}</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" (click)="openModal()" [disabled]="isLoading">
+      <i class="bi bi-plus-lg"></i>
+      Nouveau module
+    </button>
+  </div>
+
+  <div class="table-container">
+    <div *ngIf="isLoading" class="table-loading">
+      <span class="loading-dot"></span> Chargement des modules...
+    </div>
+
+    <table *ngIf="!isLoading" class="admin-table">
+      <thead>
+        <tr>
+          <th>Nom du module</th>
+          <th>Masse horaire</th>
+          <th>Filières</th>
+          <th>Enseignant</th>
+          <th>Classe</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let module of filteredModules">
+          <td class="fw-bold fs-5">{{ module.nom }}</td>
+          <td>{{ module.masse_horraire }}</td>
+          <td>{{ getFiliereNames(module) }}</td>
+          <td>
+            <div class="teachers-list">
+              <ng-container *ngIf="getModuleEnseignantName(module) !== '-' ; else noTeacher">
+                <span class="badge-teacher"><i class="bi bi-person-video3"></i> {{ getModuleEnseignantName(module) }}</span>
+              </ng-container>
+              <ng-template #noTeacher><span class="text-muted fst-italic">-</span></ng-template>
+            </div>
+          </td>
+          <td>{{ getClasseName(module) }}</td>
+          <td class="text-end">
+            <button class="action-icon" (click)="openEditModal(module)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-icon danger" (click)="deleteModule(module.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!filteredModules.length && !isLoading">
+          <td colspan="6" class="text-muted text-center">Aucun module disponible.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingModuleId ? 'Modifier le module' : 'Créer un nouveau module' }}</h3>
+        <button class="close-btn" type="button" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="form-label">Nom du module</label>
+          <input type="text" class="form-control" [(ngModel)]="newModule.nom" placeholder="Nom du module" />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Masse horaire</label>
+          <input type="number" class="form-control" [(ngModel)]="newModule.masse_horraire" placeholder="Masse horaire" />
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Filière</label>
+          <select class="form-select" [(ngModel)]="newModule.filiere_id">
+            <option [ngValue]="null">Sélectionner une filière</option>
+            <option *ngFor="let filiere of filieres" [ngValue]="filiere.id">{{ filiere.nom }}</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Enseignant</label>
+          <select class="form-select" [(ngModel)]="newModule.enseignant_id">
+            <option [ngValue]="null">Sélectionner un enseignant</option>
+            <option *ngFor="let enseignant of enseignants" [ngValue]="enseignant.enseignant?.id_enseignant ?? enseignant.id_enseignant">
+              {{ enseignant.nom }} {{ enseignant.prenom }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Classe</label>
+          <select class="form-select" [(ngModel)]="newModule.classe_id" [disabled]="!newModule.filiere_id">
+            <option [ngValue]="null">Sélectionner une classe</option>
+            <option *ngFor="let classe of filteredClasses" [ngValue]="classe.id">{{ classe.nom }}</option>
+          </select>
+          <small class="form-help">Choisir la classe où l’enseignant donnera ce module.</small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" type="button" (click)="closeModal()">Annuler</button>
+        <button class="btn-primary" type="button" (click)="saveModule()" [disabled]="isSaving">
+          {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

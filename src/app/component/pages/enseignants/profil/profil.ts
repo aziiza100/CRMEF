@@ -37,6 +37,8 @@ export class ProfilComponent implements OnInit {
   // États pour les notifications (Toast)
   showProfileSuccess = false;
   showPwdSuccess = false;
+  showPwdError = false;
+  pwdErrorMsg = '';
 
   ngOnInit() {
     this.loadProfil();
@@ -90,13 +92,39 @@ export class ProfilComponent implements OnInit {
         .subscribe({
           next: () => {
             this.showPwdSuccess = true;
+            this.showPwdError = false;
             this.passwordData = { current: '', new: '', confirm: '' };
             setTimeout(() => {
               this.showPwdSuccess = false;
             }, 3000);
           },
-          error: () => {
-            // backend error message is handled by global error handler
+          error: (error: any) => {
+            this.showPwdError = true;
+            // Handle detailed validation errors
+            if (error.error?.errors) {
+              const errors = error.error.errors;
+              const errorMessages: string[] = [];
+              
+              if (errors.current_password) {
+                errorMessages.push('Mot de passe actuel requis');
+              }
+              if (errors.password) {
+                if (errors.password[0]?.includes('min')) {
+                  errorMessages.push('Le nouveau mot de passe doit contenir au moins 8 caractères');
+                } else if (errors.password[0]?.includes('confirmed')) {
+                  errorMessages.push('Les mots de passe ne correspondent pas');
+                } else {
+                  errorMessages.push(errors.password[0]);
+                }
+              }
+              
+              this.pwdErrorMsg = errorMessages.length > 0 ? errorMessages.join(' • ') : error.error?.message || 'Une erreur est survenue';
+            } else {
+              this.pwdErrorMsg = error.error?.message || 'Une erreur est survenue lors de la modification du mot de passe.';
+            }
+            setTimeout(() => {
+              this.showPwdError = false;
+            }, 4000);
           }
         });
     }

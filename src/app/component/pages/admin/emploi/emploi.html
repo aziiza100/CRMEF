@@ -54,7 +54,7 @@
         </div>
 
         <!-- Cartes des Séances -->
-        <div class="seance-card" *ngFor="let seance of jourActif.seances" [ngClass]="seance.type">
+        <div class="seance-card" *ngFor="let seance of jourActif.seances">
           
           <div class="seance-time">
             <span class="time-start">{{ seance.heureDebut }}</span>
@@ -67,7 +67,7 @@
             <div class="info-group">
               <span class="prof"><i class="bi bi-person-video3"></i> {{ seance.professeur }}</span>
               <span class="salle"><i class="bi bi-door-open"></i> {{ seance.salle }}</span>
-              <span class="type-badge">{{ seance.type | uppercase }}</span>
+              
             </div>
           </div>
 
@@ -103,16 +103,18 @@
           </div>
         </div>
 
+
         <div class="form-group">
-          <label>Matière</label>
-          <input type="text" class="form-control" [(ngModel)]="newSeance.matiere" required placeholder="Ex: Informatique">
+          <label>Module</label>
+          <select class="form-select" [(ngModel)]="newSeance.moduleId" (change)="onModuleChange()">
+            <option [ngValue]="null">-- Sélectionner un module --</option>
+            <option *ngFor="let m of modulesForClass" [ngValue]="m.id">{{ m.nom }}</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label>Professeur</label>
-          <select class="form-select" [(ngModel)]="newSeance.professeur">
-            <option *ngFor="let p of professeurs" [value]="p">{{ p }}</option>
-          </select>
+          <input type="text" class="form-control" [(ngModel)]="newSeance.professeur" readonly placeholder="Rempli automatiquement si le module a un enseignant">
         </div>
 
         <div class="form-group">
@@ -120,20 +122,13 @@
           <input type="text" class="form-control" [(ngModel)]="newSeance.salle" placeholder="Ex: Salle 4, Amphi A...">
         </div>
 
-        <div class="form-group">
-          <label>Type de séance</label>
-          <select class="form-select" [(ngModel)]="newSeance.type">
-            <option value="cours">Cours Magistral</option>
-            <option value="td">Travaux Dirigés (TD)</option>
-            <option value="tp">Travaux Pratiques (TP)</option>
-          </select>
-        </div>
+        <!-- Type removed: module selection determines professeur and matiere -->
 
       </div>
 
       <div class="modal-footer">
         <button class="btn-cancel" (click)="closeModal()">Annuler</button>
-        <button class="btn-primary" (click)="saveSeance()" [disabled]="!newSeance.matiere || !newSeance.professeur">
+        <button class="btn-primary" (click)="saveSeance()" [disabled]="!newSeance.moduleId">
           Enregistrer
         </button>
       </div>

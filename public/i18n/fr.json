@@ -979,6 +979,9 @@
       "pageTitle": "Mon Emploi du Temps",
       "pageDesc": "Consultez votre emploi du temps hebdomadaire mis à jour.",
       "btnDownload": "Télécharger en PDF",
+      "generatedOn": "Généré le",
+      "noSchedule": "Aucun emploi du temps à télécharger.",
+      "noClassToday": "Aucun cours prévu pour ce jour.",
       "days": {
         "lundi": "Lundi",
         "mardi": "Mardi",

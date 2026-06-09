@@ -41,7 +41,7 @@
           <a routerLink="/espace-etudiant/emploi" class="btn-link"><i class="bi bi-arrow-right"></i></a>
         </div>
         <div class="widget-body p-0">
-          <ul class="schedule-list">
+          <ul class="schedule-list" *ngIf="coursDuJour.length > 0">
             <li *ngFor="let cours of coursDuJour">
               <div class="schedule-time">{{ cours.heure }}</div>
               <div class="schedule-details">
@@ -51,6 +51,10 @@
               </div>
             </li>
           </ul>
+          <div class="empty-schedule" *ngIf="coursDuJour.length === 0">
+            <i class="bi bi-calendar-x"></i>
+            <p>Aucun cours prévu aujourd'hui.</p>
+          </div>
         </div>
       </div>
 

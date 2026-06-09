@@ -997,6 +997,9 @@
       "pageTitle": "جدول حصصي",
       "pageDesc": "اطلع على جدول حصصك الأسبوعي المحدث.",
       "btnDownload": "تحميل PDF",
+      "generatedOn": "تم إنشاؤه في",
+      "noSchedule": "لا يوجد جدول لتحميله.",
+      "noClassToday": "لا يوجد حصة لهذا اليوم.",
       "days": {
         "lundi": "الإثنين",
         "mardi": "الثلاثاء",

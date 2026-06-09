@@ -212,6 +212,10 @@ export const routes: Routes = [
         loadComponent: () => import('./component/pages/admin/formations/formations').then(m => m.AdminFormationsComponent)
       },
       {
+        path: 'modules',
+        loadComponent: () => import('./component/pages/admin/modules/modules').then(m => m.AdminModulesComponent)
+      },
+      {
         path: 'content',
         loadComponent: () => import('./component/pages/admin/content/content').then(m => m.AdminContentComponent)
       },
