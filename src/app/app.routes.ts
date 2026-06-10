@@ -81,6 +81,11 @@ export const routes: Routes = [
           import('./component/pages/actualites/actualites').then(m => m.ActualitesComponent)
       },
       {
+        path: 'actualites/:id',
+        loadComponent: () =>
+          import('./component/pages/actualites-details/actualites-details').then(m => m.ActualitesDetailsComponent)
+      },
+      {
         path: 'home/banniere-dynamique',
         loadComponent: () =>
           import('./component/pages/home/composants/banniere-dynamique/banniere-dynamique').then(m => m.BanniereDynamique)

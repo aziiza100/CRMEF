@@ -52,13 +52,15 @@
           [attr.data-aos]="'zoom-in'" 
           [attr.data-aos-delay]="i * 100">
           <div class="course-item">
-            <img [src]="item.image" class="img-fluid course-img" [alt]="item.title">
+            <a [routerLink]="['/actualites', item.id]" style="cursor: pointer; color: inherit; text-decoration: none;">
+              <img [src]="item.image" class="img-fluid course-img" [alt]="item.title">
+            </a>
             <div class="course-content">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <p class="category">{{ item.category }}</p>
                 <p class="price">{{ formatDate(item.date) }}</p>
               </div>
-              <h3><a [routerLink]="[]">{{ item.title }}</a></h3>
+              <h3><a [routerLink]="['/actualites', item.id]">{{ item.title }}</a></h3>
               <p class="description">{{ item.description }}</p>
             </div>
           </div>

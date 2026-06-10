@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { RouterModule } from '@angular/router';
@@ -12,6 +12,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     styleUrls: ['./navbar.css'],
 })
 export class Navbar {
+  @Input() isMenuOpen = false;
+  @Output() closeMenuEvent = new EventEmitter<void>();
   currentLang: 'fr' | 'ar' = 'fr';
 
  constructor(private translate: TranslateService) {
@@ -40,5 +42,7 @@ export class Navbar {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
   
-  
+  closeMenu() {
+    this.closeMenuEvent.emit();
+  }
 }

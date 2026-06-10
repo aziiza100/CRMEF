@@ -1,0 +1,44 @@
+<div class="actualite-details-page">
+  <!-- Hero / Header Section -->
+  <div class="details-header" data-aos="fade-in">
+    <div class="container">
+      <div class="breadcrumbs">
+        <ol>
+          <li><a routerLink="/home">{{ 'nav.home' | translate }}</a></li>
+          <li><a routerLink="/actualites">{{ 'nav.actualites' | translate }}</a></li>
+          <li class="current">{{ category }}</li>
+        </ol>
+      </div>
+      
+      <div class="meta-info">
+        <span class="category-badge">{{ category }}</span>
+        <span class="date"><i class="bi bi-calendar3"></i> {{ formattedDate }}</span>
+      </div>
+      <h1 class="title">{{ title }}</h1>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="details-content section-padding">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="main-image" *ngIf="image" data-aos="fade-up">
+            <img [src]="image" [alt]="title" class="img-fluid rounded shadow-sm">
+          </div>
+          
+          <div class="content-body" data-aos="fade-up" data-aos-delay="100">
+            <p>{{ description }}</p>
+          </div>
+          
+          <div class="back-link mt-5 text-center">
+            <a routerLink="/actualites" class="btn btn-outline-primary rounded-pill px-4 py-2">
+              <i class="bi" [ngClass]="translate.currentLang === 'ar' ? 'bi-arrow-right' : 'bi-arrow-left'"></i> 
+              {{ 'presentation.button' | translate }} <!-- Using existing generic back button or similar translation -->
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

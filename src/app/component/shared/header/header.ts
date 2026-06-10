@@ -6,12 +6,13 @@ import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-header',
-  imports: [Navbar, RouterOutlet, TranslateModule, RouterLink],
+  imports: [Navbar, TranslateModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
   currentLang: 'fr' | 'ar' = 'fr';
+  isMobileMenuOpen = false;
 
  constructor(private translate: TranslateService) {
 
@@ -38,4 +39,11 @@ export class Header {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
   
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 }
