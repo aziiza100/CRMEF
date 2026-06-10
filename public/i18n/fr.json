@@ -49,6 +49,8 @@
       "title": "Espaces",
       "desc": "Étudiants, enseignants et administration."
     }
+    
+
   },
   "presentation": {
     "pageTitle": "Présentation du CRMEF Marrakech-Safi",
@@ -802,7 +804,11 @@
       "profil": {
         "title": "Consulter profil",
         "desc": "Gérez vos informations personnelles et paramètres de compte."
-      }
+      },
+      "emploi": {
+        "title": "Emploi du temps",
+        "desc": "Gérez votre emploi du temps, consultez les cours à venir et organisez votre temps."
+      } 
     }
   },
   "cours": {

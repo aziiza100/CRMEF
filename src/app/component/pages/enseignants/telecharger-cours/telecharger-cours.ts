@@ -16,7 +16,9 @@ interface CoursDoc {
   enseignant: string
   nom_fichier: string;
   module_id: number;
-  created_at:Date
+  module: string;
+  created_at:string;
+  classe_id?: number;
 }
 
 @Component({
@@ -82,13 +84,15 @@ throw new Error('Method not implemented.');
           id: support.id,
           titre: support.titre,
           description: support.description || '',
-          date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          date: support.created_at ? support.created_at : '',
           fichier: support.nom_fichier || support.nom_fichier,
           format: support.nom_fichier ? support.nom_fichier.split('.').pop() : 'pdf',
           enseignant: support.enseignant || 'Enseignant',
           nom_fichier :support.nom_fichier,
           module_id: support.id_module,
-          created_at: support.created_at ? new Date(support.created_at) : new Date()
+          module :support.module_nom,
+          created_at: support.created_at ? support.created_at : '',
+          classe_id: support.id_classe || support.classe_id,
         }));
         // this.appliquerFiltres();
       },
@@ -141,10 +145,11 @@ downloadSupport(support: any) {
       cours.titre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       cours.description.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-    const matchSpecialty =
-      !this.selectedSpecialty || // <-- important
-      cours.module_id === Number(this.selectedSpecialty);
-    return matchSearch && matchSpecialty;
+    const matchClasse =
+      !this.selectedSpecialty || 
+      cours.classe_id === Number(this.selectedSpecialty);
+
+    return matchSearch && matchClasse;
   });
 }
 

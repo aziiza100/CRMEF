@@ -1,0 +1,139 @@
+<div class="admin-emploi-page">
+  
+  <div class="page-header">
+    <h2 class="page-title">Emplois du Temps</h2>
+    <p class="page-desc">Gérez l'emploi du temps de chaque classe.</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification success-toast" [class.show]="showToast">
+    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
+  </div>
+
+  <!-- Sélecteur de Classe -->
+  <div class="toolbar">
+    <div class="class-selector">
+      <label><i class="bi bi-diagram-3"></i> Sélectionner une classe</label>
+      <select class="form-select large-select" [(ngModel)]="selectedClass" (change)="onClassChange()">
+        <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
+      </select>
+    </div>
+    
+    <button class="btn-primary" (click)="openModal()">
+      <i class="bi bi-plus-lg"></i> Nouvelle Séance
+    </button>
+  </div>
+
+  <div class="emploi-container">
+    
+    <!-- Sidebar Jours -->
+    <div class="days-sidebar">
+      <button 
+        *ngFor="let jour of jours" 
+        class="day-btn" 
+        [class.active]="jourActif.id === jour.id"
+        (click)="selectJour(jour)">
+        <i class="bi bi-calendar-day"></i>
+        <span>{{ jour.nomKey }}</span>
+        <div class="count-badge" *ngIf="jour.seances.length > 0">{{ jour.seances.length }}</div>
+      </button>
+    </div>
+
+    <!-- Contenu de la journée -->
+    <div class="day-content">
+      <div class="day-header">
+        <h3>{{ jourActif.nomKey }} - {{ selectedClass }}</h3>
+      </div>
+
+      <div class="seances-list">
+        
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="jourActif.seances.length === 0">
+          <i class="bi bi-calendar-x"></i>
+          <p>Aucune séance prévue pour ce jour.</p>
+        </div>
+
+        <!-- Cartes des Séances -->
+        <div class="seance-card" *ngFor="let seance of jourActif.seances">
+          
+          <div class="seance-time">
+            <span class="time-start">{{ seance.heureDebut }}</span>
+            <span class="time-separator"></span>
+            <span class="time-end">{{ seance.heureFin }}</span>
+          </div>
+          
+          <div class="seance-details">
+            <h4 class="matiere">{{ seance.matiere }}</h4>
+            <div class="info-group">
+              <span class="prof"><i class="bi bi-person-video3"></i> {{ seance.professeur }}</span>
+              <span class="salle"><i class="bi bi-door-open"></i> {{ seance.salle }}</span>
+              
+            </div>
+          </div>
+
+          <div class="seance-actions">
+            <button class="action-btn edit-btn" (click)="openModal(seance)"><i class="bi bi-pencil-square"></i></button>
+            <button class="action-btn delete-btn" (click)="deleteSeance(seance.id)"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>{{ editingId ? 'Modifier la séance' : 'Ajouter une Séance' }} - {{ jourActif.nomKey }}</h3>
+        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        
+        <div class="time-grid">
+          <div class="form-group">
+            <label><i class="bi bi-clock"></i> Heure de début</label>
+            <input type="time" class="form-control" [(ngModel)]="newSeance.heureDebut" required>
+          </div>
+          <div class="form-group">
+            <label><i class="bi bi-clock-fill"></i> Heure de fin</label>
+            <input type="time" class="form-control" [(ngModel)]="newSeance.heureFin" required>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label>Module</label>
+          <select class="form-select" [(ngModel)]="newSeance.moduleId" (change)="onModuleChange()">
+            <option [ngValue]="null">-- Sélectionner un module --</option>
+            <option *ngFor="let m of modulesForClass" [ngValue]="m.id">{{ m.nom }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Professeur</label>
+          <input type="text" class="form-control" [(ngModel)]="newSeance.professeur" readonly placeholder="Rempli automatiquement si le module a un enseignant">
+        </div>
+
+        <div class="form-group">
+          <label>Salle</label>
+          <input type="text" class="form-control" [(ngModel)]="newSeance.salle" placeholder="Ex: Salle 4, Amphi A...">
+        </div>
+
+        <!-- Type removed: module selection determines professeur and matiere -->
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button class="btn-primary" (click)="saveSeance()" [disabled]="!newSeance.moduleId">
+          Enregistrer
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

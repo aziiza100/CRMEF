@@ -56,7 +56,8 @@
         <div class="cours-meta">
           <span><i class="bi bi-person-fill"></i> {{ 'telechargerCours.by' | translate }}: {{ s.enseignant || 'Enseignant CRMEF' }}</span>
           <span><i class="bi bi-calendar3"></i> {{ s.created_at }}</span>
-          <span><i class="bi bi-hdd-fill"></i> {{ 'telecharger le Cours' | translate }}: {{ s.nom_fichier }}</span>
+          <span>{{ 'module' | translate }}: {{ s.module }}</span>
+          <span><i class="bi bi-hdd-fill"></i> {{ 'Cours' | translate }}: {{ s.nom_fichier }}</span>
         </div>
       </div>
 

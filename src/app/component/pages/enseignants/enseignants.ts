@@ -59,16 +59,22 @@ export class Enseignants implements OnInit {
   }
 
   dashboardModules = [
+    // {
+    //   id: 'messagerie',
+    //   icon: 'bi-envelope-paper',
+    //   route: null
+    // },
+    
     {
-      id: 'messagerie',
-      icon: 'bi-envelope-paper',
-      route: null
+      id: 'emploi',
+      icon: 'bi-calendar3',
+      route: '/espace-enseignant/emploi'
     },
     {
       id: 'telecharger-cours',
       icon: 'bi-download',
       route: '/espace-enseignant/telecharger-cours'
-    },
+    }, 
     {
       id: 'deposer-cours',
       icon: 'bi-cloud-arrow-up',

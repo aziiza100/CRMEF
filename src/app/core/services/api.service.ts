@@ -517,24 +517,7 @@ export class ApiService {
     }).pipe(catchError(this.handleError));
   }
 
-  createSeance(classeId: number, data: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/admin/classes/${classeId}/emploi`, data, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
-  }
-
-  updateSeance(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/admin/emploi/${id}`, data, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
-  }
-
-  deleteSeance(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/admin/emploi/${id}`, {
-      headers: this.getHeaders()
-    }).pipe(catchError(this.handleError));
-  }
-
+ 
   // ============================================================
   // TEACHER / ENSEIGNANT
   // ============================================================
@@ -571,6 +554,8 @@ export class ApiService {
     }
     return this.adminEnseignantsCache$;
   }
+  
+  
 
   createAdminEnseignant(data: any): Observable<any> {
     const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
@@ -609,6 +594,55 @@ export class ApiService {
     );
   }
 
+getEnseignantClasses(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/enseignant/classes`, {
+    headers: this.getHeaders()
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
+  
+
+  getEnseignantClass(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/enseignant/classes/${id}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+getEnseignantEmploiForClass(classeId: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/enseignant/classes/${classeId}/emploi`, {
+    headers: this.getHeaders()
+  }).pipe(catchError(this.handleError));
+}
+// ============================================================
+// crud d'une seance
+// ============================================================
+
+updateSeance(seanceId: number, payload: any): Observable<any> {
+  const role = localStorage.getItem('crmef_user_role'); 
+  
+  const url = role === 'enseignant'
+    ? `${this.baseUrl}/enseignant/emploi/${seanceId}`
+    : `${this.baseUrl}/admin/emploi/${seanceId}`; 
+
+  return this.http.put<any>(url, payload, { headers: this.getHeaders() });
+}
+createSeance(classeId: number, payload: any): Observable<any> {
+  const role = localStorage.getItem('crmef_user_role'); 
+  const url = role === 'enseignant' 
+    ? `${this.baseUrl}/enseignant/classes/${classeId}/emploi`
+    : `${this.baseUrl}/admin/classes/${classeId}/emploi`; 
+
+  return this.http.post<any>(url, payload, { headers: this.getHeaders() });
+}
+deleteSeance(seanceId: number): Observable<any> {
+  const role = localStorage.getItem('crmef_user_role'); 
+  
+  const url = role === 'enseignant'
+    ? `${this.baseUrl}/enseignant/emploi/${seanceId}`
+    : `${this.baseUrl}/admin/emploi/${seanceId}`; 
+
+  return this.http.delete<any>(url, { headers: this.getHeaders() });
+}
   // ============================================================
   // NOTES & STUDENT
   // ============================================================

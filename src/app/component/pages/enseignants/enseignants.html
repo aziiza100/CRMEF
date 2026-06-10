@@ -12,7 +12,7 @@
     </div>
     <nav class="sidebar-nav">
       <ul>
-        <li><a routerLink="/home" class="back-home"><i class="bi bi-arrow-left-circle"></i> {{ 'enseignant.backHome' | translate }}</a></li>
+        <!-- <li><a routerLink="/home" class="back-home"><i class="bi bi-arrow-left-circle"></i> {{ 'enseignant.backHome' | translate }}</a></li> -->
         <li class="nav-title">{{ 'enseignant.mainMenu' | translate }}</li>
         <li><a routerLink="/espace-enseignant" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="bi bi-grid-1x2"></i> {{ 'enseignant.dashboard' | translate }}</a></li>
         <li *ngFor="let mod of dashboardModules">

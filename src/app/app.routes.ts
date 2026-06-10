@@ -129,6 +129,10 @@ export const routes: Routes = [
         loadComponent: () => import('./component/pages/enseignants/dashboard/dashboard').then(m => m.EnseignantDashboard)
       },
       {
+        path: 'emploi',
+        loadComponent: () => import('./component/pages/enseignants/emploi/emploi').then(m => m.EnseignantEmploiComponent)
+      },
+      {
         path: 'cours',
         loadComponent: () => import('./component/pages/enseignants/cours/cours').then(m => m.CoursComponent)
       },
