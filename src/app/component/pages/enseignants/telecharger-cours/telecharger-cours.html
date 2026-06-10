@@ -21,38 +21,55 @@
         </div>
         <div class="col-md-4">
           <select class="form-select custom-select" [(ngModel)]="selectedSpecialty">
-            <option *ngFor="let spec of specialties" [value]="spec.value">{{ spec.labelKey | translate }}</option>
+            <option value="">Toutes les classes</option>
+
+            <option *ngFor="let classe of availableClasses" [value]="classe.id">
+              {{ classe.nom }}
+            </option>
           </select>
         </div>
       </div>
+
+      <!-- <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text">Module ID</span>
+            <input class="form-control" type="number" [(ngModel)]="moduleIdInput" placeholder="Entrez l'ID du module">
+            <button class="btn btn-primary" (click)="loadSupportsForModule()">Charger supports</button>
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
 
-  <!-- Grille des cours -->
-  <div class="cours-grid" *ngIf="filteredCours.length > 0">
-    <div class="cours-card" *ngFor="let cours of filteredCours">
+  <!-- Grille des supports (chargés depuis l'API) -->
+  <div class="cours-grid" *ngIf="filteredCours && filteredCours.length > 0">
+    <div class="cours-card" *ngFor="let s of filteredCours">
       <div class="cours-format-icon">
-        <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>
+        <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
       </div>
-      
+
       <div class="cours-content">
-        <h3 class="cours-title">{{ cours.titre }}</h3>
-        <p class="cours-desc">{{ cours.description }}</p>
-        
+        <h3 class="cours-title">{{ s.titre }}</h3>
+        <p class="cours-desc">{{ s.description }}</p>
+
         <div class="cours-meta">
-          <span><i class="bi bi-person-fill"></i> {{ 'telechargerCours.by' | translate }}: {{ cours.auteur }}</span>
-          <span><i class="bi bi-calendar3"></i> {{ cours.dateAjout }}</span>
-          <span><i class="bi bi-hdd-fill"></i> {{ 'telechargerCours.size' | translate }}: {{ cours.taille }}</span>
+          <span><i class="bi bi-person-fill"></i> {{ 'telechargerCours.by' | translate }}: {{ s.enseignant || 'Enseignant CRMEF' }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ s.created_at }}</span>
+          <span><i class="bi bi-hdd-fill"></i> {{ 'telecharger le Cours' | translate }}: {{ s.nom_fichier }}</span>
         </div>
       </div>
 
       <div class="cours-action">
-        <button class="btn-download" (click)="telecharger(cours)">
-          <i class="bi bi-download"></i> {{ 'telechargerCours.btnDownload' | translate }}
-        </button>
+        <!-- <button class="btn btn-secondary" (click)="viewSupport(s)">Voir</button> -->
+      <button class="btn btn-primary ms-2" (click)="downloadSupport(s)">
+        <i class="bi bi-download"></i> {{ 'telechargerCours.btnDownload' | translate }}
+      </button>      
       </div>
-    </div>
-  </div>
+          </div>
+        </div>
+
+ 
 
   <!-- État vide -->
   <div class="empty-state" *ngIf="filteredCours.length === 0">

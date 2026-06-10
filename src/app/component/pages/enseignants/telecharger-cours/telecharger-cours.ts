@@ -1,56 +1,152 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ApiService } from '../../../../core/services/api.service';
 
 interface CoursDoc {
-  id: number;
-  titre: string;
-  description: string;
-  specialite: string; // svt, math, pc, didactique
-  auteur: string;
-  dateAjout: string;
-  taille: string;
-  format: 'pdf' | 'doc' | 'zip';
+  
+  id: number,
+  titre: string,
+  description: string,
+  date: string,
+  fichier: string,
+  format: 'pdf',
+  enseignant: string
+  nom_fichier: string;
+  module_id: number;
+  created_at:Date
 }
 
 @Component({
   selector: 'app-enseignant-telecharger-cours',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, HttpClientModule],
   templateUrl: './telecharger-cours.html',
   styleUrls: ['./telecharger-cours.css']
 })
-export class TelechargerCoursComponent {
+export class TelechargerCoursComponent implements OnInit {
+  errorMessage = '';
+toggleClasse(_t20: any) {
+throw new Error('Method not implemented.');
+}
+  private apiService: ApiService = inject(ApiService);
   
   searchTerm: string = '';
-  selectedSpecialty: string = 'all';
-  showSuccess = false;
+  showSuccess = false; 
+  classesData: any[] = [];
+  availableClasses: any;
+  isLoading = true;
+  coursPublies: CoursDoc[] = [];
+  coursFiltres: CoursDoc[] = [];
 
-  specialties = [
-    { value: 'all', labelKey: 'telechargerCours.allSpecialties' },
-    { value: 'svt', labelKey: 'telechargerCours.specialties.svt' },
-    { value: 'math', labelKey: 'telechargerCours.specialties.math' },
-    { value: 'pc', labelKey: 'telechargerCours.specialties.pc' },
-    { value: 'didactique', labelKey: 'telechargerCours.specialties.didactique' }
-  ];
 
-  coursList: CoursDoc[] = [
-    { id: 1, titre: 'Introduction à la Didactique des SVT', description: 'Concepts fondamentaux et méthodologies de l\'enseignement des SVT au cycle qualifiant.', specialite: 'svt', auteur: 'Pr. Alaoui', dateAjout: '12 Sept 2023', taille: '2.4 MB', format: 'pdf' },
-    { id: 2, titre: 'Planification Pédagogique', description: 'Guide pratique pour la préparation des fiches pédagogiques et la gestion du temps scolaire.', specialite: 'didactique', auteur: 'Pr. Benjelloun', dateAjout: '05 Oct 2023', taille: '1.1 MB', format: 'doc' },
-    { id: 3, titre: 'Exercices d\'Algèbre Linéaire', description: 'Série d\'exercices corrigés pour la 1ère année Bac.', specialite: 'math', auteur: 'Pr. Idrissi', dateAjout: '22 Nov 2023', taille: '3.8 MB', format: 'pdf' },
-    { id: 4, titre: 'Mécanique Newtonienne', description: 'Support de cours complet avec schémas et démonstrations des lois de Newton.', specialite: 'pc', auteur: 'Pr. Tazi', dateAjout: '14 Dec 2023', taille: '5.2 MB', format: 'pdf' },
-    { id: 5, titre: 'Ateliers Pratiques SVT', description: 'Fiches techniques pour les expériences en laboratoire.', specialite: 'svt', auteur: 'Pr. Alaoui', dateAjout: '10 Jan 2024', taille: '12 MB', format: 'zip' }
-  ];
+  selectedSpecialty: string = '';
+  //filter
+   recherche = '';
+  filtreStatut = 'Tous';
 
-  get filteredCours(): CoursDoc[] {
-    return this.coursList.filter(cours => {
-      const matchSearch = cours.titre.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-                          cours.description.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchSpecialty = this.selectedSpecialty === 'all' || cours.specialite === this.selectedSpecialty;
-      return matchSearch && matchSpecialty;
+ ngOnInit() {
+    this.chargerClassesEnseignant();
+    this.chargerSupportsEnseignant();
+  } 
+  
+   chargerClassesEnseignant() {
+    this.apiService.getEnseignantProfile().subscribe({
+      next: (profile: any) => {
+        const classes = profile.classes ?? profile.enseignant?.classes ?? [];
+        if (classes && classes.length > 0) {
+          this.classesData = classes;
+          this.availableClasses = classes.map((classe: any) =>
+            ({ id: classe.id, nom: classe.nom || 'Classe inconnue' })
+          );
+         
+        } else {
+          this.availableClasses = [];
+        }
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des classes', err);
+        this.availableClasses = [];
+        this.isLoading = false;
+      }
     });
   }
+
+   chargerSupportsEnseignant() {
+    this.apiService.getEnseignantSupports().subscribe({
+      next: (supports: any[]) => {
+        this.coursPublies = supports.map((support: any) => ({
+          id: support.id,
+          titre: support.titre,
+          description: support.description || '',
+          date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          fichier: support.nom_fichier || support.nom_fichier,
+          format: support.nom_fichier ? support.nom_fichier.split('.').pop() : 'pdf',
+          enseignant: support.enseignant || 'Enseignant',
+          nom_fichier :support.nom_fichier,
+          module_id: support.id_module,
+          created_at: support.created_at ? new Date(support.created_at) : new Date()
+        }));
+        // this.appliquerFiltres();
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des supports', err);
+        this.coursPublies = [];
+      }
+    });
+  }
+
+
+downloadSupport(support: any) {
+  // 1. Vérification sécurisée de la présence du fichier
+  if (!support || !support.fichier) {
+    console.error('Support invalide ou fichier manquant', support);
+    return;
+  }
+
+  // 2. Récupération sécurisée des variables (avec valeur par défaut si module_id est undefined)
+  const moduleId = support.module_id || 0; 
+  const supportId = support.id;
+  const nomFichier = support.nom_fichier || `${support.titre}.pdf`;
+
+  // 3. Appel à votre API
+  this.apiService.downloadSupport(moduleId, supportId).subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomFichier;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Erreur lors du téléchargement de la note.', err);
+    }
+  });
+}
+
+  // New: supports loaded from API for the selected module
+  supports: any[] = [];
+  moduleIdInput: number | null = null;
+
+ get filteredCours(): CoursDoc[] {
+  return this.coursPublies.filter(cours => {
+
+    const matchSearch =
+      cours.titre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      cours.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+    const matchSpecialty =
+      !this.selectedSpecialty || // <-- important
+      cours.module_id === Number(this.selectedSpecialty);
+    return matchSearch && matchSpecialty;
+  });
+}
 
   getFormatIcon(format: string): string {
     switch(format) {
@@ -64,10 +160,49 @@ export class TelechargerCoursComponent {
   telecharger(cours: CoursDoc) {
     // Simulation du téléchargement
     console.log('Téléchargement de:', cours.titre);
-    
+
     this.showSuccess = true;
     setTimeout(() => {
       this.showSuccess = false;
     }, 3000);
+  }
+
+  constructor(private http: HttpClient) {}
+
+
+
+  // Load supports for a given module via API
+  loadSupportsForModule() {
+    if (!this.moduleIdInput) {
+      return;
+    }
+
+    const url = `/api/modules/${this.moduleIdInput}/supports`;
+    this.http.get<any[]>(url).subscribe({
+      next: (res) => {
+        this.supports = res;
+      },
+      error: (err) => {
+        console.error('Failed to load supports', err);
+        this.supports = [];
+      }
+    });
+  }
+
+  // Download support via API download route
+ 
+
+  // Show support details (calls show endpoint)
+  viewSupport(support: any) {
+    if (!support || !support.id_module) return;
+    const url = `/api/modules/${support.id_module}/supports/${support.id}`;
+    this.http.get<any>(url).subscribe({
+      next: (data) => {
+        alert('Support: ' + (data.titre || '') + '\n' + (data.description || ''));
+      },
+      error: (err) => {
+        console.error('Failed to fetch support details', err);
+      }
+    });
   }
 }
