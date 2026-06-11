@@ -620,26 +620,20 @@ getEnseignantEmploiForClass(classeId: number): Observable<any> {
 updateSeance(seanceId: number, payload: any): Observable<any> {
   const role = localStorage.getItem('crmef_user_role'); 
   
-  const url = role === 'enseignant'
-    ? `${this.baseUrl}/enseignant/emploi/${seanceId}`
-    : `${this.baseUrl}/admin/emploi/${seanceId}`; 
+  const url =  `${this.baseUrl}/admin/emploi/${seanceId}`; 
 
   return this.http.put<any>(url, payload, { headers: this.getHeaders() });
 }
 createSeance(classeId: number, payload: any): Observable<any> {
   const role = localStorage.getItem('crmef_user_role'); 
-  const url = role === 'enseignant' 
-    ? `${this.baseUrl}/enseignant/classes/${classeId}/emploi`
-    : `${this.baseUrl}/admin/classes/${classeId}/emploi`; 
+  const url = `${this.baseUrl}/admin/classes/${classeId}/emploi`; 
 
   return this.http.post<any>(url, payload, { headers: this.getHeaders() });
 }
 deleteSeance(seanceId: number): Observable<any> {
   const role = localStorage.getItem('crmef_user_role'); 
   
-  const url = role === 'enseignant'
-    ? `${this.baseUrl}/enseignant/emploi/${seanceId}`
-    : `${this.baseUrl}/admin/emploi/${seanceId}`; 
+  const url = `${this.baseUrl}/admin/emploi/${seanceId}`; 
 
   return this.http.delete<any>(url, { headers: this.getHeaders() });
 }

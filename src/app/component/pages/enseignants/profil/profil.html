@@ -14,7 +14,7 @@
   <div class="toast-notification pwd-error-toast" [class.show]="showPwdError">
     <i class="bi bi-exclamation-circle-fill"></i> {{ pwdErrorMsg }}
   </div>
-
+ 
   <div class="profil-grid">
     
     <!-- Zone Avatar et Résumé (Gauche) -->
@@ -39,10 +39,7 @@
             <i class="bi bi-telephone"></i>
             <span>{{ profilInfo.tel }}</span>
           </div>
-          <div class="meta-item">
-            <i class="bi bi-calendar-check"></i>
-            <span>Membre depuis: {{ profilInfo.dateRejoindre }}</span>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -80,10 +77,7 @@
               </div>
             </div>
 
-            <div class="form-group mt-3">
-              <label>{{ 'profil.form.bio' | translate }}</label>
-              <textarea class="form-control" rows="4" [(ngModel)]="profilInfo.bio" name="bio" [placeholder]="'profil.form.bioPh' | translate"></textarea>
-            </div>
+          
 
             <div class="text-end mt-4">
               <button type="submit" class="btn-save" [disabled]="!profilForm.valid">

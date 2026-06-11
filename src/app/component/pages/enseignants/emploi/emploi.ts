@@ -192,53 +192,7 @@ export class EnseignantEmploiComponent {
     this.showModal = false;
   }
 
-  saveSeance() {
-    this.api.getEnseignantClasses().subscribe({ 
-      next: (classes: any[]) => {
-        const cls = classes.find((c: any) => c.nom === this.selectedClass);
-        if (!cls) return this.triggerToast('Classe introuvable');
-
-        const payload: any = {
-          jour: this.jourActif.id,
-          heureDebut: this.newSeance.heureDebut,
-          heureFin: this.newSeance.heureFin,
-          module_id: this.newSeance.moduleId ?? null,
-          salle: this.newSeance.salle
-        };
-
-        if (this.editingId) {
-          this.api.updateSeance(this.editingId, payload).subscribe({ 
-            next: () => {
-              this.loadEmploiForSelectedClass();
-              this.closeModal();
-              this.triggerToast('Séance mise à jour.');
-            }, 
-            error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible de mettre à jour la séance') 
-          });
-        } else {
-          this.api.createSeance(cls.id, payload).subscribe({ 
-            next: () => {
-              this.loadEmploiForSelectedClass();
-              this.closeModal();
-              this.triggerToast('Séance ajoutée.');
-            }, 
-            error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible d\'ajouter la séance') 
-          });
-        }
-      }
-    });
-  }
-
-  deleteSeance(id: number) {
-    if (!confirm("Supprimer cette séance ?")) return;
-    this.api.deleteSeance(id).subscribe({ 
-      next: () => {
-        this.loadEmploiForSelectedClass();
-        this.triggerToast('Séance supprimée.');
-      }, 
-      error: (err) => this.triggerToast(err?.message || 'Impossible de supprimer la séance') 
-    });
-  }
+  
 
   triggerToast(msg: string) {
     this.toastMessage = msg;

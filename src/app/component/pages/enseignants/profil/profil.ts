@@ -17,14 +17,14 @@ export class ProfilComponent implements OnInit {
 
   // Profil de l'enseignant
   profilInfo = {
-    nom: 'Prof. Mohammed Alaoui',
-    email: 'enseignant@crmef.ma',
-    tel: '06 12 34 56 78',
-    specialite: 'Didactique des Sciences (SVT)',
-    grade: 'Professeur Agrégé',
-    bio: 'Professeur agrégé avec plus de 15 ans d\'expérience dans l\'enseignement secondaire et la formation des formateurs.',
-    dateRejoindre: 'Septembre 2020',
-    avatar: 'https://ui-avatars.com/api/?name=Mohammed+Alaoui&background=005E76&color=fff&size=150'
+    nom: '',
+    email: '',
+    tel: '',
+    specialite: '',
+    grade: '',
+    bio: '',
+    dateRejoindre: '',
+    avatar: ''
   };
 
   // Variables pour le changement de mot de passe
