@@ -12,16 +12,15 @@ import { ApiService } from '../../../../core/services/api.service';
   styleUrls: ['./dashboard.css']
 })
 export class EnseignantDashboard implements OnInit {
+  // Stats dynamiques
   classesCount = 0;
+  coursesCount = 0;   
+  totalHours = 0;     
 
-  dashboardModules = [
-    {
-      id: 'messagerie',
-      icon: 'bi-envelope-paper',
-      colorClass: 'module-primary',
-      badge: '3',
-      route: '/espace-enseignant'
-    },
+  // Prochain cours dynamique
+  nextClass: any = null;
+
+  dashboardModules = [ 
     {
       id: 'telecharger-cours',
       icon: 'bi-cloud-arrow-down',
@@ -40,7 +39,7 @@ export class EnseignantDashboard implements OnInit {
       id: 'gerer-notes',
       icon: 'bi-journal-check',
       colorClass: 'module-warning',
-      badge: '!',
+      badge: null, 
       route: '/espace-enseignant/notes'
     },
     {
@@ -59,25 +58,71 @@ export class EnseignantDashboard implements OnInit {
     }
   ];
 
-  recentActivities = [
-    { text: 'Vous avez déposé le support "Didactique des SVT - Chap 3"', time: 'Il y a 2 heures', icon: 'bi-file-earmark-pdf', color: 'text-danger' },
-    { text: 'Nouvelle note d\'information de la direction', time: 'Hier à 14h30', icon: 'bi-bell', color: 'text-warning' },
-    { text: 'Saisie des notes finalisée pour le groupe SVT-2', time: 'Il y a 2 jours', icon: 'bi-check-circle', color: 'text-success' }
-  ];
+  // Activities dynamiques
+  recentActivities: any[] = [];
 
   constructor(private api: ApiService) {}
 
   ngOnInit() {
-    this.loadStats();
+    this.loadDashboardData();
   }
 
-  loadStats() {
-    this.api.getEnseignantProfile().subscribe({
-      next: (profile) => {
-        this.classesCount = profile.classes_count ?? 0;
+  loadDashboardData() {
+    this.api.getEnseignantDashbord().subscribe({
+      next: (response: any) => {
+        const profile = response.enseignant || response;
+        
+        // 1. Stats Calculation
+        if (profile.classes) {
+          this.classesCount = profile.classes.length;
+        } else {
+          this.classesCount = response.classes_count ?? 0;
+        }
+
+        const modules = profile.modules || [];
+        this.coursesCount = modules.length || response.modules_count || 0;
+
+        let hoursSum = 0;
+        modules.forEach((mod: any) => {
+          hoursSum += Number(mod.masse_horraire || mod.masse_horaire || 0);
+        });
+        this.totalHours = hoursSum > 0 ? hoursSum : (response.heures_count ?? 18);
+
+        // 2. Activités Récentes Dynamiques (Mapping)
+        if (response.activities && response.activities.length > 0) {
+          this.recentActivities = response.activities.map((act: any) => ({
+            text: act.description || act.text || 'Activité enregistrée',
+            time: act.time || act.created_at_formatted || 'Récemment',
+            icon: act.icon || 'bi-file-earmark-text',
+            color: act.color || 'text-primary'
+          }));
+        } else {
+          // Fallback au cas ou l'historique est vide
+          this.recentActivities = [
+            { text: `Vous êtes affecté à ${this.coursesCount} modules de formation.`, time: 'Actualisé à l\'instant', icon: 'bi-info-circle', color: 'text-info' },
+            { text: 'Saisie des notes disponible pour vos classes.', time: 'Actif', icon: 'bi-check-circle', color: 'text-success' }
+          ];
+        }
+
+        // 3. Prochain Cours Dynamique
+        if (response.next_class || response.prochain_cours) {
+          const nc = response.next_class || response.prochain_cours;
+          this.nextClass = {
+            time: `${nc.heure_debut || nc.time_start || '14:30'} - ${nc.heure_fin || nc.time_end || '16:30'}`,
+            subject: nc.module_nom || nc.module || 'Cours non spécifié',
+            location: nc.salle || nc.room || 'Salle non définie',
+            classe: nc.classe_nom || nc.classe || ''
+          };
+        } else {
+          this.nextClass = null; // Ghadi i-biyyen design compact f l-html ila makaynch cours jay
+        }
       },
-      error: () => {
+      error: (err) => {
+        console.error('Erreur lors du chargement du dashboard enseignant:', err);
         this.classesCount = 0;
+        this.coursesCount = 0;
+        this.totalHours = 0;
+        this.nextClass = null;
       }
     });
   }

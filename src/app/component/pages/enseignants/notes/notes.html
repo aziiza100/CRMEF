@@ -107,7 +107,7 @@
           </div>
           
           <div class="action-buttons d-flex gap-2">
-            <button class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="downloadNote()">
+            <button class="btn btn-outline-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="downloadNote(currentNote)">
               <i class="bi bi-download"></i> {{ 'notes.download' | translate }}
             </button>
             <button class="btn btn-danger rounded-pill px-4 py-2 d-flex align-items-center gap-2" (click)="deleteNote()">

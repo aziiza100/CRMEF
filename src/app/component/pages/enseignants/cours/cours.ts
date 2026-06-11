@@ -10,7 +10,7 @@ interface Cours {
   id: number;
   titre: string;
   description: string;
-  classes: string[];
+  classes: string[]; // Tableau de chaînes pour l'affichage
   statut: 'Publié' | 'Brouillon';
   date: string;
   fichier: string | null;
@@ -27,11 +27,9 @@ interface Cours {
 export class CoursComponent implements OnInit {
   private apiService: ApiService = inject(ApiService);
   
-  // Liste des classes disponibles pour l'affectation (chargée du backend)
   availableClasses: string[] = [];
   classesData: any[] = [];
   
-  // Modèle pour le nouveau cours
   nouveauCours = {
     titre: '',
     description: '',
@@ -40,13 +38,10 @@ export class CoursComponent implements OnInit {
     nomFichier: ''
   };
 
-  // Liste des cours existants (chargés du backend)
   coursPublies: Cours[] = [];
-
-  // Propriétés de filtrage et d'UI
+  coursFiltres: Cours[] = [];
   recherche = '';
   filtreStatut = 'Tous';
-  coursFiltres: Cours[] = [];
   modeEdition = false;
   coursEditeId: number | null = null;
   showSuccessToast = false;
@@ -54,60 +49,54 @@ export class CoursComponent implements OnInit {
   fileErrorMessage = '';
   submissionErrors: string[] = [];
 
-  ngOnInit() {
+  ngOnInit() { 
     this.chargerClassesEnseignant();
-    this.chargerSupportsEnseignant();
   }
 
-  /**
-   * Charger les classes affectées à l'enseignant connecté depuis le backend
-   */
   chargerClassesEnseignant() {
     this.apiService.getEnseignantProfile().subscribe({
       next: (profile: any) => {
         const classes = profile.classes ?? profile.enseignant?.classes ?? [];
-        if (classes && classes.length > 0) {
-          this.classesData = classes;
-          this.availableClasses = classes.map((classe: any) => classe.nom || classe.nom_classe || classe.designation || 'Classe inconnue');
-        } else {
-          this.availableClasses = [];
-        }
-        this.isLoading = false;
+        this.classesData = classes;
+        this.availableClasses = classes.map((classe: any) => classe.nom || classe.nom_classe || classe.designation || 'Classe inconnue');
+        this.chargerSupportsEnseignant();
       },
-      error: (err: any) => {
-        console.error('Erreur lors du chargement des classes', err);
-        this.availableClasses = [];
-        this.isLoading = false;
-      }
+      error: (err) => console.error(err)
     });
   }
 
-  /**
-   * Charger les supports (documents de cours) de l'enseignant depuis le backend
-   */
   chargerSupportsEnseignant() {
     this.apiService.getEnseignantSupports().subscribe({
       next: (supports: any[]) => {
-        this.coursPublies = supports.map((support: any) => ({
-          id: support.id,
-          titre: support.titre,
-          description: support.description || '',
-          classes: support.classes || [],
-          statut: 'Publié',
-          date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-          fichier: support.nom_fichier || support.titre,
-          module_id: support.id_module // Stocker le module ID pour la suppression
-        }));
+        this.coursPublies = supports.map((support: any) => {
+          // Extraire les noms des classes associées à ce support
+          let classesNoms: string[] = [];
+          if (support.classes && support.classes.length > 0) {
+            classesNoms = support.classes.map((c: any) => c.nom || c.nom_classe || 'Classe');
+          }
+
+          return {
+            id: support.id,
+            titre: support.titre,
+            description: support.description || '',
+            classes: classesNoms,
+            statut: 'Publié',
+            date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            fichier: support.nom_fichier || support.titre,
+            module_id: support.id_module
+          };
+        });
         this.appliquerFiltres();
+        this.isLoading = false;
       },
       error: (err: any) => {
         console.error('Erreur lors du chargement des supports', err);
         this.coursPublies = [];
+        this.isLoading = false;
       }
-    });
+    }); 
   }
 
-  // Gérer la sélection du fichier
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -123,7 +112,6 @@ export class CoursComponent implements OnInit {
     }
   }
 
-  // Gérer la sélection multiple des classes (checkboxes)
   toggleClasse(classe: string) {
     const index = this.nouveauCours.classesSelectionnees.indexOf(classe);
     if (index > -1) {
@@ -145,62 +133,39 @@ export class CoursComponent implements OnInit {
     }
   }
 
-  // Soumettre le formulaire
   soumettreCours(statut: 'Publié' | 'Brouillon') {
     if (!this.nouveauCours.titre) return;
+
+    if (this.modeEdition) {
+      this.executerMiseAJour();
+      return;
+    }
 
     if (!this.nouveauCours.fichier) {
       alert('Veuillez sélectionner un fichier PDF');
       return;
     }
 
-    if (this.nouveauCours.fichier.type !== 'application/pdf') {
-      alert('Le fichier doit être un PDF.');
-      return;
-    }
-
-    // Pour les classes sélectionnées, créer un support pour chaque module enseigné dans ces classes
     this.creerSupportsClasses();
   }
 
-  /**
-   * Créer des supports pour les classes sélectionnées
-   * Pour chaque classe, on crée un support pour chaque module de l'enseignant dans cette classe
-   */
   private creerSupportsClasses() {
     if (this.nouveauCours.classesSelectionnees.length === 0) {
       alert('Veuillez sélectionner au moins une classe');
       return;
     }
 
-    // Collecter tous les modules uniques des classes sélectionnées
     const modulesIds = new Set<number>();
-    const missingModuleClasses: string[] = [];
-
     this.classesData.forEach((classe: any) => {
-      const classLabel = classe.nom || classe.nom_classe || classe.designation || 'Classe inconnue';
+      const classLabel = classe.nom || classe.nom_classe || 'Classe inconnue';
       if (this.nouveauCours.classesSelectionnees.includes(classLabel)) {
         const modules = classe.modules ?? classe.modules_list ?? [];
-        if (!modules || modules.length === 0) {
-          missingModuleClasses.push(classLabel);
-          return;
-        }
-
         modules.forEach((module: any) => {
-          const moduleId = module.id ?? module.module_id ?? module.id_module ?? module.moduleId;
-          if (typeof moduleId === 'number') {
-            modulesIds.add(moduleId);
-          } else {
-            console.warn(`Module sans identifiant trouvé pour la classe ${classLabel}`, module);
-          }
+          const moduleId = module.id ?? module.module_id;
+          if (moduleId) modulesIds.add(moduleId);
         });
       }
     });
-
-    if (missingModuleClasses.length > 0) {
-      alert(`Aucun module trouvé pour les classes suivantes : ${missingModuleClasses.join(', ')}`);
-      return;
-    }
 
     if (modulesIds.size === 0) {
       alert('Aucun module valide trouvé pour les classes sélectionnées');
@@ -214,51 +179,127 @@ export class CoursComponent implements OnInit {
         this.nouveauCours.description,
         this.nouveauCours.fichier!
       ).pipe(
-        catchError((err: any) => {
-          console.error(`Erreur lors de la création du support pour module ${moduleId}:`, err);
-          return of({ success: false, moduleId, error: err });
-        })
+        catchError((err: any) => of({ success: false, moduleId, error: err }))
       )
     );
 
+    this.isLoading = true;
     forkJoin(requests).subscribe((results) => {
-      const successResults = results.filter((result: any) => result && result.success !== false);
       const failedResults = results.filter((result: any) => result && result.success === false);
 
-      if (successResults.length > 0) {
-        this.reinitialiserFormulaire();
-        this.appliquerFiltres();
-        this.chargerSupportsEnseignant();
-        this.afficherToast();
-      }
+      this.reinitialiserFormulaire();
+      this.chargerSupportsEnseignant();
+      this.afficherToast();
 
       if (failedResults.length > 0) {
-        this.submissionErrors = failedResults.map((result: any) => {
-          const moduleId = result.moduleId;
-          const message = result.error?.message || result.error?.statusText || 'Erreur inconnue';
-          return `Module ${moduleId} : ${message}`;
-        });
-        alert(`Certains supports n’ont pas pu être ajoutés :\n${this.submissionErrors.join('\n')}`);
+        alert('Certains supports n’ont pas pu être ajoutés.');
       }
     });
   }
 
-  // Éditer un cours
+  executerMiseAJour() {
+    if (!this.coursEditeId || !this.nouveauCours.titre) return;
+
+    // Trouver le cours en cours d'édition pour récupérer son module_id original
+    const coursEnCours = this.coursPublies.find(c => c.id === this.coursEditeId);
+    const mId = coursEnCours?.module_id;
+
+    if (!mId) {
+      alert('Erreur: Impossible de localiser le module associé.');
+      return;
+    }
+
+    this.isLoading = true;
+    this.apiService.updateSupport(
+      mId,
+      this.coursEditeId,
+      this.nouveauCours.titre,
+      this.nouveauCours.description,
+      this.nouveauCours.fichier || undefined
+    ).subscribe({
+      next: () => {
+        this.modeEdition = false;
+        this.coursEditeId = null;
+        this.reinitialiserFormulaire();
+        this.chargerSupportsEnseignant();
+        this.afficherToast();
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+        alert('Erreur lors de la modification.');
+      }
+    });
+  }
+
+ // Éditer un cours
   editerCours(cours: Cours) {
     this.modeEdition = true;
     this.coursEditeId = cours.id;
+
+    // 1. Tableau bach n-jma3o fih les noms dial les classes li khasshom yt-cochaw (Strings)
+    const classesDuCours: string[] = [];
+
+    // --- ÉTAPE A: Check b module_id daxel classesData ---
+    if (cours.module_id && this.classesData && this.classesData.length > 0) {
+      this.classesData.forEach((classe: any) => {
+        // Jbed s-miya dyal l-classe safe
+        const classLabel = classe.nom || classe.nom_classe || classe.designation;
+        if (!classLabel) return;
+
+        const modules = classe.modules ?? classe.modules_list ?? [];
+        
+        // Ila had l-classe fiha dak l-module_id, n-zidiw s-miya dyalha
+        const hasModule = modules.some((mod: any) => {
+          const mId = mod.id ?? mod.module_id ?? mod.id_module ?? mod.moduleId;
+          return Number(mId) === Number(cours.module_id); // Convert to number safely
+        });
+
+        if (hasModule && !classesDuCours.includes(classLabel)) {
+          classesDuCours.push(classLabel);
+        }
+      });
+    }
+
+    // --- ÉTAPE B: Fallback (Ila classesDuCours b9at khawya, n-chdo direct chno rje3 m l-Backend) ---
+    if (classesDuCours.length === 0 && cours.classes && cours.classes.length > 0) {
+      cours.classes.forEach((c: any) => {
+        if (typeof c === 'string') {
+          if (!classesDuCours.includes(c)) classesDuCours.push(c);
+        } else if (c && typeof c === 'object') {
+          const nomClasse = c.nom || c.nom_classe || c.designation;
+          if (nomClasse && !classesDuCours.includes(nomClasse)) {
+            classesDuCours.push(nomClasse);
+          }
+        }
+      });
+    }
+
+    // --- ÉTAPE C: Ultra Fallback (Ila b9at khawya, checki s-miya nishan m3a availableClasses) ---
+    if (classesDuCours.length === 0 && this.availableClasses && this.availableClasses.length > 0) {
+      // Hna ila kan cours.classes fih ghir strings o bgha y-matchi m3a availableClasses direct
+      this.availableClasses.forEach((avClasse: string) => {
+        if (cours.classes && cours.classes.some((c: any) => {
+          const name = typeof c === 'string' ? c : (c.nom || c.nom_classe || '');
+          return name.toLowerCase().trim() === avClasse.toLowerCase().trim();
+        })) {
+          if (!classesDuCours.includes(avClasse)) classesDuCours.push(avClasse);
+        }
+      });
+    }
+
+    // 2. Remplir l-formulaire o hna les classes ghadi y-bano m-cochyine 100%
     this.nouveauCours = {
       titre: cours.titre,
-      description: cours.description,
-      classesSelectionnees: [...cours.classes],
+      description: cours.description || '',
+      classesSelectionnees: classesDuCours, // <--- Tableau de strings [ "FBR 1", ... ]
       fichier: null,
       nomFichier: cours.fichier || ''
     };
-    // Scroll to top
+
+    // Scroll to top cleanly
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  // Supprimer un cours
   supprimerCours(cours: Cours) {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce document de cours ?')) {
       if (cours.id && cours.module_id) {
@@ -268,15 +309,14 @@ export class CoursComponent implements OnInit {
             this.appliquerFiltres();
           },
           error: (err: any) => {
-            console.error('Erreur lors de la suppression du support', err);
-            alert('Erreur lors de la suppression du support');
+            console.error(err);
+            alert('Erreur lors de la suppression.');
           }
         });
       }
     }
   }
 
-  // Annuler l'édition
   annulerEdition() {
     this.modeEdition = false;
     this.coursEditeId = null;
@@ -291,7 +331,6 @@ export class CoursComponent implements OnInit {
       fichier: null,
       nomFichier: ''
     };
-    // Reset file input UI
     const fileInput = document.getElementById('fichierCours') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
   }
@@ -307,8 +346,6 @@ export class CoursComponent implements OnInit {
 
   afficherToast() {
     this.showSuccessToast = true;
-    setTimeout(() => {
-      this.showSuccessToast = false;
-    }, 3000);
+    setTimeout(() => this.showSuccessToast = false, 3000);
   }
 }

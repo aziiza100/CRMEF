@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiService } from '../../../../core/services/api.service';
 
 interface ElearningDoc {
   id: number;
   titre: string;
   description: string;
-  matiere: string; // svt, math, pc, etc.
+  id_module: number;
+  nom_fichier: string;
   professeur: string;
   dateMiseEnLigne: string;
   format: 'pdf' | 'video' | 'doc';
@@ -21,33 +23,76 @@ interface ElearningDoc {
   templateUrl: './elearning.html',
   styleUrls: ['./elearning.css']
 })
-export class ElearningComponent {
+export class ElearningComponent implements OnInit {
   
   searchTerm: string = '';
-  selectedMatiere: string = 'all';
+  selectedMatiere: string = 'all'; // contiendra l'ID du module ou 'all'
   showSuccess = false;
+  isLoading = false;
+  
+  matieres: any[] = [{ value: 'all', label: 'Toutes les matières' }];
+  coursList: ElearningDoc[] = [];
 
-  matieres = [
-    { value: 'all', labelKey: 'etudiant.elearning.allSubjects' },
-    { value: 'svt', label: 'SVT' },
-    { value: 'math', label: 'Mathématiques' },
-    { value: 'pc', label: 'Physique-Chimie' },
-    { value: 'info', label: 'Informatique' }
-  ];
+  constructor(private apiService: ApiService) {}
 
-  // Mock data of courses available to the student
-  coursList: ElearningDoc[] = [
-    { id: 1, titre: 'La Cellule Eucaryote', description: 'Chapitre 1 : Structure et ultrastructure de la cellule animale et végétale.', matiere: 'svt', professeur: 'Pr. Alaoui', dateMiseEnLigne: 'Hier', format: 'pdf', isNew: true },
-    { id: 2, titre: 'Fonctions Exponentielles', description: 'Série d\'exercices préparatoires avec corrections détaillées.', matiere: 'math', professeur: 'Pr. Idrissi', dateMiseEnLigne: 'Il y a 2 jours', format: 'doc', isNew: true },
-    { id: 3, titre: 'Atelier de Programmation Python', description: 'Bases de l\'algorithmique et premiers scripts.', matiere: 'info', professeur: 'Pr. Tazi', dateMiseEnLigne: 'La semaine dernière', format: 'video', isNew: false },
-    { id: 4, titre: 'Lois de Newton', description: 'Résumé de cours et schémas du bilan des forces.', matiere: 'pc', professeur: 'Pr. Benjelloun', dateMiseEnLigne: 'Le mois dernier', format: 'pdf', isNew: false }
-  ];
+  ngOnInit() {
+    this.loadElearningData();
+  }
+
+  loadElearningData() {
+    this.isLoading = true;
+    // 1. Récupérer le profil de l'étudiant connecté pour obtenir ses modules (matières)
+    this.apiService.getEtudiantProfile().subscribe({
+      next: (profile) => {
+        const studentModules = profile?.classe?.modules || [];
+        
+        // Remplir dynamiquement la liste des filtres matières
+        this.matieres = [
+          { value: 'all', label: 'Toutes les matières' },
+          ...studentModules.map((m: any) => ({ value: m.id.toString(), label: m.nom }))
+        ];
+
+        // 2. Charger les fichiers de cours pour chaque module
+        this.coursList = [];
+        studentModules.forEach((mod: any) => {
+          this.apiService.getSupportsForModule(mod.id).subscribe({
+            next: (supports: any[]) => {
+              const formattedSupports = supports.map(sup => ({
+                id: sup.id,
+                titre: sup.titre || sup.nom_fichier,
+                description: sup.description || 'Aucune description disponible',
+                id_module: mod.id,
+                nom_fichier: sup.nom_fichier,
+                professeur: sup.enseignant || 'Non assigné',
+                dateMiseEnLigne: new Date(sup.created_at).toLocaleDateString(),
+                format: this.detectFormat(sup.nom_fichier),
+                isNew: (new Date().getTime() - new Date(sup.created_at).getTime()) < (3 * 24 * 60 * 60 * 1000) // Nouveau si < 3 jours
+              }));
+              this.coursList = [...this.coursList, ...formattedSupports];
+            }
+          });
+        });
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private detectFormat(filename: string): 'pdf' | 'video' | 'doc' {
+    const ext = filename.split('.').pop()?.toLowerCase();
+    if (ext === 'pdf') return 'pdf';
+    if (['mp4', 'avi', 'mkv'].includes(ext || '')) return 'video';
+    if (['doc', 'docx', 'odt'].includes(ext || '')) return 'doc';
+    return 'pdf';
+  }
 
   get filteredCours(): ElearningDoc[] {
     return this.coursList.filter(cours => {
       const matchSearch = cours.titre.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-                          cours.professeur.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchMatiere = this.selectedMatiere === 'all' || cours.matiere === this.selectedMatiere;
+                          cours.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchMatiere = this.selectedMatiere === 'all' || cours.id_module.toString() === this.selectedMatiere;
       return matchSearch && matchMatiere;
     });
   }
@@ -62,12 +107,21 @@ export class ElearningComponent {
   }
 
   telecharger(cours: ElearningDoc) {
-    // Simulation du téléchargement
-    console.log('Accès au cours:', cours.titre);
-    
-    this.showSuccess = true;
-    setTimeout(() => {
-      this.showSuccess = false;
-    }, 3000);
+    this.apiService.downloadSupportFile(cours.id_module, cours.id).subscribe({
+      next: (blob: Blob) => {
+        const fileBlob = new Blob([blob], { type: blob.type });
+        const url = window.URL.createObjectURL(fileBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = cours.nom_fichier;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        this.showSuccess = true;
+        setTimeout(() => this.showSuccess = false, 3000);
+      }
+    });
   }
 }

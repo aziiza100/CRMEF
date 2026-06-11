@@ -66,8 +66,8 @@
               </div>
               <div class="classes-grid" *ngIf="availableClasses.length > 0">
                 <div class="class-checkbox" *ngFor="let classe of availableClasses" 
-                     [class.selected]="nouveauCours.classesSelectionnees.includes(classe)"
-                     (click)="toggleClasse(classe)">
+                    [class.selected]="nouveauCours.classesSelectionnees.includes(classe)"
+                    (click)="toggleClasse(classe)">
                   <i class="bi" [ngClass]="nouveauCours.classesSelectionnees.includes(classe) ? 'bi-check-square-fill' : 'bi-square'"></i>
                   {{ classe }}
                 </div>
@@ -77,12 +77,10 @@
               </div>
             </div>
 
-            <div class="form-actions">
-              <button type="button" class="btn-draft" (click)="soumettreCours('Brouillon')" [disabled]="!nouveauCours.titre">
-                <i class="bi bi-file-earmark"></i> {{ 'cours.form.btnDraft' | translate }}
-              </button>
+           <div class="form-actions">
+              
               <button type="button" class="btn-publish" (click)="soumettreCours('Publié')" [disabled]="!nouveauCours.titre">
-                <i class="bi bi-send-check"></i> {{ 'cours.form.btnPublish' | translate }}
+                <i class="bi bi-send-check"></i> {{ (modeEdition ? 'cours.editTitle' : 'cours.form.btnPublish') | translate }}
               </button>
             </div>
 

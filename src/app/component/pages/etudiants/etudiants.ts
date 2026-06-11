@@ -36,11 +36,6 @@ export class EtudiantsComponent implements OnInit, OnDestroy {
       route: '/espace-etudiant/emploi'
     },
     {
-      id: 'messagerie',
-      icon: 'bi-chat-dots',
-      route: null
-    },
-    {
       id: 'profil',
       icon: 'bi-person',
       route: '/espace-etudiant/profil'
