@@ -16,7 +16,7 @@ interface Classe {
   niveau: string;
   modules: Module[];
 }
-
+ 
 @Component({
   selector: 'app-enseignant-notes',
   standalone: true,
@@ -163,21 +163,33 @@ export class NotesComponent implements OnInit {
     });
   }
 
-  downloadNote() {
-    if (!this.selectedClasseId || !this.selectedModuleId) return;
-    
-    this.apiService.downloadNoteFile(this.selectedClasseId, this.selectedModuleId).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
+ downloadNote(module: Module) {
+    // Dans l'espace enseignant, on utilise l'ID de la classe sélectionnée dans le formulaire
+    const classeId = this.selectedClasseId;
+    if (!classeId || !module || !module.id) return;
+
+    this.apiService.downloadNoteFile(classeId, module.id).subscribe({
+      next: (blob: Blob) => {
+        // Forcer le type MIME en PDF au cas où le serveur omet l'entête
+        const fileBlob = new Blob([blob], { type: 'application/pdf' });
+        
+        const url = window.URL.createObjectURL(fileBlob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = this.currentNote?.nom_fichier || 'note.pdf';
+        
+        // Récupération du nom du fichier existant ou génération d'un nom par défaut
+        const fileName = this.currentNote?.nom_fichier || `${module.nom}_Note.pdf`;
+        a.download = fileName;
+        
         document.body.appendChild(a);
         a.click();
+        
+        // Nettoyage de la mémoire du navigateur
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       },
       error: (err) => {
+        console.error('Erreur download:', err);
         this.errorMessage = 'Erreur lors du téléchargement de la note.';
       }
     });

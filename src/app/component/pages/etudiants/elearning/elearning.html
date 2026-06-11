@@ -4,63 +4,65 @@
     <p class="page-desc">{{ 'etudiant.elearning.pageDesc' | translate }}</p>
   </div>
 
-  <!-- Toast Notification -->
   <div class="toast-notification success-toast" [class.show]="showSuccess">
     <i class="bi bi-cloud-arrow-down-fill"></i> {{ 'etudiant.elearning.successMsg' | translate }}
   </div>
-
-  <!-- Barre de filtres -->
-  <div class="filter-bar mb-4">
-    <div class="row align-items-center">
-      <div class="col-md-8 mb-3 mb-md-0">
-        <div class="search-box">
-          <i class="bi bi-search"></i>
-          <input type="text" [(ngModel)]="searchTerm" [placeholder]="'etudiant.elearning.searchPh' | translate">
-        </div>
-      </div>
-      <div class="col-md-4">
-        <select class="form-select custom-select" [(ngModel)]="selectedMatiere">
-          <option *ngFor="let m of matieres" [value]="m.value">
-            {{ m.labelKey ? (m.labelKey | translate) : m.label }}
-          </option>
-        </select>
-      </div>
-    </div>
+ 
+  <div class="text-center py-5" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Chargement de vos cours en ligne...</p>
   </div>
 
-  <!-- Grille des cours -->
-  <div class="cours-grid" *ngIf="filteredCours.length > 0">
-    <div class="cours-card" *ngFor="let cours of filteredCours">
-      <span class="badge-new" *ngIf="cours.isNew">Nouveau</span>
-      
-      <div class="cours-format-icon">
-        <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>
+  <div *ngIf="!isLoading">
+    <div class="filter-bar mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-8 mb-3 mb-md-0">
+          <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" [(ngModel)]="searchTerm" [placeholder]="'etudiant.elearning.searchPh' | translate">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <select class="form-select custom-select" [(ngModel)]="selectedMatiere">
+            <option *ngFor="let m of matieres" [value]="m.value">
+              {{ m.labelKey ? (m.labelKey | translate) : m.label }}
+            </option>
+          </select>
+        </div>
       </div>
-      
-      <div class="cours-content">
-        <h3 class="cours-title">{{ cours.titre }}</h3>
-        <p class="cours-desc">{{ cours.description }}</p>
+    </div>
+
+    <div class="cours-grid" *ngIf="filteredCours.length > 0">
+      <div class="cours-card" *ngFor="let cours of filteredCours">
+        <span class="badge-new" *ngIf="cours.isNew">Nouveau</span>
         
-        <div class="cours-meta">
-          <span class="prof"><i class="bi bi-person-badge-fill"></i> {{ cours.professeur }}</span>
-          <span class="date"><i class="bi bi-clock-history"></i> {{ cours.dateMiseEnLigne }}</span>
+        <div class="cours-format-icon">
+          <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>
+        </div>
+        
+        <div class="cours-content">
+          <h3 class="cours-title">{{ cours.titre }}</h3>
+          <p class="cours-desc">{{ cours.description }}</p>
+          
+          <div class="cours-meta">
+            <span class="prof"><i class="bi bi-person-badge-fill"></i> {{ cours.professeur }}</span>
+            <span class="date"><i class="bi bi-clock-history"></i> {{ cours.dateMiseEnLigne }}</span>
+          </div>
+        </div>
+
+        <div class="cours-action">
+          <button class="btn-download" (click)="telecharger(cours)">
+            <i class="bi bi-cloud-download"></i> {{ 'etudiant.elearning.btnDownload' | translate }}
+          </button>
         </div>
       </div>
+    </div>
 
-      <div class="cours-action">
-        <button class="btn-download" (click)="telecharger(cours)">
-          <i class="bi bi-cloud-download"></i> {{ 'etudiant.elearning.btnDownload' | translate }}
-        </button>
+    <div class="empty-state" *ngIf="filteredCours.length === 0">
+      <div class="empty-icon-wrapper">
+        <i class="bi bi-folder-x"></i>
       </div>
+      <p>{{ 'etudiant.elearning.empty' | translate }}</p>
     </div>
   </div>
-
-  <!-- État vide -->
-  <div class="empty-state" *ngIf="filteredCours.length === 0">
-    <div class="empty-icon-wrapper">
-      <i class="bi bi-folder-x"></i>
-    </div>
-    <p>{{ 'etudiant.elearning.empty' | translate }}</p>
-  </div>
-
 </div>

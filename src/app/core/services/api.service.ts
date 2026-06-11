@@ -521,6 +521,12 @@ export class ApiService {
   // ============================================================
   // TEACHER / ENSEIGNANT
   // ============================================================
+    getEnseignantDashbord(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/enseignant/dashbord`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
   getEnseignantProfile(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/enseignant`, {
       headers: this.getHeaders()
@@ -662,17 +668,12 @@ deleteSeance(seanceId: number): Observable<any> {
     }).pipe(catchError(this.handleError));
   }
 
-  downloadNoteFile(classeId: number, moduleId: number): Observable<Blob> {
-    const token = localStorage.getItem(this.tokenKey);
-    const headers = new HttpHeaders({
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-    });
-    return this.http.get(`${this.baseUrl}/notes/${classeId}/${moduleId}/download`, {
-      headers,
-      responseType: 'blob'
-    });
-  }
-
+ downloadNoteFile(classeId: number, moduleId: number): Observable<Blob> {
+  return this.http.get(`${this.baseUrl}/notes/${classeId}/${moduleId}/download`, {
+    headers: this.getHeaders(),
+    responseType: 'blob' // <--- Indispensable pour récupérer un fichier PDF
+  }).pipe(catchError(this.handleError));
+}
   getStudentNotes(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/etudiant/notes`, {
       headers: this.getHeaders()
@@ -695,6 +696,24 @@ deleteSeance(seanceId: number): Observable<any> {
     }).pipe(catchError(this.handleError));
   }
 
+  /**
+   * Récupère la liste des supports d'un module
+   */
+  getModuleSupports(moduleId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/modules/${moduleId}/supports`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Télécharge un support binaire (PDF / Vidéo / Doc)
+   */
+  downloadSupportFile(moduleId: number, supportId: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/modules/${moduleId}/supports/${supportId}/download`, {
+      headers: this.getHeaders(),
+      responseType: 'blob' // Obligatoire pour récupérer le binaire
+    }).pipe(catchError(this.handleError));
+  }
   // ============================================================
   // SITE CONTENT
   // ============================================================

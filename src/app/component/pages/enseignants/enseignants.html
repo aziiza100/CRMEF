@@ -54,16 +54,7 @@
         <!-- Titre vide pour garder la mise en page flex si besoin, ou on le laisse complètement disparaître -->
       </div>
       
-      <div class="topbar-actions">
-        <div class="search-bar" *ngIf="router.url === '/espace-enseignant'">
-          <i class="bi bi-search"></i>
-          <input type="text" [placeholder]="'enseignant.searchPlaceholder' | translate">
-        </div>
-        <button class="notification-btn" *ngIf="router.url === '/espace-enseignant'">
-          <i class="bi bi-bell"></i>
-          <span class="badge">3</span>
-        </button>
-      </div>
+ 
     </header>
 
     <!-- Dashboard Content (Router Outlet) -->
