@@ -20,89 +20,210 @@ section,
 }
 
 /*--------------------------------------------------------------
-# Section hero
+# Section hero (Carousel)
 --------------------------------------------------------------*/
 .hero {
   width: 100%;
-  min-height: 100vh;
+  height: 75vh;
+  min-height: 500px;
+  max-height: 800px;
   position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: url("/assets/images/hero-crmef.avif") center center / cover no-repeat;
-
   overflow: hidden;
+  padding: 0;
 }
 
-/* Overlay */
-.hero::before {
-  content: "";
+#heroCarousel,
+.carousel-inner,
+.carousel-item {
+  height: 100%;
+  width: 100%;
+}
+
+.hero-bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  transition: transform 6s ease;
+}
 
-  background: rgba(0, 0, 0, 0.45);
+.carousel-item.active .hero-bg {
+  transform: scale(1.05);
+}
 
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(10, 14, 26, 0.95) 0%, rgba(10, 14, 26, 0.6) 50%, rgba(10, 14, 26, 0.1) 100%);
   z-index: 1;
 }
 
-/* Content */
-.hero .container {
-  position: relative;
+/* Glassmorphism Card */
+.hero-content-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 45px 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.hero-content-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bg-accent {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 2;
-  text-align: center;
-  color: white;
+  padding-bottom: 0;
+  text-align: left;
 }
 
 .hero h2 {
-  font-size: 48px;
-  font-weight: 700;
+  font-family: var(--heading-font);
 }
 
-.hero p {
-  font-size: 22px;
-  opacity: 0.85;
-}
-
-.hero .btn-get-started {
-  display: inline-block;
-  margin-top: 25px;
-  margin-left: 25px;
-  padding: 10px 30px;
-
+.btn-get-started {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
   border-radius: 50px;
-  border: 2px solid white;
-
+  border: 2px solid var(--accent-color);
+  background: var(--accent-color);
   color: white;
-  transition: 0.3s;
-  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 20px rgba(0, 94, 118, 0.3);
 }
 
-.hero .btn-get-started:hover {
-  background: var(--accent-color);
-  border-color: #005E76;
+.btn-get-started:hover {
+  background: transparent;
+  border-color: white;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-get-started.outline {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: none;
+}
+
+.btn-get-started.outline:hover {
+  background: white;
+  border-color: white;
+  color: #233142; /* academic slate */
+}
+
+/* Custom Carousel Controls (Flèches) */
+.carousel-control-prev {
+  justify-content: flex-start;
+  padding-left: 30px;
+  width: 10%;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.carousel-control-next {
+  justify-content: flex-end;
+  padding-right: 30px;
+  width: 10%;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 3.5rem !important;
+  height: 3.5rem !important;
+  background-size: 40%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: scale(1.15);
+}
+
+/* Custom Indicators (Tirets en bas) */
+.carousel-indicators {
+  margin-bottom: 2rem;
+  z-index: 10;
+}
+
+.carousel-indicators button {
+  width: 40px !important;
+  height: 5px !important;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border: none !important;
+  margin: 0 6px !important;
+  transition: all 0.4s ease;
+}
+
+.carousel-indicators button.active {
+  background-color: var(--accent-color) !important;
+  width: 60px !important;
+  background-color: #fff !important;
+}
+
+.hero .display-4 {
+  font-family: var(--heading-font);
+  letter-spacing: -1px;
+}
+
+@media (max-width: 992px) {
+  .hero-overlay {
+    background: linear-gradient(to bottom, rgba(10, 14, 26, 0.8) 0%, rgba(10, 14, 26, 0.95) 100%);
+  }
 }
 
 @media (max-width: 768px) {
-  .hero h2 {
-    font-size: 32px;
+  .hero-content-card {
+    padding: 30px 20px;
+    background: rgba(10, 14, 26, 0.4);
   }
-  .hero p {
-    font-size: 18px;
+  .hero .display-5 {
+    font-size: 1.8rem;
   }
-  .hero .btn-get-started {
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 8px 20px;
+  .hero .text-white-50 {
+    font-size: 1rem !important;
   }
-}
-
-@media (max-width: 480px) {
-  .hero .btn-get-started {
-    display: block;
-    margin: 15px auto 0;
-    width: 80%;
+  .btn-get-started {
+    padding: 10px 25px;
+    font-size: 1rem;
+    width: 100%;
+    margin-right: 0 !important;
   }
 }
 

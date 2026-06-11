@@ -1,22 +1,76 @@
-    <main class="main">
+<main class="main">
     <!-- Hero Section -->
 
-    <section class="hero section dark-background">
-
-    <div class="container">
-        <h2>{{ 'hero.eyebrow' | translate }}</h2>
-
-        <p> 
-        {{ 'hero.title' | translate }}
-       </p>
-        <a routerLink="/formations" class="btn-get-started">
-          {{ 'header.button1' | translate }}
-        </a>
-         <a routerLink="/contact" class="btn-get-started">
-          {{ 'header.button2' | translate }}
-        </a>
-    </div>
-
+    <section class="hero p-0">
+      <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators" *ngIf="latestActualites().length > 1">
+          <button *ngFor="let item of latestActualites(); let i = index" 
+                  type="button" 
+                  data-bs-target="#heroCarousel" 
+                  [attr.data-bs-slide-to]="i" 
+                  [class.active]="i === 0" 
+                  [attr.aria-current]="i === 0 ? 'true' : null">
+          </button>
+        </div>
+        <div class="carousel-inner">
+          <div *ngFor="let item of latestActualites(); let i = index" 
+               class="carousel-item" 
+               [class.active]="i === 0">
+            <div class="hero-bg" [style.backgroundImage]="'url(' + item.image + ')'"></div>
+            <div class="hero-overlay"></div>
+            <div class="carousel-caption d-flex align-items-center h-100">
+              <div class="container" data-aos="fade-up">
+                <div class="row">
+                  <div class="col-lg-7 col-md-9 text-start">
+                    <div class="hero-content-card">
+                      <span class="badge bg-accent mb-3 px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">{{ item.category }}</span>
+                      <h2 class="display-5 fw-bold text-white mb-3" style="line-height: 1.25;">
+                        {{ translate.currentLang === 'ar' ? item.titleAr : item.titleFr }}
+                      </h2>
+                      <p class="text-white-50 mb-4" style="font-size: 1.1rem; line-height: 1.7;">
+                        {{ (translate.currentLang === 'ar' ? item.descAr : item.descFr) | slice:0:150 }}{{ (translate.currentLang === 'ar' ? item.descAr : item.descFr)?.length > 150 ? '...' : '' }}
+                      </p>
+                      <div class="d-flex flex-wrap gap-3">
+                        <a [routerLink]="['/actualites', item.id]" class="btn-get-started">Lire la suite</a>
+                        <a routerLink="/formations" class="btn-get-started outline">Nos Formations</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fallback if no actualites -->
+          <div *ngIf="latestActualites().length === 0" class="carousel-item active">
+             <div class="hero-bg" style="background-image: url('/assets/images/hero-crmef.avif')"></div>
+             <div class="hero-overlay"></div>
+             <div class="carousel-caption d-flex align-items-center h-100">
+              <div class="container" data-aos="fade-up">
+                <div class="row">
+                  <div class="col-lg-7 col-md-9 text-start">
+                    <div class="hero-content-card">
+                      <h2 class="display-5 fw-bold text-white mb-3" style="line-height: 1.25;">{{ 'hero.eyebrow' | translate }}</h2>
+                      <p class="text-white-50 mb-4" style="font-size: 1.1rem; line-height: 1.7;">{{ 'hero.title' | translate }}</p>
+                      <div class="d-flex flex-wrap gap-3">
+                        <a routerLink="/formations" class="btn-get-started">{{ 'header.button1' | translate }}</a>
+                        <a routerLink="/contact" class="btn-get-started outline">{{ 'header.button2' | translate }}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" *ngIf="latestActualites().length > 1">
+          <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" *ngIf="latestActualites().length > 1">
+          <span class="carousel-control-next-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </section> 
     <!-- About Section -->
     <section id="about" class="about section">
@@ -151,8 +205,8 @@
                   <p class="price">{{ item.date }}</p>
                 </div>
 
-                <h3><a [routerLink]="['/actualites', item.id]">{{ item.title }}</a></h3>
-                <p class="description">{{ item.description }}</p>
+                <h3><a [routerLink]="['/actualites', item.id]">{{ translate.currentLang === 'ar' ? item.titleAr : item.titleFr }}</a></h3>
+                <p class="description">{{ translate.currentLang === 'ar' ? item.descAr : item.descFr }}</p>
               </div>
             </div>
           </div> <!-- End Course Item-->
@@ -177,16 +231,16 @@
             <div class="row gy-4" data-aos="fade-up" data-aos-delay="100">
 
              <div class="col-xl-3 col-lg-6 col-md-6">
-                <a routerLink="/espace-pedagogique" style="text-decoration: none; color: inherit; display: block;">
+                <a routerLink="/presentation" style="text-decoration: none; color: inherit; display: block;">
                   <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                 <i class="bi bi-book"></i>
-                    <h4>Cours</h4>
-                    <p>Téléchargement des supports pédagogiques.</p>
+                 <i class="bi bi-info-circle-fill"></i>
+                    <h4>Présentation</h4>
+                    <p>Découvrez notre historique et nos missions.</p>
                   </div>
                 </a>
               </div><!-- End Icon Box -->
 
-              <div class="col-xl-3 col-lg-6 col-md-6">
+             <div class="col-xl-3 col-lg-6 col-md-6">
                 <a routerLink="/formations" style="text-decoration: none; color: inherit; display: block;">
                   <div class="icon-box d-flex flex-column justify-content-center align-items-center">
                     <i class="bi bi-mortarboard-fill"></i>
@@ -205,6 +259,7 @@
                   </div>
                 </a>
               </div><!-- End Icon Box -->
+              
               <div class="col-xl-3 col-lg-6 col-md-6">
                 <a routerLink="/contact" style="text-decoration: none; color: inherit; display: block;">
                   <div class="icon-box d-flex flex-column justify-content-center align-items-center">
@@ -218,21 +273,14 @@
           </div>
           <div id="features" class="features section">
             <div class="row gy-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                  <div class="features-item">
-                    <i class="bi bi-book-half"  style="color: #ffbb2c;"></i>
-                    <h3><a routerLink="/espace-pedagogique" class="stretched-link">Espace-pedagogique</a></h3>
-                  </div>
-                </div><!-- End Feature Item -->
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="200">
                   <div class="features-item">
                     <i class="bi bi-mortarboard" style="color: #5578ff;"></i>
                     <h3><a routerLink="/login" class="stretched-link">Espace-enseignant</a></h3>
                   </div>
                 </div><!-- End Feature Item -->
 
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="300">
                   <div class="features-item">
                     <i class="bi bi-backpack" style="color: #e80368;"></i>
                     <h3><a routerLink="/login" class="stretched-link">Espace-etudiant</a></h3>

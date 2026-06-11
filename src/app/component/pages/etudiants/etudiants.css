@@ -330,11 +330,36 @@
 }
 
 /* Responsive */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 @media (max-width: 992px) {
-  .sidebar { width: 80px; }
-  .sidebar-header .logo span, .sidebar-nav span, .lang-toggle-btn span, .logout-btn span { display: none; }
-  .sidebar-nav a { justify-content: center; padding: 20px; }
-  .sidebar-nav a.active { border-radius: 15px; margin: 0 10px; padding: 15px; }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    height: 100vh;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .sidebar.sidebar-open {
+    left: 0;
+  }
+
   .search-bar { display: none; }
+  .dashboard-topbar { padding: 0 20px; }
   .content-wrapper { padding: 20px; }
+}
+
+@media (max-width: 576px) {
+  .welcome-text h1 { font-size: 18px; }
+  .topbar-actions { gap: 15px; }
 }

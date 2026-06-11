@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, computed } from '@angular/core';
+import { Component, OnInit, AfterViewInit, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import AOS from 'aos';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActualitesService } from '../../../core/services/actualites.service';
 declare var PureCounter: any;
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,24 @@ export class Home implements OnInit, AfterViewInit {
   constructor(
     public translate: TranslateService,
     private actualitesService: ActualitesService
-  ) {}
+  ) {
+    // Initialize carousel automatically when actualites data arrives
+    effect(() => {
+      const news = this.latestActualites();
+      if (news.length > 0) {
+        setTimeout(() => {
+          const carouselElement = document.getElementById('heroCarousel');
+          if (carouselElement && typeof bootstrap !== 'undefined') {
+            new bootstrap.Carousel(carouselElement, {
+              interval: 5000,
+              ride: 'carousel',
+              wrap: true
+            });
+          }
+        }, 100);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.actualitesService.loadActualites();
@@ -38,8 +56,8 @@ export class Home implements OnInit, AfterViewInit {
   latestActualites = computed(() => {
     const apiActualites = this.actualitesService.publishedActualites();
     if (apiActualites && apiActualites.length > 0) {
-      // Get the latest 3 published actualites
-      return apiActualites.slice(0, 3).map((item: any) => {
+      // Get the latest 10 published actualites
+      return apiActualites.slice(0, 10).map((item: any) => {
         const titreParts = item.titre ? item.titre.split(' ||| ') : ['', ''];
         const descParts = item.description ? item.description.split(' ||| ') : ['', ''];
         
@@ -53,8 +71,10 @@ export class Home implements OnInit, AfterViewInit {
           id: item.id,
           date: item.date,
           category: item.type === 'annonces' ? 'Annonce' : (item.type === 'evenements' ? 'Événement' : 'Séminaire'),
-          title: this.translate.currentLang === 'ar' ? titleAr : titleFr,
-          description: this.translate.currentLang === 'ar' ? descAr : descFr,
+          titleFr: titleFr,
+          titleAr: titleAr,
+          descFr: descFr,
+          descAr: descAr,
           image: item.image_base64 || 'assets/images/actualites/actualite1.jpg'
         };
       });

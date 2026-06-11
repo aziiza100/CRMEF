@@ -13,6 +13,7 @@ import { ApiService } from '../../../core/services/api.service';
 })
 export class Enseignants implements OnInit {
   enseignantName = 'Prof. Mohammed Alaoui';
+  isSidebarOpen = false;
   currentLang = 'fr';
 
   constructor(private translate: TranslateService, public router: Router, private api: ApiService) {
@@ -56,6 +57,14 @@ export class Enseignants implements OnInit {
     this.currentLang = lang;
     localStorage.setItem('lang', lang);
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
   }
 
   dashboardModules = [

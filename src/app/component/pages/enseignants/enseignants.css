@@ -331,59 +331,49 @@
 }
 
 /* Responsive */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 @media (max-width: 992px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-  
   .dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    height: 100vh;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .dashboard-sidebar.sidebar-open {
+    left: 0;
+  }
+  
+  .dashboard-main {
     width: 100%;
-    height: auto;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 20px;
-  }
-  
-  .sidebar-header {
-    padding: 0;
-    border: none;
-  }
-  
-  .sidebar-nav {
-    padding: 0;
-    margin-left: auto;
-    overflow: visible;
-  }
-  
-  .sidebar-nav ul {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .sidebar-nav li {
-    margin: 0;
-  }
-  
-  .nav-title {
-    display: none;
-  }
-  
-  .sidebar-nav a {
-    padding: 10px 15px;
-  }
-  
-  .sidebar-nav a span {
-    display: none;
-  }
-  
-  .sidebar-nav a.active {
-    background: rgba(255,255,255,0.1);
-    border-inline-start: none;
-    border-bottom: 4px solid #fff;
   }
 
-  .lang-switcher-sidebar {
-    margin-top: 0;
-    margin-inline-start: 10px;
+  .dashboard-topbar {
+    padding: 15px 20px;
+  }
+
+  .search-bar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .topbar-actions .search-bar {
+    display: none; /* Hide search on very small screens to save space */
+  }
+  
+  .dashboard-content {
+    padding: 20px 15px;
   }
 }

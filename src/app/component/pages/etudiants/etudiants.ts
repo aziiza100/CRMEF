@@ -13,6 +13,7 @@ import { ApiService } from '../../../core/services/api.service';
 })
 export class EtudiantsComponent implements OnInit, OnDestroy {
   currentLang: string = 'fr';
+  isSidebarOpen = false;
   
   menuItems = [
     {
@@ -81,6 +82,14 @@ export class EtudiantsComponent implements OnInit, OnDestroy {
     this.translate.use(this.currentLang);
     localStorage.setItem('lang', this.currentLang);
     this.updateDirection();
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
   }
 
   private updateDirection() {

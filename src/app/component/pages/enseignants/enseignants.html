@@ -1,6 +1,8 @@
 <div class="dashboard-wrapper">
+  <!-- Overlay for mobile when sidebar is open -->
+  <div class="sidebar-overlay d-lg-none" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
   <!-- Sidebar / Navigation Menu -->
-  <aside class="dashboard-sidebar">
+  <aside class="dashboard-sidebar" [class.sidebar-open]="isSidebarOpen">
     <div class="sidebar-header">
       <div class="user-avatar">
         <i class="bi bi-person-fill"></i>
@@ -14,16 +16,16 @@
       <ul>
         <!-- <li><a routerLink="/home" class="back-home"><i class="bi bi-arrow-left-circle"></i> {{ 'enseignant.backHome' | translate }}</a></li> -->
         <li class="nav-title">{{ 'enseignant.mainMenu' | translate }}</li>
-        <li><a routerLink="/espace-enseignant" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="bi bi-grid-1x2"></i> {{ 'enseignant.dashboard' | translate }}</a></li>
+        <li><a routerLink="/espace-enseignant" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()"><i class="bi bi-grid-1x2"></i> {{ 'enseignant.dashboard' | translate }}</a></li>
         <li *ngFor="let mod of dashboardModules">
-          <a *ngIf="mod.route" [routerLink]="mod.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a *ngIf="mod.route" [routerLink]="mod.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()">
             <i class="bi {{ mod.icon }}"></i> {{ 'enseignant.modules.' + mod.id + '.title' | translate }}
           </a>
-          <a *ngIf="!mod.route" [routerLink]="[]" fragment="{{ mod.id }}">
+          <a *ngIf="!mod.route" [routerLink]="[]" fragment="{{ mod.id }}" (click)="closeSidebar()">
             <i class="bi {{ mod.icon }}"></i> {{ 'enseignant.modules.' + mod.id + '.title' | translate }}
           </a>
         </li>
-        <li class="mt-auto"><a (click)="logout()" class="nav-item logout-btn"><i class="bi bi-box-arrow-right"></i> {{ 'enseignant.logout' | translate }}</a></li>
+        <li class="mt-auto"><a (click)="logout(); closeSidebar()" class="nav-item logout-btn"><i class="bi bi-box-arrow-right"></i> {{ 'enseignant.logout' | translate }}</a></li>
         
         <!-- Language Switcher -->
         <li class="lang-switcher-sidebar">
@@ -39,9 +41,14 @@
     
     <!-- Topbar -->
     <header class="dashboard-topbar">
-      <div class="welcome-text" *ngIf="router.url === '/espace-enseignant'">
-        <h2>{{ 'enseignant.dashboard' | translate }}</h2>
-        <p>{{ 'enseignant.welcome' | translate }}</p>
+      <div class="d-flex align-items-center gap-3">
+        <button class="menu-toggle-btn d-lg-none bg-transparent border-0" (click)="toggleSidebar()">
+          <i class="bi bi-list" style="font-size: 28px; color: #005E76;"></i>
+        </button>
+        <div class="welcome-text" *ngIf="router.url === '/espace-enseignant'">
+          <h2>{{ 'enseignant.dashboard' | translate }}</h2>
+          <p>{{ 'enseignant.welcome' | translate }}</p>
+        </div>
       </div>
       <div class="welcome-text" *ngIf="router.url !== '/espace-enseignant'">
         <!-- Titre vide pour garder la mise en page flex si besoin, ou on le laisse complètement disparaître -->

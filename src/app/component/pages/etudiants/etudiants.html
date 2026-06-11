@@ -1,7 +1,8 @@
 <div class="dashboard-layout">
-  
+  <!-- Overlay -->
+  <div class="sidebar-overlay d-lg-none" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" [class.sidebar-open]="isSidebarOpen">
     <div class="sidebar-header">
       <div class="logo">
         <i class="bi bi-mortarboard-fill"></i>
@@ -16,14 +17,16 @@
           <a *ngIf="item.route" 
              [routerLink]="item.route" 
              routerLinkActive="active" 
-             [routerLinkActiveOptions]="{exact: item.id === 'dashboard'}">
+             [routerLinkActiveOptions]="{exact: item.id === 'dashboard'}"
+             (click)="closeSidebar()">
             <i class="bi {{item.icon}}"></i>
             <span>{{ 'etudiant.menu.' + item.id | translate }}</span>
           </a>
           <!-- Si pas de route (en dev), on simule -->
           <a *ngIf="!item.route" 
              [routerLink]="[]" 
-             [fragment]="item.id">
+             [fragment]="item.id"
+             (click)="closeSidebar()">
             <i class="bi {{item.icon}}"></i>
             <span>{{ 'etudiant.menu.' + item.id | translate }}</span>
           </a>
@@ -40,7 +43,7 @@
     </div>
 
     <div class="sidebar-footer">
-      <button class="logout-btn" (click)="logout()">
+      <button class="logout-btn" (click)="logout(); closeSidebar()">
         <i class="bi bi-box-arrow-right"></i>
         <span>{{ 'enseignant.logout' | translate }}</span>
       </button>
@@ -52,10 +55,15 @@
     
     <!-- Topbar -->
     <header class="dashboard-topbar">
-      <!-- Zone d'accueil dynamique : affichée uniquement sur le dashboard racine -->
-      <div class="welcome-text" *ngIf="router.url === '/espace-etudiant'">
-        <h1>{{ 'etudiant.welcome' | translate }}</h1>
-        <p>Année Scolaire 2023/2024</p>
+      <div class="d-flex align-items-center gap-3">
+        <button class="menu-toggle-btn d-lg-none bg-transparent border-0 p-0" (click)="toggleSidebar()">
+          <i class="bi bi-list" style="font-size: 28px; color: #4f46e5;"></i>
+        </button>
+        <!-- Zone d'accueil dynamique : affichée uniquement sur le dashboard racine -->
+        <div class="welcome-text" *ngIf="router.url === '/espace-etudiant'">
+          <h1>{{ 'etudiant.welcome' | translate }}</h1>
+          <p>Année Scolaire 2023/2024</p>
+        </div>
       </div>
 
       <div class="topbar-actions">
