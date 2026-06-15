@@ -27,7 +27,7 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher un titre...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher un titre...">
       </div>
       <button class="btn-primary" (click)="openModal()">
         <i class="bi bi-plus-lg"></i> Nouvelle Publication
@@ -47,7 +47,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let article of filteredArticles" [class.is-draft]="article.status === 'draft'">
+        <tr *ngFor="let article of paginatedArticles" [class.is-draft]="article.status === 'draft'">
           <td>
             <div class="article-cell">
               <div class="article-img-wrapper">
@@ -83,6 +83,12 @@
         </tr>
       </tbody>
     </table>
+    <app-pagination 
+      [totalItems]="filteredArticles.length" 
+      [pageSize]="pageSize" 
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <!-- Form Modal (Bilingual) -->

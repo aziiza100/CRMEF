@@ -12,6 +12,7 @@ interface Seance {
   moduleId?: number;
   professeur: string;
   salle: string;
+  date?: string;
 }
 
 interface JourEmploi {
@@ -116,7 +117,8 @@ export class EnseignantEmploiComponent {
                 matiere: s.matiere || (s.module ? s.module.nom : ''), 
                 moduleId: s.module_id ?? null, 
                 professeur: s.professeur || this.currentTeacherName, 
-                salle: s.salle || '' 
+                salle: s.salle || '',
+                date: s.date ?? null 
               });
             });
 

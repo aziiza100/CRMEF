@@ -349,6 +349,15 @@ export class ApiService {
     );
   }
 
+  importAdminStudents(users: any[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/students/import`, { users }, {
+      headers: this.getHeaders()
+    }).pipe(
+      tap(() => { this.adminStudentsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
+  }
+
   updateAdminStudent(id: number, data: any): Observable<any> {
     if (data instanceof FormData) {
       data.append('_method', 'PUT');
@@ -516,6 +525,12 @@ export class ApiService {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }
+  
+  getStudentDashboard(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/etudiant/dashboard`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
 
  
   // ============================================================
@@ -567,6 +582,15 @@ export class ApiService {
     const headers = data instanceof FormData ? this.getFormHeaders() : this.getHeaders();
     return this.http.post<any>(`${this.baseUrl}/admin/enseignants`, data, {
       headers
+    }).pipe(
+      tap(() => { this.adminEnseignantsCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
+  }
+
+  importAdminEnseignants(users: any[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/enseignants/import`, { users }, {
+      headers: this.getHeaders()
     }).pipe(
       tap(() => { this.adminEnseignantsCache$ = null; this.dashboardCache$ = null; }),
       catchError(this.handleError)

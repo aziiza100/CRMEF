@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Filiere } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 @Component({
   selector: 'app-admin-classes',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './classes.html',
   styleUrls: ['./classes.css']
 })
@@ -22,6 +23,9 @@ export class AdminClassesComponent implements OnInit {
   showToast = false;
   isLoading = false;
   isSaving = false;
+
+  currentPage = 1;
+  pageSize = 10;
 
   // Modèle de classe
   newClass = {
@@ -46,6 +50,7 @@ export class AdminClassesComponent implements OnInit {
   ngOnInit() {
     this.searchService.currentSearch$.subscribe((term: string) => {
       this.searchTerm = term;
+      this.currentPage = 1;
     });
     this.loadClasses();
     this.loadFilieres();
@@ -103,6 +108,15 @@ export class AdminClassesComponent implements OnInit {
       const matchFilter = this.selectedFilter === 'all' || c.filiere_id == this.selectedFilter;
       return matchSearch && matchFilter;
     });
+  }
+
+  get paginatedClasses() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredClasses.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
 
   openModal(cls?: any) {

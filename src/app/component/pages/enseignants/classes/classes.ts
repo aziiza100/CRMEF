@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../../core/services/api.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 interface Student {
   id: number;
@@ -23,7 +24,7 @@ interface Classe {
 @Component({
   selector: 'app-enseignant-classes',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './classes.html',
   styleUrls: ['./classes.css']
 })
@@ -32,6 +33,9 @@ export class ClassesComponent implements OnInit {
   selectedClasse: Classe | null = null;
   searchTerm: string = '';
   isLoading = false;
+
+  currentPage = 1;
+  pageSize = 10;
 
   constructor(private api: ApiService) {}
 
@@ -58,6 +62,7 @@ export class ClassesComponent implements OnInit {
   selectClasse(classe: Classe) {
     this.selectedClasse = classe;
     this.searchTerm = ''; // Reset search on new class
+    this.currentPage = 1;
   }
 
   get filteredStudents(): Student[] {
@@ -74,6 +79,15 @@ export class ClassesComponent implements OnInit {
       (student.cin && student.cin.toLowerCase().includes(term)) ||
       (student.email && student.email.toLowerCase().includes(term))
     );
+  }
+
+  get paginatedStudents(): Student[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredStudents.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
 
   exportList() {

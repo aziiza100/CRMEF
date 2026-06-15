@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { ApiService, Filiere, Module } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 @Component({
   selector: 'app-admin-modules',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './modules.html',
   styleUrls: ['./modules.css']
 })
@@ -28,6 +29,9 @@ export class AdminModulesComponent implements OnInit {
   showModal = false;
   editingModuleId: number | null = null;
 
+  currentPage = 1;
+  pageSize = 10;
+
   newModule = {
     nom: '',
     masse_horraire: 0,
@@ -41,6 +45,7 @@ export class AdminModulesComponent implements OnInit {
   ngOnInit(): void {
     this.searchService.currentSearch$.subscribe((term: string) => {
       this.searchTerm = term;
+      this.currentPage = 1;
     });
     this.loadModules();
     this.loadFilieres();
@@ -67,6 +72,15 @@ export class AdminModulesComponent implements OnInit {
 
       return matchesTerm && matchesClasse;
     });
+  }
+
+  get paginatedModules() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredModules.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
 
   getClasseName(module: Module): string {

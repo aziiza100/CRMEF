@@ -61,11 +61,16 @@
           </div>
           
           <div class="seance-details">
-            <h4 class="matiere">{{ seance.matiere }}</h4>
+            <h4 class="matiere">
+              {{ seance.matiere }}
+              <span class="text-muted" *ngIf="seance.date" style="font-size: 0.85rem; font-weight: normal; margin-left: 8px; font-style: italic;">
+                (le {{ seance.date | date:'dd/MM/yyyy' }})
+              </span>
+            </h4>
             <div class="info-group">
               <span class="prof"><i class="bi bi-person-video3"></i> {{ seance.professeur }}</span>
               <span class="salle"><i class="bi bi-door-open"></i> {{ seance.salle }}</span>
-              
+              <span class="date" *ngIf="seance.date"><i class="bi bi-calendar-event"></i> {{ seance.date | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
 

@@ -19,109 +19,58 @@ export class EtudiantDashboardComponent implements OnInit {
     heure: ''
   };
 
-  derniereNote = {
-    matiere: 'TICE',
-    note: 17.5,
-    date: 'Aujourd\'hui'
+  derniereNote: any = {
+    matiere: '',
+    note: '',
+    date: ''
   };
 
-  nouveauxSupports = 3;
+  nouveauxSupports = 0;
 
   coursDuJour: Array<{ heure: string; matiere: string; salle: string; type: string }> = [];
 
-  derniersCoursElearning = [
-    { titre: 'Introduction au TICE', format: 'pdf', professeur: 'Pr. Benjelloun', date: 'Il y a 2h' },
-    { titre: 'Chapitre 2 : La Cellule', format: 'doc', professeur: 'Pr. Alaoui', date: 'Hier' }
-  ];
+  derniersCoursElearning: Array<{ id: number; moduleId: number; titre: string; nom_fichier: string; format: string; professeur: string; date: string }> = [];
 
-  messages = [
-    { titre: 'Rappel : Dépôt du rapport de stage', date: '12 Nov 2023', urgent: true },
-    { titre: 'Changement de salle pour le cours de demain', date: '11 Nov 2023', urgent: false }
-  ];
+  messages: Array<{ titre: string; date: string; urgent: boolean }> = [];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.loadTodaySchedule();
+    this.loadDashboardData();
   }
 
-  private loadTodaySchedule(): void {
-    this.apiService.getStudentEmploi().subscribe({
+  private loadDashboardData(): void {
+    this.apiService.getStudentDashboard().subscribe({
       next: (response: any) => {
-        const allSeances = Array.isArray(response?.seances)
-          ? response.seances
-          : Array.isArray(response)
-          ? response
-          : [];
-
-        const today = this.getDayId(new Date());
-        const seances = allSeances.filter((item: any) => this.normalizeDay(item.jour) === today);
-        this.coursDuJour = seances.map((item: any) => ({
-          heure: `${this.formatTime(item.heureDebut)} - ${this.formatTime(item.heureFin)}`,
-          matiere: item.matiere,
-          salle: item.salle,
-          type: item.type || 'cours'
-        }));
-
-        if (this.coursDuJour.length > 0) {
-          const next = this.coursDuJour[0];
-          this.prochainCours = {
-            matiere: next.matiere,
-            salle: next.salle,
-            heure: next.heure
-          };
-        } else {
-          this.prochainCours = {
-            matiere: 'Aucun cours aujourd\'hui',
-            salle: '',
-            heure: ''
-          };
+        if (response) {
+          this.prochainCours = response.prochainCours || { matiere: 'Aucun cours prévu', salle: '', heure: '' };
+          this.derniereNote = response.derniereNote || { matiere: 'Aucune note publiée', note: 'Aucune', date: '' };
+          this.nouveauxSupports = response.nouveauxSupports ?? 0;
+          this.coursDuJour = response.coursDuJour || [];
+          this.derniersCoursElearning = response.derniersCoursElearning || [];
+          this.messages = response.messages || [];
         }
       },
       error: (error: any) => {
-        console.error('Erreur chargement emploi du temps étudiant', error);
-        this.coursDuJour = [];
+        console.error('Erreur chargement tableau de bord étudiant', error);
       }
     });
   }
 
-  private normalizeDay(jour: unknown): string {
-    const raw = String(jour || '').toLowerCase().trim();
-    const mapping: Record<string, string> = {
-      'lundi': 'lundi',
-      'mardi': 'mardi',
-      'mercredi': 'mercredi',
-      'jeudi': 'jeudi',
-      'vendredi': 'vendredi',
-      'samedi': 'samedi',
-      'dimanche': 'dimanche',
-      'monday': 'lundi',
-      'tuesday': 'mardi',
-      'wednesday': 'mercredi',
-      'thursday': 'jeudi',
-      'friday': 'vendredi',
-      'saturday': 'samedi',
-      'sunday': 'dimanche'
-    };
-    return mapping[raw] ?? raw;
-  }
-
-  private formatTime(value: unknown): string {
-    const time = String(value || '').trim();
-    const match = time.match(/^(\d{1,2}:\d{2})/);
-    return match ? match[1] : time;
-  }
-
-  private getDayId(date: Date): string {
-    const mapping: Record<number, string> = {
-      0: 'dimanche',
-      1: 'lundi',
-      2: 'mardi',
-      3: 'mercredi',
-      4: 'jeudi',
-      5: 'vendredi',
-      6: 'samedi'
-    };
-    return mapping[date.getDay()] || 'lundi';
+  downloadSupport(doc: any): void {
+    if (!doc.moduleId || !doc.id) return;
+    this.apiService.downloadSupportFile(doc.moduleId, doc.id).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.nom_fichier || 'support';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => console.error('Erreur téléchargement support', error)
+    });
   }
 }

@@ -12,7 +12,7 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une filière...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher une filière...">
       </div>
     </div>
 
@@ -36,7 +36,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let filiere of filteredFilieres; trackBy: trackByFiliere">
+        <tr *ngFor="let filiere of paginatedFilieres; trackBy: trackByFiliere">
           <td class="fw-bold fs-5">{{ filiere.nom }}</td>
           <td>{{ filiere.description }}</td>
           <td>
@@ -60,6 +60,12 @@
         </tr>
       </tbody>
     </table>
+    <app-pagination 
+      [totalItems]="filteredFilieres.length" 
+      [pageSize]="pageSize" 
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">

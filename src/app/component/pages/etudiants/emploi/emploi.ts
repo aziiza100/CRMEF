@@ -11,6 +11,7 @@ interface Seance {
   professeur: string;
   salle: string;
   type: string;
+  date?: string;
 }
 
 interface JourEmploi {
@@ -102,7 +103,13 @@ export class EtudiantEmploiComponent implements OnInit {
           doc.setFontSize(11);
           doc.setTextColor('#1f2937');
           doc.text(`${seance.heureDebut} - ${seance.heureFin}`, 46, y);
-          doc.text(seance.matiere, 160, y);
+          let matiereText = seance.matiere;
+          if (seance.date) {
+            const parts = seance.date.split('-');
+            const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : seance.date;
+            matiereText += ` (le ${formattedDate})`;
+          }
+          doc.text(matiereText, 160, y);
           y += 16;
 
           doc.setFont('helvetica', 'normal');
@@ -152,7 +159,8 @@ export class EtudiantEmploiComponent implements OnInit {
               matiere: seance.matiere,
               professeur: seance.professeur,
               salle: seance.salle,
-              type: seance.type || 'cours'
+              type: seance.type || 'cours',
+              date: seance.date ?? null
             });
           }
         });

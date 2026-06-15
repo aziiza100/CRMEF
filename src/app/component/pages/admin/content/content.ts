@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Actualite } from '../../../../core/services/api.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 @Component({
   selector: 'app-admin-content',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './content.html',
   styleUrls: ['./content.css']
 })
@@ -22,6 +23,9 @@ export class AdminContentComponent implements OnInit {
   showToast = false;
   isLoading = false;
   isSaving = false;
+
+  currentPage = 1;
+  pageSize = 10;
 
   // Selected file for upload
   selectedFile: File | null = null;
@@ -88,9 +92,19 @@ export class AdminContentComponent implements OnInit {
     });
   }
 
+  get paginatedArticles() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredArticles.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+  }
+
   switchTab(tab: 'actualites' | 'evenements' | 'annonces') {
     this.activeTab = tab;
     this.searchTerm = '';
+    this.currentPage = 1;
   }
 
   @HostListener('window:admin-reset-content-tab')

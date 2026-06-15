@@ -12,11 +12,11 @@
     <div class="toolbar-actions toolbar-actions--with-filter">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher un module..." />
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher un module..." />
       </div>
 
       <div class="select-filter">
-        <select class="form-select" [(ngModel)]="selectedClasseId">
+        <select class="form-select" [(ngModel)]="selectedClasseId" (ngModelChange)="currentPage = 1">
           <option [ngValue]="null">Toutes les classes</option>
           <option *ngFor="let classe of classes" [ngValue]="classe.id">{{ classe.nom }}</option>
         </select>
@@ -46,7 +46,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let module of filteredModules">
+        <tr *ngFor="let module of paginatedModules">
           <td class="fw-bold fs-5">{{ module.nom }}</td>
           <td>{{ module.masse_horraire }}</td>
           <td>{{ getFiliereNames(module) }}</td>
@@ -71,6 +71,12 @@
         </tr>
       </tbody>
     </table>
+    <app-pagination 
+      [totalItems]="filteredModules.length" 
+      [pageSize]="pageSize" 
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">

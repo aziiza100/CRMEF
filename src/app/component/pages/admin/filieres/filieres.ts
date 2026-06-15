@@ -6,11 +6,12 @@ import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApiService, Filiere, Formation } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 @Component({
   selector: 'app-admin-filieres',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './filieres.html',
   styleUrls: ['./filieres.css']
 })
@@ -22,6 +23,9 @@ export class AdminFilieresComponent implements OnInit {
   showToast = false;
   isLoading = false;
   isSaving = false;
+
+  currentPage = 1;
+  pageSize = 10;
 
   newFiliere: Partial<Filiere> & { formation_ids?: number[] } = {
     nom: '',
@@ -37,6 +41,7 @@ export class AdminFilieresComponent implements OnInit {
   ngOnInit(): void {
     this.searchService.currentSearch$.subscribe((term: string) => {
       this.searchTerm = term;
+      this.currentPage = 1;
     });
     this.loadFilieres();
     this.loadFormations();
@@ -46,6 +51,15 @@ export class AdminFilieresComponent implements OnInit {
     return this.filieres.filter(f => {
       return f.nom?.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
+  }
+
+  get paginatedFilieres() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredFilieres.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
 
   loadFilieres(): void {

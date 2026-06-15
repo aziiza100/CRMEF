@@ -15,10 +15,10 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une classe...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher une classe...">
       </div>
       
-      <select class="form-select filter-select" [(ngModel)]="selectedFilter">
+      <select class="form-select filter-select" [(ngModel)]="selectedFilter" (ngModelChange)="currentPage = 1">
         <option value="all">Toutes les filières</option>
         <option *ngFor="let fil of filieres" [value]="fil.id">{{ fil.nom }}</option>
       </select>
@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let cls of filteredClasses">
+        <tr *ngFor="let cls of paginatedClasses">
           <td class="fw-bold fs-5">{{ cls.nom }}</td>
           <td><span class="badge-outline-blue">{{ cls.filiere }}</span></td>
           <td>
@@ -65,6 +65,12 @@
         </tr>
       </tbody>
     </table>
+    <app-pagination 
+      [totalItems]="filteredClasses.length" 
+      [pageSize]="pageSize" 
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <!-- Form Modal (Overlay) -->

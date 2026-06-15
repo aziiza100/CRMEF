@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../../core/services/api.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
 
 interface MappedModule {
   id: number;
@@ -19,7 +20,7 @@ interface MappedModule {
 @Component({
   selector: 'app-etudiant-resultats',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, PaginationComponent],
   templateUrl: './resultats.html',
   styleUrls: ['./resultats.css']
 })
@@ -29,6 +30,9 @@ export class EtudiantResultatsComponent implements OnInit {
   mappedModules: MappedModule[] = [];
   isLoading = false;
   errorMessage = '';
+
+  currentPage = 1;
+  pageSize = 10;
 
   constructor(private apiService: ApiService) {}
 
@@ -85,6 +89,15 @@ export class EtudiantResultatsComponent implements OnInit {
 
   get publishedNotesCount(): number {
     return this.mappedModules.filter(m => m.isAvailable).length;
+  }
+
+  get paginatedModules() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.mappedModules.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
 
   downloadNote(module: MappedModule) {

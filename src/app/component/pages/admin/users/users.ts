@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination';
+
+declare var XLSX: any;
 
 type AdminUserForm = {
   role: 'student' | 'teacher';
@@ -34,7 +37,7 @@ type EtudiantItem = {
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, PaginationComponent],
   templateUrl: './users.html',
   styleUrls: ['./users.css']
 })
@@ -51,9 +54,20 @@ export class AdminUsersComponent implements OnInit {
   toastMessage = '';
   showToast = false;
 
+  currentPage = 1;
+  pageSize = 10;
+
   @ViewChild('imageInput') imageInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('excelInput') excelInput?: ElementRef<HTMLInputElement>;
+  
   imagePreview: string | null = null;
   selectedImageFile: File | null = null;
+
+  // Excel bulk import properties
+  showImportResultModal = false;
+  importErrors: string[] = [];
+  importSuccessMessage = '';
+  importedUsers: any[] = [];
 
   // Formulaire d'ajout / modif
   newUser: AdminUserForm = {
@@ -96,10 +110,25 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  get paginatedEtudiants() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredEtudiants.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get paginatedProfs() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredProfs.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+  }
+
   switchTab(tab: 'etudiants' | 'profs') {
     this.activeTab = tab;
     this.searchTerm = '';
     this.selectedFilter = 'all';
+    this.currentPage = 1;
   }
 
   private splitName(fullName: string) {
@@ -210,6 +239,7 @@ export class AdminUsersComponent implements OnInit {
   ngOnInit() {
     this.searchService.currentSearch$.subscribe((term: string) => {
       this.searchTerm = term;
+      this.currentPage = 1;
     });
     this.loadClasses();
     this.loadEtudiants();
@@ -403,6 +433,180 @@ export class AdminUsersComponent implements OnInit {
     setTimeout(() => {
       this.showToast = false;
     }, 3000);
+  }
+
+  triggerExcelUpload() {
+    if (this.excelInput?.nativeElement) {
+      this.excelInput.nativeElement.value = '';
+      this.excelInput.nativeElement.click();
+    }
+  }
+
+  onExcelFileSelected(event: any) {
+    const file = event.target.files?.[0] as File | undefined;
+    if (!file) {
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      alert("Erreur : La bibliothèque d'importation SheetJS n'est pas chargée. Veuillez patienter ou vérifier votre connexion Internet.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawRows = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+        if (rawRows.length === 0) {
+          alert("Le fichier Excel est vide.");
+          return;
+        }
+
+        const normalizeKey = (key: string): string => {
+          return key
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+        };
+
+        const mapExcelRow = (row: any, role: 'student' | 'teacher') => {
+          const mapped: any = {};
+          for (const key of Object.keys(row)) {
+            const norm = normalizeKey(key);
+            if (norm === 'prenom') mapped.prenom = String(row[key]);
+            else if (norm === 'nom') mapped.nom = String(row[key]);
+            else if (norm === 'email' || norm === 'adresse email') mapped.email = String(row[key]);
+            else if (norm === 'mot de passe' || norm === 'password' || norm === 'motdepasse') mapped.password = String(row[key]);
+            else if (norm === 'cin') mapped.cin = String(row[key]);
+            else if (norm === 'telephone' || norm === 'tele') mapped.tele = String(row[key]);
+            else if (role === 'student') {
+              if (norm === 'cne' || norm === 'cne / code massar' || norm === 'codemassar') mapped.cne = String(row[key]);
+              else if (norm === 'classe' || norm === 'affectation (classe)' || norm === 'affectation') mapped.classe = String(row[key]);
+            } else if (role === 'teacher') {
+              if (norm === 'matiere' || norm === 'specialite' || norm === 'matiere (specialite principale)' || norm === 'specialite principale') mapped.specialite = String(row[key]);
+              else if (norm === 'grade') mapped.grade = String(row[key]);
+            }
+          }
+          return mapped;
+        };
+
+        const mappedRows = rawRows.map((row, idx) => {
+          const mapped = mapExcelRow(row, this.activeTab === 'etudiants' ? 'student' : 'teacher');
+          mapped._rowIndex = idx + 2;
+          return mapped;
+        });
+
+        // Client side validation
+        const clientErrors: string[] = [];
+        for (const row of mappedRows) {
+          const line = row._rowIndex;
+          if (!row.prenom) clientErrors.push(`Ligne ${line} : Le prénom est manquant.`);
+          if (!row.nom) clientErrors.push(`Ligne ${line} : Le nom est manquant.`);
+          if (!row.email) clientErrors.push(`Ligne ${line} : L'adresse email est manquante.`);
+          
+          if (this.activeTab === 'etudiants') {
+            if (!row.cin) clientErrors.push(`Ligne ${line} : Le CIN est manquant.`);
+            if (!row.cne) clientErrors.push(`Ligne ${line} : Le CNE est manquant.`);
+            if (!row.classe) clientErrors.push(`Ligne ${line} : La classe est manquante.`);
+          } else {
+            if (!row.specialite) clientErrors.push(`Ligne ${line} : La spécialité/matière est manquante.`);
+            if (!row.grade) clientErrors.push(`Ligne ${line} : Le grade est manquant.`);
+          }
+        }
+
+        if (clientErrors.length > 0) {
+          this.importErrors = clientErrors;
+          this.importSuccessMessage = '';
+          this.importedUsers = [];
+          this.showImportResultModal = true;
+          if (this.excelInput?.nativeElement) {
+            this.excelInput.nativeElement.value = '';
+          }
+          return;
+        }
+
+        const payload = mappedRows.map(row => {
+          const { _rowIndex, ...rest } = row;
+          return rest;
+        });
+
+        if (this.activeTab === 'etudiants') {
+          this.api.importAdminStudents(payload).subscribe({
+            next: (res) => {
+              this.importErrors = [];
+              this.importSuccessMessage = res.message || 'Importation réussie.';
+              this.importedUsers = res.imported || [];
+              this.showImportResultModal = true;
+              this.loadEtudiants();
+              if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+            },
+            error: (err) => {
+              this.importErrors = err.error?.errors || [err.message || 'Erreur lors de l\'importation.'];
+              this.importSuccessMessage = '';
+              this.importedUsers = [];
+              this.showImportResultModal = true;
+              if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+            }
+          });
+        } else {
+          this.api.importAdminEnseignants(payload).subscribe({
+            next: (res) => {
+              this.importErrors = [];
+              this.importSuccessMessage = res.message || 'Importation réussie.';
+              this.importedUsers = res.imported || [];
+              this.showImportResultModal = true;
+              this.loadEnseignants();
+              if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+            },
+            error: (err) => {
+              this.importErrors = err.error?.errors || [err.message || 'Erreur lors de l\'importation.'];
+              this.importSuccessMessage = '';
+              this.importedUsers = [];
+              this.showImportResultModal = true;
+              if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+            }
+          });
+        }
+      } catch (err) {
+        alert("Erreur lors de la lecture du fichier Excel. Assurez-vous que le format est valide.");
+        if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  closeImportResultModal() {
+    this.showImportResultModal = false;
+    this.importErrors = [];
+    this.importedUsers = [];
+  }
+
+  downloadCredentialsCSV() {
+    if (this.importedUsers.length === 0) return;
+
+    const headers = ['Email', 'Nom', 'Prenom', 'Mot de passe'];
+    const rows = this.importedUsers.map(u => [u.email, u.nom, u.prenom, u.password || '']);
+
+    const BOM = '\uFEFF';
+    const csvContent = BOM + [
+      headers.join(','),
+      ...rows.map(e => e.map(val => `"${val.replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `identifiants_import_${this.activeTab}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
 }

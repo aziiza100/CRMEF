@@ -12,6 +12,7 @@ interface Seance {
   moduleId?: number;
   professeur: string;
   salle: string;
+  date?: string;
 }
 
 interface JourEmploi {
@@ -54,7 +55,8 @@ export class AdminEmploiComponent {
     matiere: '',
     moduleId: undefined,
     professeur: '',
-    salle: ''
+    salle: '',
+    date: ''
   };
 
   modulesForClass: Array<{ id: number; nom: string; pivot?: { id_enseignant?: number } }> = [];
@@ -109,7 +111,7 @@ export class AdminEmploiComponent {
         this.jours.forEach(d => d.seances = []);
         (res.seances || []).forEach((s:any) => {
           const jour = this.jours.find(d => d.id === (s.jour || '').toLowerCase()) || this.jours[0];
-          jour.seances.push({ id: s.id, heureDebut: this.formatTime(s.heureDebut), heureFin: this.formatTime(s.heureFin), matiere: s.matiere || '', moduleId: s.module_id ?? null, professeur: s.professeur || '', salle: s.salle || '' });
+          jour.seances.push({ id: s.id, heureDebut: this.formatTime(s.heureDebut), heureFin: this.formatTime(s.heureFin), matiere: s.matiere || '', moduleId: s.module_id ?? null, professeur: s.professeur || '', salle: s.salle || '', date: s.date ?? null });
         });
         this.jours.forEach(d => d.seances.sort((a,b) => a.heureDebut.localeCompare(b.heureDebut)));
         this.jourActif = this.jours[0];
@@ -136,11 +138,12 @@ export class AdminEmploiComponent {
         matiere: seance.matiere,
         moduleId: seance.moduleId,
         professeur: seance.professeur,
-        salle: seance.salle
+        salle: seance.salle,
+        date: seance.date ?? ''
       };
     } else {
       this.editingId = null;
-      this.newSeance = { heureDebut: '08:00', heureFin: '10:00', matiere: '', moduleId: undefined, professeur: '', salle: '' };
+      this.newSeance = { heureDebut: '08:00', heureFin: '10:00', matiere: '', moduleId: undefined, professeur: '', salle: '', date: '' };
     }
     // load modules for selected class
     this.api.getAdminClasses().subscribe({ next: (classes: any[]) => {
@@ -185,7 +188,8 @@ export class AdminEmploiComponent {
         heureDebut: this.newSeance.heureDebut,
         heureFin: this.newSeance.heureFin,
         module_id: this.newSeance.moduleId ?? null,
-        salle: this.newSeance.salle
+        salle: this.newSeance.salle,
+        date: this.newSeance.date ? this.newSeance.date : null
       };
 
       if (this.editingId) {

@@ -1140,5 +1140,13 @@
       "registrationsDesc": "Autoriser la création de nouveaux comptes étudiants depuis le site."
     },
     "btnSave": "Sauvegarder les paramètres"
+  },
+  "pagination": {
+    "showing": "Affichage de",
+    "to": "à",
+    "of": "sur",
+    "entries": "entrées",
+    "previous": "Précédent",
+    "next": "Suivant"
   }
 }

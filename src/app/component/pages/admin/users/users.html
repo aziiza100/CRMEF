@@ -24,18 +24,23 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher par nom, email...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher par nom, email...">
       </div>
       
-      <select class="form-select filter-select" *ngIf="activeTab === 'etudiants'" [(ngModel)]="selectedFilter">
+      <select class="form-select filter-select" *ngIf="activeTab === 'etudiants'" [(ngModel)]="selectedFilter" (ngModelChange)="currentPage = 1">
         <option value="all">Toutes les classes</option>
         <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
       </select>
 
-      <select class="form-select filter-select" *ngIf="activeTab === 'profs'" [(ngModel)]="selectedFilter">
+      <select class="form-select filter-select" *ngIf="activeTab === 'profs'" [(ngModel)]="selectedFilter" (ngModelChange)="currentPage = 1">
         <option value="all">Toutes les matières</option>
         <option *ngFor="let specialite of specialityFilters" [value]="specialite">{{ specialite }}</option>
       </select>
+
+      <button class="btn-success-outline" (click)="triggerExcelUpload()">
+        <i class="bi bi-file-earmark-excel"></i> Importer Excel
+      </button>
+      <input #excelInput type="file" (change)="onExcelFileSelected($event)" accept=".xlsx, .xls" style="display: none;">
 
       <button class="btn-primary" (click)="openModal()">
         <i class="bi bi-plus-lg"></i> Nouvel Utilisateur
@@ -57,7 +62,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of filteredEtudiants">
+        <tr *ngFor="let student of paginatedEtudiants">
           <td>
             <div class="user-cell">
               <img [src]="student.avatar" class="user-avatar" alt="avatar">
@@ -88,7 +93,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let prof of filteredProfs">
+        <tr *ngFor="let prof of paginatedProfs">
           <td>
             <div class="user-cell">
               <img [src]="prof.avatar" class="user-avatar" alt="avatar">
@@ -118,6 +123,12 @@
       </tbody>
     </table>
 
+    <app-pagination 
+      [totalItems]="activeTab === 'etudiants' ? filteredEtudiants.length : filteredProfs.length" 
+      [pageSize]="pageSize" 
+      [currentPage]="currentPage" 
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <!-- Form Modal (Overlay) -->
@@ -236,6 +247,72 @@
         <button class="btn-primary" (click)="saveUser()" [disabled]="!newUser.nom || !newUser.prenom || !newUser.email">
           Enregistrer
         </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Import Results Modal -->
+  <div class="modal-overlay" *ngIf="showImportResultModal" (click)="closeImportResultModal()">
+    <div class="modal-content import-modal-content" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>
+          <span *ngIf="importErrors.length > 0" class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Erreurs d'importation</span>
+          <span *ngIf="importErrors.length === 0" class="text-success"><i class="bi bi-check-circle-fill"></i> Importation Réussie</span>
+        </h3>
+        <button class="close-btn" (click)="closeImportResultModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Error State -->
+        <div *ngIf="importErrors.length > 0">
+          <div class="alert alert-danger-custom">
+            <i class="bi bi-x-circle-fill"></i> Certains enregistrements contiennent des erreurs. L'importation a été annulée. Veuillez corriger ces lignes dans votre fichier Excel et réessayer.
+          </div>
+          <ul class="error-list">
+            <li *ngFor="let error of importErrors">
+              <i class="bi bi-arrow-right-short"></i> {{ error }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Success State -->
+        <div *ngIf="importErrors.length === 0">
+          <div class="alert alert-success-custom">
+            <i class="bi bi-check-circle-fill"></i> {{ importSuccessMessage }}
+          </div>
+          
+          <div class="info-note mb-3">
+            <i class="bi bi-info-circle-fill"></i> Les mots de passe ci-dessous ont été générés ou fournis. Vous pouvez télécharger ce récapitulatif sous forme de fichier CSV pour les distribuer.
+          </div>
+
+          <div class="credentials-table-container">
+            <table class="credentials-table">
+              <thead>
+                <tr>
+                  <th>Nom Complet</th>
+                  <th>Email</th>
+                  <th>Mot de passe</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let u of importedUsers">
+                  <td>{{ u.prenom }} {{ u.nom }}</td>
+                  <td class="email-cell">{{ u.email }}</td>
+                  <td><code class="password-code">{{ u.password }}</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button *ngIf="importErrors.length === 0" class="btn-primary" (click)="downloadCredentialsCSV()">
+          <i class="bi bi-download"></i> Télécharger les identifiants (CSV)
+        </button>
+        <button class="btn-cancel" (click)="closeImportResultModal()">Fermer</button>
       </div>
 
     </div>
