@@ -74,9 +74,9 @@
       </div>
 
       <div class="next-class text-center py-2" *ngIf="!nextClass" [routerLink]="['/espace-enseignant/classes']" style="cursor: pointer;">
-        <div class="class-subject" style="font-size: 1rem; color: var(--text-muted);">Aucun cours planifié aujourd'hui</div>
+        <div class="class-subject" style="font-size: 1rem; color: var(--text-muted);">{{ 'enseignant.emploi.noClassToday' | translate }}</div>
         <div class="class-location" style="color: var(--primary-color); margin-top: 5px;">
-          <i class="bi bi-calendar3"></i> Consulter l'emploi du temps complet
+          <i class="bi bi-calendar3"></i> {{ 'enseignant.modules.emploi.title' | translate }}
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 <div class="admin-emploi-page">
   
   <div class="page-header">
-    <h2 class="page-title">Emplois du Temps</h2>
-    <p class="page-desc">Gérez l'emploi du temps de chaque classe.</p>
+    <h2 class="page-title">{{ 'enseignant.emploi.pageTitle' | translate }}</h2>
+    <p class="page-desc">{{ 'enseignant.emploi.pageDesc' | translate }}</p>
   </div>
 
   <!-- Toast Notification -->
@@ -13,7 +13,7 @@
   <!-- Sélecteur de Classe -->
   <div class="toolbar">
     <div class="class-selector">
-      <label><i class="bi bi-diagram-3"></i> Sélectionner une classe</label>
+      <label><i class="bi bi-diagram-3"></i> {{ 'enseignant.emploi.selectClass' | translate }}</label>
       <select class="form-select large-select" [(ngModel)]="selectedClass" (change)="onClassChange()">
         <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
       </select>
@@ -32,7 +32,7 @@
         [class.active]="jourActif.id === jour.id"
         (click)="selectJour(jour)">
         <i class="bi bi-calendar-day"></i>
-        <span>{{ jour.nomKey }}</span>
+        <span>{{ jour.nomKey | translate }}</span>
         <div class="count-badge" *ngIf="jour.seances.length > 0">{{ jour.seances.length }}</div>
       </button>
     </div>
@@ -40,7 +40,7 @@
     <!-- Contenu de la journée -->
     <div class="day-content">
       <div class="day-header">
-        <h3>{{ jourActif.nomKey }} - {{ selectedClass }}</h3>
+        <h3>{{ jourActif.nomKey | translate }} - {{ selectedClass }}</h3>
       </div>
 
       <div class="seances-list">
@@ -48,7 +48,7 @@
         <!-- Empty State -->
         <div class="empty-state" *ngIf="jourActif.seances.length === 0">
           <i class="bi bi-calendar-x"></i>
-          <p>Aucune séance prévue pour ce jour.</p>
+          <p>{{ 'enseignant.emploi.noClassToday' | translate }}</p>
         </div>
 
         <!-- Cartes des Séances -->
