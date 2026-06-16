@@ -1,8 +1,8 @@
 <div class="admin-content-page">
   
   <div class="page-header">
-    <h2 class="page-title">Gestion du Contenu</h2>
-    <p class="page-desc">Publiez et modifiez les articles de la plateforme.</p>
+    <h2 class="page-title">{{ 'admin.content.title' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.content.desc' | translate }}</p>
   </div>
 
   <!-- Toast Notification -->
@@ -14,23 +14,23 @@
   <div class="toolbar">
     <div class="tabs">
       <button class="tab-btn" [class.active]="activeTab === 'actualites'" (click)="switchTab('actualites')">
-        <i class="bi bi-newspaper"></i> Actualités
+        <i class="bi bi-newspaper"></i> {{ 'admin.content.tabNews' | translate }}
       </button>
       <button class="tab-btn" [class.active]="activeTab === 'evenements'" (click)="switchTab('evenements')">
-        <i class="bi bi-calendar-event"></i> Événements
+        <i class="bi bi-calendar-event"></i> {{ 'admin.content.tabEvents' | translate }}
       </button>
       <button class="tab-btn" [class.active]="activeTab === 'annonces'" (click)="switchTab('annonces')">
-        <i class="bi bi-megaphone"></i> Annonces
+        <i class="bi bi-megaphone"></i> {{ 'admin.content.tabAnnouncements' | translate }}
       </button>
     </div>
 
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher un titre...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" [placeholder]="'admin.content.search' | translate">
       </div>
       <button class="btn-primary" (click)="openModal()">
-        <i class="bi bi-plus-lg"></i> Nouvelle Publication
+        <i class="bi bi-plus-lg"></i> {{ 'admin.content.newPost' | translate }}
       </button>
     </div>
   </div>
@@ -40,10 +40,10 @@
     <table class="admin-table">
       <thead>
         <tr>
-          <th>Article</th>
-          <th>Date</th>
-          <th>Statut</th>
-          <th class="text-end">Actions</th>
+          <th>{{ 'admin.content.colArticle' | translate }}</th>
+          <th>{{ 'admin.content.colDate' | translate }}</th>
+          <th>{{ 'admin.content.colStatus' | translate }}</th>
+          <th class="text-end">{{ 'admin.content.colActions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +65,7 @@
             <!-- Bouton Toggle Statut -->
             <button class="status-toggle" [ngClass]="article.status" (click)="toggleStatus(article)">
               <span class="dot"></span>
-              {{ article.status === 'published' ? 'Publié' : 'Brouillon' }}
+              {{ article.status === 'published' ? ('admin.content.lblPublished' | translate) : ('admin.content.lblDraft' | translate) }}
             </button>
           </td>
           <td class="text-end">
@@ -78,7 +78,7 @@
         <tr *ngIf="filteredArticles.length === 0">
           <td colspan="4" class="text-center p-5 text-muted">
             <i class="bi bi-folder-x fs-1 mb-3 d-block"></i>
-            Aucun contenu trouvé dans cette catégorie.
+            {{ 'admin.content.emptyList' | translate }}
           </td>
         </tr>
       </tbody>
@@ -96,7 +96,7 @@
     <div class="modal-content large-modal" (click)="$event.stopPropagation()">
       
       <div class="modal-header">
-        <h3>{{ editingId ? 'Modifier Article' : ("Ajouter un Article") }}</h3>
+        <h3>{{ editingId ? ('admin.content.editArticle' | translate) : ('admin.content.createArticle' | translate) }}</h3>
         <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
@@ -105,17 +105,17 @@
         <!-- Image & Status -->
         <div class="top-fields-grid">
           <div class="form-group">
-            <label><i class="bi bi-image"></i> Image de l'article (Fichier)</label>
+            <label><i class="bi bi-image"></i> {{ 'admin.content.lblImage' | translate }}</label>
             <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
             <div class="mt-2" *ngIf="imagePreview">
               <img [src]="imagePreview" style="max-height: 80px; border-radius: 4px;" alt="Aperçu">
             </div>
           </div>
           <div class="form-group">
-            <label><i class="bi bi-eye"></i> Statut de publication</label>
+            <label><i class="bi bi-eye"></i> {{ 'admin.content.lblStatus' | translate }}</label>
             <select class="form-select status-select" [ngClass]="newArticle.status" [(ngModel)]="newArticle.status">
-              <option value="published">🟢 Publié (Visible)</option>
-              <option value="draft">⚪ Brouillon (Caché)</option>
+              <option value="published">{{ 'admin.content.optPublished' | translate }}</option>
+              <option value="draft">{{ 'admin.content.optDraft' | translate }}</option>
             </select>
           </div>
         </div>
@@ -123,11 +123,11 @@
         <!-- Date & Heure -->
         <div class="top-fields-grid mt-3">
           <div class="form-group">
-            <label><i class="bi bi-calendar3"></i> Date de publication</label>
+            <label><i class="bi bi-calendar3"></i> {{ 'admin.content.lblDate' | translate }}</label>
             <input type="date" class="form-control" [(ngModel)]="newArticle.date" required>
           </div>
           <div class="form-group">
-            <label><i class="bi bi-clock"></i> Heure de publication</label>
+            <label><i class="bi bi-clock"></i> {{ 'admin.content.lblTime' | translate }}</label>
             <input type="time" class="form-control" [(ngModel)]="newArticle.heure">
           </div>
         </div>
@@ -139,26 +139,26 @@
           
           <!-- Colonne Français -->
           <div class="lang-col fr-col">
-            <div class="lang-badge">🇫🇷 Français</div>
+            <div class="lang-badge">{{ 'admin.content.lblFr' | translate }}</div>
             <div class="form-group mt-3">
-              <label>Titre (Français)</label>
+              <label>{{ 'admin.content.lblTitleFr' | translate }}</label>
               <input type="text" class="form-control" [(ngModel)]="newArticle.titreFr" required>
             </div>
             <div class="form-group">
-              <label>Description (Français)</label>
+              <label>{{ 'admin.content.lblDescFr' | translate }}</label>
               <textarea class="form-control" rows="4" [(ngModel)]="newArticle.descFr"></textarea>
             </div>
           </div>
 
           <!-- Colonne Arabe -->
           <div class="lang-col ar-col" dir="rtl">
-            <div class="lang-badge">🇲🇦 العربية</div>
+            <div class="lang-badge">{{ 'admin.content.lblAr' | translate }}</div>
             <div class="form-group mt-3">
-              <label>Titre (Arabe)</label>
+              <label>{{ 'admin.content.lblTitleAr' | translate }}</label>
               <input type="text" class="form-control" [(ngModel)]="newArticle.titreAr" required>
             </div>
             <div class="form-group">
-              <label>Description (Arabe)</label>
+              <label>{{ 'admin.content.lblDescAr' | translate }}</label>
               <textarea class="form-control" rows="4" [(ngModel)]="newArticle.descAr"></textarea>
             </div>
           </div>
@@ -168,9 +168,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()" [disabled]="isSaving">Annuler</button>
+        <button class="btn-cancel" (click)="closeModal()" [disabled]="isSaving">{{ 'admin.content.btnCancel' | translate }}</button>
         <button class="btn-primary" (click)="saveArticle()" [disabled]="!newArticle.titreFr || !newArticle.titreAr || isSaving">
-          <i class="bi" [ngClass]="isSaving ? 'bi-arrow-repeat spinner' : 'bi-check2'"></i> {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+          <i class="bi" [ngClass]="isSaving ? 'bi-arrow-repeat spinner' : 'bi-check2'"></i> {{ isSaving ? ('admin.content.btnSaving' | translate) : ('admin.content.btnSave' | translate) }}
         </button>
       </div>
 

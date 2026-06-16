@@ -20,7 +20,7 @@ interface MappedModule {
 @Component({
   selector: 'app-etudiant-resultats',
   standalone: true,
-  imports: [CommonModule, TranslateModule, PaginationComponent],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './resultats.html',
   styleUrls: ['./resultats.css']
 })

@@ -15,7 +15,7 @@
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="mt-2 text-muted fw-semibold">Chargement des bulletins de notes...</p>
+    <p class="mt-2 text-muted fw-semibold">{{ 'etudiant.resultats.loading' | translate }}</p>
   </div>
 
   <div *ngIf="!isLoading" class="animate-fade-in">
@@ -25,7 +25,7 @@
         <div class="stat-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <div class="stat-info">
           <h3>{{ 'etudiant.profil.classe' | translate }}</h3>
-          <div class="stat-value fs-5 mt-1 text-truncate" style="max-width: 200px;">{{ studentProfile?.classe?.nom || 'Non affecté' }}</div>
+          <div class="stat-value fs-5 mt-1 text-truncate" style="max-width: 200px;">{{ studentProfile?.classe?.nom || ('etudiant.resultats.notAssigned' | translate) }}</div>
           <p class="m-0 text-white-50 small mt-1 text-truncate" style="max-width: 200px;">{{ studentProfile?.classe?.filiere }}</p>
         </div>
       </div>
@@ -33,7 +33,7 @@
       <div class="stat-card success-gradient">
         <div class="stat-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
         <div class="stat-info">
-          <h3>Bulletins publiés</h3>
+          <h3>{{ 'etudiant.resultats.published' | translate }}</h3>
           <div class="stat-value">{{ publishedNotesCount }} <span>/ {{ totalModules }}</span></div>
         </div>
       </div>
@@ -41,7 +41,7 @@
       <div class="stat-card warning-gradient">
         <div class="stat-icon"><i class="bi bi-book-half"></i></div>
         <div class="stat-info">
-          <h3>Total modules</h3>
+          <h3>{{ 'etudiant.resultats.totalModules' | translate }}</h3>
           <div class="stat-value">{{ totalModules }}</div>
         </div>
       </div>
@@ -60,7 +60,7 @@
             <tr>
               <th width="40%">{{ 'etudiant.resultats.matiere' | translate }}</th>
               <th width="30%">{{ 'etudiant.emploi.prof' | translate }}</th>
-              <th width="15%" class="text-center">Statut</th>
+              <th width="15%" class="text-center">{{ 'etudiant.resultats.statut' | translate }}</th>
               <th width="15%" class="text-center">Action</th>
             </tr>
           </thead>
@@ -81,19 +81,19 @@
                   </div>
                   <span class="text-secondary small">{{ mod.enseignant.prenom }} {{ mod.enseignant.nom }}</span>
                 </div>
-                <span class="text-muted small" *ngIf="!mod.enseignant">Non assigné</span>
+                <span class="text-muted small" *ngIf="!mod.enseignant">{{ 'etudiant.resultats.noTeacher' | translate }}</span>
               </td>
               <td class="text-center">
                 <span class="status-badge" [ngClass]="mod.isAvailable ? 'badge-success' : 'badge-danger'">
                   <i class="bi" [ngClass]="mod.isAvailable ? 'bi-check-circle-fill' : 'bi-dash-circle-fill'"></i>
-                  {{ mod.isAvailable ? 'Disponible' : 'Non disponible' }}
+                  {{ mod.isAvailable ? ('etudiant.resultats.available' | translate) : ('etudiant.resultats.notAvailable' | translate) }}
                 </span>
               </td>
               <td class="text-center">
                 <button class="btn btn-primary rounded-pill btn-sm px-3 d-inline-flex align-items-center gap-1" 
                         *ngIf="mod.isAvailable" 
                         (click)="downloadNote(mod)">
-                  <i class="bi bi-download"></i> Télécharger
+                  <i class="bi bi-download"></i> {{ 'etudiant.resultats.download' | translate }}
                 </button>
                 <span class="text-muted small" *ngIf="!mod.isAvailable">--</span>
               </td>
@@ -101,7 +101,7 @@
             <tr *ngIf="mappedModules.length === 0">
               <td colspan="4" class="text-center py-5 text-muted fw-semibold">
                 <i class="bi bi-journal-x fs-1 d-block mb-3 text-secondary"></i>
-                Aucun module affecté à votre classe.
+                {{ 'etudiant.resultats.empty' | translate }}
               </td>
             </tr>
           </tbody>

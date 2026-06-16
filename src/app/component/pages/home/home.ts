@@ -4,6 +4,7 @@ import AOS from 'aos';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActualitesService } from '../../../core/services/actualites.service';
+import { ApiService } from '../../../core/services/api.service';
 declare var PureCounter: any;
 declare var bootstrap: any;
 
@@ -16,9 +17,17 @@ declare var bootstrap: any;
 })
 export class Home implements OnInit, AfterViewInit {
 
+  public stats: any = {
+    etudiants: 800,
+    profs: 100,
+    classes: 24,
+    filieres: 7
+  };
+
   constructor(
     public translate: TranslateService,
-    private actualitesService: ActualitesService
+    private actualitesService: ActualitesService,
+    private apiService: ApiService
   ) {
     // Initialize carousel automatically when actualites data arrives
     effect(() => {
@@ -40,6 +49,19 @@ export class Home implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.actualitesService.loadActualites();
+    
+    this.apiService.getDashboardStats().subscribe({
+      next: (res) => {
+        if (res && res.stats) {
+          this.stats = res.stats;
+          setTimeout(() => {
+            new PureCounter();
+          }, 100);
+        }
+      },
+      error: (err) => console.error('Error loading stats', err)
+    });
+
     AOS.init({
       duration: 800,
       once: true

@@ -51,7 +51,7 @@
         </ul>
         <div class="empty-schedule" *ngIf="coursDuJour.length === 0">
           <i class="bi bi-calendar-x"></i>
-          <p>Aucun cours prévu aujourd'hui.</p>
+          <p>{{ 'etudiant.dashboard.noClassesToday' | translate }}</p>
         </div>
       </div>
     </div>

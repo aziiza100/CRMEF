@@ -237,7 +237,7 @@ export class ApiService {
   }
 
   getActualiteById(id: number): Observable<ApiResponse<Actualite>> {
-    return this.http.get<ApiResponse<Actualite>>(`${this.baseUrl}/admin/actualites/${id}`, {
+    return this.http.get<ApiResponse<Actualite>>(`${this.baseUrl}/actualites/${id}`, {
       headers: this.getHeaders()
     }).pipe(catchError(this.handleError));
   }

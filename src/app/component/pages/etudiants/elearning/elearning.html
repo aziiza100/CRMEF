@@ -10,7 +10,7 @@
  
   <div class="text-center py-5" *ngIf="isLoading">
     <div class="spinner-border text-primary" role="status"></div>
-    <p class="mt-2 text-muted">Chargement de vos cours en ligne...</p>
+    <p class="mt-2 text-muted">{{ 'etudiant.elearning.loading' | translate }}</p>
   </div>
 
   <div *ngIf="!isLoading">
@@ -34,7 +34,7 @@
 
     <div class="cours-grid" *ngIf="filteredCours.length > 0">
       <div class="cours-card" *ngFor="let cours of filteredCours">
-        <span class="badge-new" *ngIf="cours.isNew">Nouveau</span>
+        <span class="badge-new" *ngIf="cours.isNew">{{ 'etudiant.elearning.new' | translate }}</span>
         
         <div class="cours-format-icon">
           <i class="bi" [ngClass]="getFormatIcon(cours.format)"></i>

@@ -2,10 +2,10 @@
   
   <div class="page-header">
     <div class="title-container">
-      <h2 class="page-title">Messagerie</h2>
-      <span class="unread-badge" *ngIf="unreadCount > 0">{{ unreadCount }} non lu(s)</span>
+      <h2 class="page-title">{{ 'admin.messages.title' | translate }}</h2>
+      <span class="unread-badge" *ngIf="unreadCount > 0">{{ unreadCount }} {{ 'admin.messages.unread' | translate }}</span>
     </div>
-    <p class="page-desc">Consultez les messages reçus via la plateforme.</p>
+    <p class="page-desc">{{ 'admin.messages.desc' | translate }}</p>
   </div>
 
   <div class="inbox-container">
@@ -15,13 +15,13 @@
       
       <div class="inbox-search">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher dans les messages...">
+        <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.messages.search' | translate">
       </div>
 
       <div class="message-items-scroll">
         <div class="empty-list" *ngIf="filteredMessages.length === 0">
           <i class="bi bi-inbox"></i>
-          <p>Votre boîte de réception est vide.</p>
+          <p>{{ 'admin.messages.emptyList' | translate }}</p>
         </div>
 
         <div class="message-item" 
@@ -53,7 +53,7 @@
       <!-- État vide -->
       <div class="reader-empty" *ngIf="!selectedMessage">
         <div class="empty-circle"><i class="bi bi-envelope-open"></i></div>
-        <h3>Sélectionnez un message pour le lire</h3>
+        <h3>{{ 'admin.messages.emptyReader' | translate }}</h3>
       </div>
 
       <!-- Message Ouvert -->
@@ -62,10 +62,10 @@
         <div class="reader-header">
           <h2 class="reader-subject">{{ selectedMessage.sujet }}</h2>
           <div class="reader-actions">
-            <button class="action-btn" (click)="replyToMessage()" title="Répondre">
+            <button class="action-btn" (click)="replyToMessage()" [title]="'admin.messages.btnReply' | translate">
               <i class="bi bi-reply-fill"></i>
             </button>
-            <button class="action-btn danger" (click)="deleteMessage(selectedMessage.id)" title="Supprimer">
+            <button class="action-btn danger" (click)="deleteMessage(selectedMessage.id)" [title]="'admin.messages.btnDelete' | translate">
               <i class="bi bi-trash"></i>
             </button>
           </div>

@@ -1,8 +1,8 @@
 <div class="admin-emploi-page">
   
   <div class="page-header">
-    <h2 class="page-title">Emplois du Temps</h2>
-    <p class="page-desc">Gérez l'emploi du temps de chaque classe.</p>
+    <h2 class="page-title">{{ 'admin.emploi.title' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.emploi.desc' | translate }}</p>
   </div>
 
   <!-- Toast Notification -->
@@ -13,14 +13,14 @@
   <!-- Sélecteur de Classe -->
   <div class="toolbar">
     <div class="class-selector">
-      <label><i class="bi bi-diagram-3"></i> Sélectionner une classe</label>
+      <label><i class="bi bi-diagram-3"></i> {{ 'admin.emploi.lblClass' | translate }}</label>
       <select class="form-select large-select" [(ngModel)]="selectedClass" (change)="onClassChange()">
         <option *ngFor="let cls of classes" [value]="cls">{{ cls }}</option>
       </select>
     </div>
     
     <button class="btn-primary" (click)="openModal()">
-      <i class="bi bi-plus-lg"></i> Nouvelle Séance
+      <i class="bi bi-plus-lg"></i> {{ 'admin.emploi.newSeance' | translate }}
     </button>
   </div>
 
@@ -34,7 +34,7 @@
         [class.active]="jourActif.id === jour.id"
         (click)="selectJour(jour)">
         <i class="bi bi-calendar-day"></i>
-        <span>{{ jour.nomKey }}</span>
+        <span>{{ 'admin.days.' + jour.id | translate }}</span>
         <div class="count-badge" *ngIf="jour.seances.length > 0">{{ jour.seances.length }}</div>
       </button>
     </div>
@@ -42,7 +42,7 @@
     <!-- Contenu de la journée -->
     <div class="day-content">
       <div class="day-header">
-        <h3>{{ jourActif.nomKey }} - {{ selectedClass }}</h3>
+        <h3>{{ 'admin.days.' + jourActif.id | translate }} - {{ selectedClass }}</h3>
       </div>
 
       <div class="seances-list">
@@ -50,7 +50,7 @@
         <!-- Empty State -->
         <div class="empty-state" *ngIf="jourActif.seances.length === 0">
           <i class="bi bi-calendar-x"></i>
-          <p>Aucune séance prévue pour ce jour.</p>
+          <p>{{ 'admin.emploi.emptyList' | translate }}</p>
         </div>
 
         <!-- Cartes des Séances -->
@@ -66,7 +66,7 @@
             <h4 class="matiere">
               {{ seance.matiere }}
               <span class="text-muted" *ngIf="seance.date" style="font-size: 0.85rem; font-weight: normal; margin-left: 8px; font-style: italic;">
-                (le {{ seance.date | date:'dd/MM/yyyy' }})
+                ({{ 'admin.emploi.the' | translate }} {{ seance.date | date:'dd/MM/yyyy' }})
               </span>
             </h4>
             <div class="info-group">
@@ -91,7 +91,7 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
       
       <div class="modal-header">
-        <h3>{{ editingId ? 'Modifier la séance' : 'Ajouter une Séance' }} - {{ jourActif.nomKey }}</h3>
+        <h3>{{ editingId ? ('admin.emploi.editSeance' | translate) : ('admin.emploi.createSeance' | translate) }} - {{ 'admin.days.' + jourActif.id | translate }}</h3>
         <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
@@ -99,37 +99,37 @@
         
         <div class="time-grid">
           <div class="form-group">
-            <label><i class="bi bi-clock"></i> Heure de début</label>
+            <label><i class="bi bi-clock"></i> {{ 'admin.emploi.lblStart' | translate }}</label>
             <input type="time" class="form-control" [(ngModel)]="newSeance.heureDebut" required>
           </div>
           <div class="form-group">
-            <label><i class="bi bi-clock-fill"></i> Heure de fin</label>
+            <label><i class="bi bi-clock-fill"></i> {{ 'admin.emploi.lblEnd' | translate }}</label>
             <input type="time" class="form-control" [(ngModel)]="newSeance.heureFin" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label><i class="bi bi-calendar3"></i> Date (Optionnelle)</label>
+          <label><i class="bi bi-calendar3"></i> {{ 'admin.emploi.lblDate' | translate }}</label>
           <input type="date" class="form-control" [(ngModel)]="newSeance.date">
         </div>
 
 
         <div class="form-group">
-          <label>Module</label>
+          <label>{{ 'admin.emploi.lblModule' | translate }}</label>
           <select class="form-select" [(ngModel)]="newSeance.moduleId" (change)="onModuleChange()">
-            <option [ngValue]="null">-- Sélectionner un module --</option>
+            <option [ngValue]="null">{{ 'admin.emploi.plcModule' | translate }}</option>
             <option *ngFor="let m of modulesForClass" [ngValue]="m.id">{{ m.nom }}</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Professeur</label>
-          <input type="text" class="form-control" [(ngModel)]="newSeance.professeur" readonly placeholder="Rempli automatiquement si le module a un enseignant">
+          <label>{{ 'admin.emploi.lblTeacher' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newSeance.professeur" readonly [placeholder]="'admin.emploi.plcTeacher' | translate">
         </div>
 
         <div class="form-group">
-          <label>Salle</label>
-          <input type="text" class="form-control" [(ngModel)]="newSeance.salle" placeholder="Ex: Salle 4, Amphi A...">
+          <label>{{ 'admin.emploi.lblRoom' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newSeance.salle" [placeholder]="'admin.emploi.plcRoom' | translate">
         </div>
 
         <!-- Type removed: module selection determines professeur and matiere -->
@@ -137,9 +137,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.emploi.btnCancel' | translate }}</button>
         <button class="btn-primary" (click)="saveSeance()" [disabled]="!newSeance.moduleId">
-          Enregistrer
+          {{ 'admin.emploi.btnSave' | translate }}
         </button>
       </div>
 

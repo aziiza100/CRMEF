@@ -1,7 +1,7 @@
 <div class="admin-modules-page">
   <div class="page-header">
-    <h2 class="page-title">Gestion des Modules</h2>
-    <p class="page-desc">Créez et gérez les modules, en choisissant la filière, la classe et l’enseignant affecté.</p>
+    <h2 class="page-title">{{ 'admin.modules.title' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.modules.desc' | translate }}</p>
   </div>
 
   <div class="toast-notification success-toast" [class.show]="showToast">
@@ -12,12 +12,12 @@
     <div class="toolbar-actions toolbar-actions--with-filter">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher un module..." />
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" [placeholder]="'admin.modules.search' | translate" />
       </div>
 
       <div class="select-filter">
         <select class="form-select" [(ngModel)]="selectedClasseId" (ngModelChange)="currentPage = 1">
-          <option [ngValue]="null">Toutes les classes</option>
+          <option [ngValue]="null">{{ 'admin.modules.allClasses' | translate }}</option>
           <option *ngFor="let classe of classes" [ngValue]="classe.id">{{ classe.nom }}</option>
         </select>
       </div>
@@ -25,24 +25,24 @@
 
     <button class="btn-primary" (click)="openModal()" [disabled]="isLoading">
       <i class="bi bi-plus-lg"></i>
-      Nouveau module
+      {{ 'admin.modules.newModule' | translate }}
     </button>
   </div>
 
   <div class="table-container">
     <div *ngIf="isLoading" class="table-loading">
-      <span class="loading-dot"></span> Chargement des modules...
+      <span class="loading-dot"></span> {{ 'admin.modules.loading' | translate }}
     </div>
 
     <table *ngIf="!isLoading" class="admin-table">
       <thead>
         <tr>
-          <th>Nom du module</th>
-          <th>Masse horaire</th>
-          <th>Filières</th>
-          <th>Enseignant</th>
-          <th>Classe</th>
-          <th class="text-end">Actions</th>
+          <th>{{ 'admin.modules.colName' | translate }}</th>
+          <th>{{ 'admin.modules.colHours' | translate }}</th>
+          <th>{{ 'admin.modules.colFilieres' | translate }}</th>
+          <th>{{ 'admin.modules.colTeacher' | translate }}</th>
+          <th>{{ 'admin.modules.colClasse' | translate }}</th>
+          <th class="text-end">{{ 'admin.modules.colActions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -67,7 +67,7 @@
           </td>
         </tr>
         <tr *ngIf="!filteredModules.length && !isLoading">
-          <td colspan="6" class="text-muted text-center">Aucun module disponible.</td>
+          <td colspan="6" class="text-muted text-center">{{ 'admin.modules.emptyList' | translate }}</td>
         </tr>
       </tbody>
     </table>
@@ -82,33 +82,33 @@
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>{{ editingModuleId ? 'Modifier le module' : 'Créer un nouveau module' }}</h3>
+        <h3>{{ editingModuleId ? ('admin.modules.editModule' | translate) : ('admin.modules.createModule' | translate) }}</h3>
         <button class="close-btn" type="button" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-row">
-          <label class="form-label">Nom du module</label>
-          <input type="text" class="form-control" [(ngModel)]="newModule.nom" placeholder="Nom du module" />
+          <label class="form-label">{{ 'admin.modules.lblName' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newModule.nom" [placeholder]="'admin.modules.plcName' | translate" />
         </div>
 
         <div class="form-row">
-          <label class="form-label">Masse horaire</label>
-          <input type="number" class="form-control" [(ngModel)]="newModule.masse_horraire" placeholder="Masse horaire" />
+          <label class="form-label">{{ 'admin.modules.lblHours' | translate }}</label>
+          <input type="number" class="form-control" [(ngModel)]="newModule.masse_horraire" [placeholder]="'admin.modules.plcHours' | translate" />
         </div>
 
         <div class="form-row">
-          <label class="form-label">Filière</label>
+          <label class="form-label">{{ 'admin.modules.lblFiliere' | translate }}</label>
           <select class="form-select" [(ngModel)]="newModule.filiere_id">
-            <option [ngValue]="null">Sélectionner une filière</option>
+            <option [ngValue]="null">{{ 'admin.modules.plcFiliere' | translate }}</option>
             <option *ngFor="let filiere of filieres" [ngValue]="filiere.id">{{ filiere.nom }}</option>
           </select>
         </div>
 
         <div class="form-row">
-          <label class="form-label">Enseignant</label>
+          <label class="form-label">{{ 'admin.modules.lblTeacher' | translate }}</label>
           <select class="form-select" [(ngModel)]="newModule.enseignant_id">
-            <option [ngValue]="null">Sélectionner un enseignant</option>
+            <option [ngValue]="null">{{ 'admin.modules.plcTeacher' | translate }}</option>
             <option *ngFor="let enseignant of enseignants" [ngValue]="enseignant.enseignant?.id_enseignant ?? enseignant.id_enseignant">
               {{ enseignant.nom }} {{ enseignant.prenom }}
             </option>
@@ -116,19 +116,19 @@
         </div>
 
         <div class="form-row">
-          <label class="form-label">Classe</label>
+          <label class="form-label">{{ 'admin.modules.lblClasse' | translate }}</label>
           <select class="form-select" [(ngModel)]="newModule.classe_id" [disabled]="!newModule.filiere_id">
-            <option [ngValue]="null">Sélectionner une classe</option>
+            <option [ngValue]="null">{{ 'admin.modules.plcClasse' | translate }}</option>
             <option *ngFor="let classe of filteredClasses" [ngValue]="classe.id">{{ classe.nom }}</option>
           </select>
-          <small class="form-help">Choisir la classe où l’enseignant donnera ce module.</small>
+          <small class="form-help">{{ 'admin.modules.helpClasse' | translate }}</small>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" type="button" (click)="closeModal()">Annuler</button>
+        <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.modules.btnCancel' | translate }}</button>
         <button class="btn-primary" type="button" (click)="saveModule()" [disabled]="isSaving">
-          {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+          {{ isSaving ? ('admin.modules.btnSaving' | translate) : ('admin.modules.btnSave' | translate) }}
         </button>
       </div>
     </div>

@@ -14,8 +14,8 @@ import { SearchService } from '../../../../core/services/search.service';
   template: `
     <div class="admin-formations-page">
       <div class="page-header">
-        <h1 class="page-title">Gestion des Formations</h1>
-        <p class="page-desc">Créez, modifiez ou supprimez des formations et associez-les aux filières.</p>
+        <h1 class="page-title">{{ 'admin.formations.title' | translate }}</h1>
+        <p class="page-desc">{{ 'admin.formations.desc' | translate }}</p>
       </div>
 
       <div class="toast-notification success-toast" [class.show]="showToast">
@@ -27,11 +27,11 @@ import { SearchService } from '../../../../core/services/search.service';
         <div class="toolbar-actions">
           <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une formation..." />
+            <input type="text" [(ngModel)]="searchTerm" [placeholder]="'admin.formations.search' | translate" />
           </div>
         </div>
         <button class="btn-primary" (click)="openModal()" [disabled]="isLoading">
-          <i class="bi bi-plus-lg"></i> Ajouter une formation
+          <i class="bi bi-plus-lg"></i> {{ 'admin.formations.addFormation' | translate }}
         </button>
       </div>
 
@@ -39,17 +39,17 @@ import { SearchService } from '../../../../core/services/search.service';
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Type</th>
-              <th>Durée</th>
-              <th>Description</th>
-              <th>Condition d'accès</th>
-              <th>Filières</th>
-              <th class="text-end">Actions</th>
+              <th>{{ 'admin.formations.colType' | translate }}</th>
+              <th>{{ 'admin.formations.colDuration' | translate }}</th>
+              <th>{{ 'admin.formations.colDesc' | translate }}</th>
+              <th>{{ 'admin.formations.colCondition' | translate }}</th>
+              <th>{{ 'admin.formations.colFilieres' | translate }}</th>
+              <th class="text-end">{{ 'admin.formations.colActions' | translate }}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="isLoading">
-              <td colspan="6">Chargement des formations...</td>
+              <td colspan="6">{{ 'admin.formations.loading' | translate }}</td>
             </tr>
             <tr *ngFor="let formation of filteredFormations; trackBy: trackByFormation">
               <td class="fw-bold">{{ formation.type }}</td>
@@ -72,7 +72,7 @@ import { SearchService } from '../../../../core/services/search.service';
               </td>
             </tr>
             <tr *ngIf="!isLoading && filteredFormations.length === 0">
-              <td colspan="6">Aucune formation trouvée.</td>
+              <td colspan="6">{{ 'admin.formations.emptyList' | translate }}</td>
             </tr>
           </tbody>
         </table>
@@ -81,28 +81,29 @@ import { SearchService } from '../../../../core/services/search.service';
       <div *ngIf="showModal" class="modal-overlay">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>{{ editingId ? 'Modifier la formation' : 'Nouvelle formation' }}</h3>
+            <h3>{{ editingId ? ('admin.formations.editFormation' | translate) : ('admin.formations.newFormation' | translate) }}</h3>
             <button class="close-btn" (click)="closeModal()">×</button>
           </div>
           <div class="modal-body">
+          <div class="modal-body">
             <div class="form-group">
-              <label>Type</label>
-              <input type="text" class="form-control" [(ngModel)]="newFormation.type" placeholder="Ex: Primaire, Secondaire" />
+              <label>{{ 'admin.formations.lblType' | translate }}</label>
+              <input type="text" class="form-control" [(ngModel)]="newFormation.type" [placeholder]="'admin.formations.plcType' | translate" />
             </div>
             <div class="form-group">
-              <label>Durée</label>
-              <input type="text" class="form-control" [(ngModel)]="newFormation.duree" placeholder="Ex: 2 ans" />
+              <label>{{ 'admin.formations.lblDuration' | translate }}</label>
+              <input type="text" class="form-control" [(ngModel)]="newFormation.duree" [placeholder]="'admin.formations.plcDuration' | translate" />
             </div>
             <div class="form-group">
-              <label>Description</label>
+              <label>{{ 'admin.formations.lblDesc' | translate }}</label>
               <textarea rows="3" class="form-control" [(ngModel)]="newFormation.description"></textarea>
             </div>
             <div class="form-group">
-              <label>Condition d'accès</label>
+              <label>{{ 'admin.formations.lblCondition' | translate }}</label>
               <textarea rows="2" class="form-control" [(ngModel)]="newFormation.condition_acces"></textarea>
             </div>
             <div class="form-group">
-              <label>Filières associées</label>
+              <label>{{ 'admin.formations.lblFilieres' | translate }}</label>
               <div class="checkbox-grid">
                 <label *ngFor="let filiere of filieres" class="checkbox-item">
                   <input type="checkbox" [checked]="isFiliereSelected(filiere.id!)" (change)="toggleFiliereSelection(filiere.id!)" />
@@ -112,9 +113,9 @@ import { SearchService } from '../../../../core/services/search.service';
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn-cancel" type="button" (click)="closeModal()">Annuler</button>
+            <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.formations.btnCancel' | translate }}</button>
             <button class="btn-primary" type="button" (click)="saveFormation()" [disabled]="isSaving">
-              {{ editingId ? 'Enregistrer' : 'Créer' }}
+              {{ editingId ? ('admin.formations.btnSave' | translate) : ('admin.formations.btnCreate' | translate) }}
             </button>
           </div>
         </div>

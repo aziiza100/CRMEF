@@ -1,7 +1,7 @@
 <div class="admin-filieres-page">
   <div class="page-header">
-    <h2 class="page-title">Gestion des Filières</h2>
-    <p class="page-desc">Gérez les filières avec leur nom et leur description.</p>
+    <h2 class="page-title">{{ 'admin.filieres.title' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.filieres.desc' | translate }}</p>
   </div>
 
   <div class="toast-notification success-toast" [class.show]="showToast">
@@ -12,27 +12,27 @@
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher une filière...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" [placeholder]="'admin.filieres.search' | translate">
       </div>
     </div>
 
     <button class="btn-primary" (click)="openModal()">
-      <i class="bi bi-plus-lg"></i> Nouvelle Filière
+      <i class="bi bi-plus-lg"></i> {{ 'admin.filieres.newFiliere' | translate }}
     </button>
   </div>
 
   <div class="table-container">
     <div *ngIf="isLoading" class="table-loading">
-      <span class="loading-dot"></span> Chargement des filières...
+      <span class="loading-dot"></span> {{ 'admin.filieres.loading' | translate }}
     </div>
 
     <table *ngIf="!isLoading" class="admin-table">
       <thead>
         <tr>
-          <th>Nom de la Filière</th>
-          <th>Description</th>
-          <th>Formations</th>
-          <th class="text-end">Actions</th>
+          <th>{{ 'admin.filieres.colName' | translate }}</th>
+          <th>{{ 'admin.filieres.colDesc' | translate }}</th>
+          <th>{{ 'admin.filieres.colFormations' | translate }}</th>
+          <th class="text-end">{{ 'admin.filieres.colActions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +47,7 @@
               </span>
             </ng-container>
             <ng-template #noFormations>
-              <span class="text-muted">Aucune formation</span>
+              <span class="text-muted">{{ 'admin.filieres.noFormations' | translate }}</span>
             </ng-template>
           </td>
           <td class="text-end">
@@ -56,7 +56,7 @@
           </td>
         </tr>
         <tr *ngIf="filteredFilieres.length === 0">
-          <td colspan="4" class="text-muted text-center">Aucune filière disponible.</td>
+          <td colspan="4" class="text-muted text-center">{{ 'admin.filieres.emptyList' | translate }}</td>
         </tr>
       </tbody>
     </table>
@@ -71,23 +71,23 @@
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>{{ editingId ? 'Modifier Filière' : 'Créer une Filière' }}</h3>
+        <h3>{{ editingId ? ('admin.filieres.editFiliere' | translate) : ('admin.filieres.createFiliere' | translate) }}</h3>
         <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-group">
-          <label>Nom</label>
-          <input type="text" class="form-control" [(ngModel)]="newFiliere.nom" required placeholder="ex: SVT">
+          <label>{{ 'admin.filieres.lblName' | translate }}</label>
+          <input type="text" class="form-control" [(ngModel)]="newFiliere.nom" required [placeholder]="'admin.filieres.plcName' | translate">
         </div>
 
         <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" placeholder="Description de la filière..."></textarea>
+          <label>{{ 'admin.filieres.lblDesc' | translate }}</label>
+          <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" [placeholder]="'admin.filieres.plcDesc' | translate"></textarea>
         </div>
 
         <div class="form-group mt-3">
-          <label class="fw-bold mb-2">Formations associées</label>
+          <label class="fw-bold mb-2">{{ 'admin.filieres.lblFormations' | translate }}</label>
           <div *ngIf="formations.length; else noFormationOptions" class="checkbox-grid">
             <div class="form-check" *ngFor="let formation of formations">
               <input
@@ -103,15 +103,15 @@
             </div>
           </div>
           <ng-template #noFormationOptions>
-            <p class="text-muted fst-italic">Aucune formation disponible pour lier à cette filière.</p>
+            <p class="text-muted fst-italic">{{ 'admin.filieres.noFormationOptions' | translate }}</p>
           </ng-template>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.filieres.btnCancel' | translate }}</button>
         <button class="btn-primary" (click)="saveFiliere()" [disabled]="!newFiliere.nom || isSaving">
-          {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+          {{ isSaving ? ('admin.filieres.btnSaving' | translate) : ('admin.filieres.btnSave' | translate) }}
         </button>
       </div>
     </div>

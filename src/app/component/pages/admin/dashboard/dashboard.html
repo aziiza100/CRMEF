@@ -3,7 +3,7 @@
   <!-- Loading State -->
   <div class="loading-state" *ngIf="isLoading">
     <div class="spinner"></div>
-    <p>Chargement des statistiques...</p>
+    <p>{{ 'admin.dashboard.loading' | translate }}</p>
   </div>
 
   <!-- Error State -->
@@ -14,14 +14,14 @@
 
   <ng-container *ngIf="!isLoading && !error">
     <div class="page-header">
-      <h2 class="page-title">Tableau de bord Administrateur</h2>
-      <p class="page-desc">Vue d'ensemble de l'établissement</p>
+      <h2 class="page-title">{{ 'admin.dashboard.title' | translate }}</h2>
+      <p class="page-desc">{{ 'admin.dashboard.subtitle' | translate }}</p>
     </div>
 
     <div class="welcome-banner">
       <div class="banner-content">
-        <h2>Bienvenue dans le panneau d'administration.</h2>
-        <p>Gérez l'ensemble de l'établissement depuis ce panneau de contrôle unifié.</p>
+        <h2>{{ 'admin.dashboard.welcomeTitle' | translate }}</h2>
+        <p>{{ 'admin.dashboard.welcomeDesc' | translate }}</p>
       </div>
       <div class="banner-illustration">
         <i class="bi bi-shield-check"></i>
@@ -30,7 +30,7 @@
 
     <!-- Key Metrics -->
     <div class="section-title">
-      <h3>Statistiques globales</h3>
+      <h3>{{ 'admin.dashboard.globalStats' | translate }}</h3>
     </div>
 
     <div class="metrics-grid">
@@ -38,7 +38,7 @@
         <div class="metric-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <div class="metric-info">
           <h3>{{ stats.etudiants }}</h3>
-          <p>Total étudiants</p>
+          <p>{{ 'admin.dashboard.totalStudents' | translate }}</p>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
         <div class="metric-icon"><i class="bi bi-person-video3"></i></div>
         <div class="metric-info">
           <h3>{{ stats.profs }}</h3>
-          <p>Total Enseignants</p>
+          <p>{{ 'admin.dashboard.totalTeachers' | translate }}</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@
         <div class="metric-icon"><i class="bi bi-diagram-3-fill"></i></div>
         <div class="metric-info">
           <h3>{{ stats.classes }}</h3>
-          <p>Total Classes actives</p>
+          <p>{{ 'admin.dashboard.totalClasses' | translate }}</p>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
         <div class="metric-icon"><i class="bi bi-bookmarks-fill"></i></div>
         <div class="metric-info">
           <h3>{{ stats.filieres }}</h3>
-          <p>Total Filières</p>
+          <p>{{ 'admin.dashboard.totalFilieres' | translate }}</p>
         </div>
       </div>
     </div>
@@ -73,28 +73,28 @@
       <!-- Quick Actions -->
       <div class="card">
         <div class="card-header">
-          <h3><i class="bi bi-lightning-charge-fill"></i> Actions Rapides</h3>
+          <h3><i class="bi bi-lightning-charge-fill"></i> {{ 'admin.dashboard.quickActions' | translate }}</h3>
         </div>
         <div class="card-body">
           <div class="quick-actions-grid">
             <button class="action-btn" routerLink="/espace-admin/users">
               <div class="icon-wrapper bg-blue-light"><i class="bi bi-person-plus-fill"></i></div>
-              <span>Ajouter un étudiant</span>
+              <span>{{ 'admin.dashboard.addStudent' | translate }}</span>
             </button>
             
             <button class="action-btn" routerLink="/espace-admin/users">
               <div class="icon-wrapper bg-emerald-light"><i class="bi bi-person-badge-fill"></i></div>
-              <span>Ajouter un enseignant</span>
+              <span>{{ 'admin.dashboard.addTeacher' | translate }}</span>
             </button>
 
             <button class="action-btn" routerLink="/espace-admin/classes">
               <div class="icon-wrapper bg-purple-light"><i class="bi bi-folder-plus"></i></div>
-              <span>Gérer les classes</span>
+              <span>{{ 'admin.dashboard.manageClasses' | translate }}</span>
             </button>
 
             <button class="action-btn" routerLink="/espace-admin/filieres">
               <div class="icon-wrapper bg-emerald-light"><i class="bi bi-bookmarks-fill"></i></div>
-              <span>Gérer les filières</span>
+              <span>{{ 'admin.dashboard.manageFilieres' | translate }}</span>
             </button>
           </div>
         </div>
@@ -103,13 +103,13 @@
       <!-- Recent Activity -->
       <div class="card">
         <div class="card-header">
-          <h3><i class="bi bi-activity"></i> Activité Récente</h3>
+          <h3><i class="bi bi-activity"></i> {{ 'admin.dashboard.recentActivity' | translate }}</h3>
         </div>
         <div class="card-body p-0">
           <ul class="activity-list">
             <!-- Empty state -->
             <li class="empty-activities" *ngIf="recentActivities.length === 0">
-              Aucune activité récente.
+              {{ 'admin.dashboard.noActivity' | translate }}
             </li>
             
             <li class="activity-item" *ngFor="let act of recentActivities">
