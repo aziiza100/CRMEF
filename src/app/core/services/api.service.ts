@@ -880,6 +880,15 @@ deleteSeance(seanceId: number): Observable<any> {
   }
 
   // ============================================================
+  // CONTACT
+  // ============================================================
+  sendContact(data: { name: string; email: string; subject: string; message: string }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/contact`, data, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
+
+  // ============================================================
   // ERROR HANDLER
   // ============================================================
   private handleError(error: any): Observable<never> {
