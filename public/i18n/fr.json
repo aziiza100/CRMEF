@@ -810,6 +810,12 @@
         "title": "Emploi du temps",
         "desc": "Gérez votre emploi du temps, consultez les cours à venir et organisez votre temps."
       } 
+    },
+    "emploi": {
+      "pageTitle": "Emplois du Temps",
+      "pageDesc": "Consultez l'emploi du temps de chaque classe.",
+      "selectClass": "Sélectionner une classe",
+      "noClassToday": "Aucune séance prévue pour ce jour."
     }
   },
   "cours": {

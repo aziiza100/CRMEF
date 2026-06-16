@@ -34,12 +34,12 @@ export class EnseignantEmploiComponent {
   selectedClass = '';
 
   jours: JourEmploi[] = [
-    { id: 'lundi', nomKey: 'Lundi', seances: [] },
-    { id: 'mardi', nomKey: 'Mardi', seances: [] },
-    { id: 'mercredi', nomKey: 'Mercredi', seances: [] },
-    { id: 'jeudi', nomKey: 'Jeudi', seances: [] },
-    { id: 'vendredi', nomKey: 'Vendredi', seances: [] },
-    { id: 'samedi', nomKey: 'Samedi', seances: [] }
+    { id: 'lundi', nomKey: 'etudiant.emploi.days.lundi', seances: [] },
+    { id: 'mardi', nomKey: 'etudiant.emploi.days.mardi', seances: [] },
+    { id: 'mercredi', nomKey: 'etudiant.emploi.days.mercredi', seances: [] },
+    { id: 'jeudi', nomKey: 'etudiant.emploi.days.jeudi', seances: [] },
+    { id: 'vendredi', nomKey: 'etudiant.emploi.days.vendredi', seances: [] },
+    { id: 'samedi', nomKey: 'etudiant.emploi.days.samedi', seances: [] }
   ];
 
   jourActif: JourEmploi = this.jours[0];
