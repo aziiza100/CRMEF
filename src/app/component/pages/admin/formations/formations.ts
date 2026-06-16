@@ -78,35 +78,41 @@ import { SearchService } from '../../../../core/services/search.service';
         </table>
       </div>
 
-      <div *ngIf="showModal" class="modal-overlay">
-        <div class="modal-content">
+      <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+        <form class="modal-content" (ngSubmit)="formationForm.valid && saveFormation()" #formationForm="ngForm" novalidate (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h3>{{ editingId ? ('admin.formations.editFormation' | translate) : ('admin.formations.newFormation' | translate) }}</h3>
-            <button class="close-btn" (click)="closeModal()">×</button>
+            <button class="close-btn" type="button" (click)="closeModal()">×</button>
           </div>
-          <div class="modal-body">
           <div class="modal-body">
             <div class="form-group">
               <label>{{ 'admin.formations.lblType' | translate }}</label>
-              <input type="text" class="form-control" [(ngModel)]="newFormation.type" [placeholder]="'admin.formations.plcType' | translate" />
+              <input type="text" class="form-control" [(ngModel)]="newFormation.type" name="type" required minlength="2" #type="ngModel" [class.is-invalid]="type.invalid && type.touched" [placeholder]="'admin.formations.plcType' | translate" />
+              <div class="invalid-feedback" *ngIf="type.invalid && type.touched">
+                <span *ngIf="type.errors?.['required']">Le type de formation est requis.</span>
+                <span *ngIf="type.errors?.['minlength']">Le type doit contenir au moins 2 caractères.</span>
+              </div>
             </div>
             <div class="form-group">
               <label>{{ 'admin.formations.lblDuration' | translate }}</label>
-              <input type="text" class="form-control" [(ngModel)]="newFormation.duree" [placeholder]="'admin.formations.plcDuration' | translate" />
+              <input type="text" class="form-control" [(ngModel)]="newFormation.duree" name="duree" required #duree="ngModel" [class.is-invalid]="duree.invalid && duree.touched" [placeholder]="'admin.formations.plcDuration' | translate" />
+              <div class="invalid-feedback" *ngIf="duree.invalid && duree.touched">
+                La durée est requise.
+              </div>
             </div>
             <div class="form-group">
               <label>{{ 'admin.formations.lblDesc' | translate }}</label>
-              <textarea rows="3" class="form-control" [(ngModel)]="newFormation.description"></textarea>
+              <textarea rows="3" class="form-control" [(ngModel)]="newFormation.description" name="description"></textarea>
             </div>
             <div class="form-group">
               <label>{{ 'admin.formations.lblCondition' | translate }}</label>
-              <textarea rows="2" class="form-control" [(ngModel)]="newFormation.condition_acces"></textarea>
+              <textarea rows="2" class="form-control" [(ngModel)]="newFormation.condition_acces" name="condition_acces"></textarea>
             </div>
             <div class="form-group">
               <label>{{ 'admin.formations.lblFilieres' | translate }}</label>
               <div class="checkbox-grid">
                 <label *ngFor="let filiere of filieres" class="checkbox-item">
-                  <input type="checkbox" [checked]="isFiliereSelected(filiere.id!)" (change)="toggleFiliereSelection(filiere.id!)" />
+                  <input type="checkbox" name="filiere-{{filiere.id}}" [checked]="isFiliereSelected(filiere.id!)" (change)="toggleFiliereSelection(filiere.id!)" />
                   {{ filiere.nom }}
                 </label>
               </div>
@@ -114,11 +120,11 @@ import { SearchService } from '../../../../core/services/search.service';
           </div>
           <div class="modal-footer">
             <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.formations.btnCancel' | translate }}</button>
-            <button class="btn-primary" type="button" (click)="saveFormation()" [disabled]="isSaving">
+            <button class="btn-primary" type="submit" [disabled]="formationForm.invalid || isSaving">
               {{ editingId ? ('admin.formations.btnSave' | translate) : ('admin.formations.btnCreate' | translate) }}
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   `,
@@ -360,6 +366,21 @@ import { SearchService } from '../../../../core/services/search.service';
       }
 
       .btn-cancel:hover { background: #f1f5f9; }
+      
+      .is-invalid {
+        border-color: #ef4444 !important;
+      }
+      .invalid-feedback {
+        display: block;
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 500;
+        text-align: left;
+      }
+      [dir="rtl"] .invalid-feedback {
+        text-align: right;
+      }
     `
   ]
 })

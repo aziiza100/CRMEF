@@ -48,6 +48,7 @@ export class AdminEmploiComponent {
   editingId: number | null = null;
   toastMessage = '';
   showToast = false;
+  isSaving = false;
 
   newSeance: Omit<Seance, 'id'> & { moduleId?: number } = {
     heureDebut: '08:00',
@@ -173,8 +174,14 @@ export class AdminEmploiComponent {
     }
   }
 
+  isTimeRangeValid(): boolean {
+    if (!this.newSeance.heureDebut || !this.newSeance.heureFin) return true;
+    return this.newSeance.heureFin > this.newSeance.heureDebut;
+  }
+
   closeModal() {
     this.showModal = false;
+    this.isSaving = false;
   }
 
   saveSeance() {
@@ -192,18 +199,28 @@ export class AdminEmploiComponent {
         date: this.newSeance.date ? this.newSeance.date : null
       };
 
+      this.isSaving = true;
+
       if (this.editingId) {
         this.api.updateSeance(this.editingId, payload).subscribe({ next: (res: any) => {
+          this.isSaving = false;
           this.loadEmploiForSelectedClass();
           this.closeModal();
           this.triggerToast('Séance mise à jour.');
-        }, error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible de mettre à jour la séance') });
+        }, error: (err: any) => {
+          this.isSaving = false;
+          this.triggerToast(err?.error?.message || err?.message || 'Impossible de mettre à jour la séance');
+        } });
       } else {
         this.api.createSeance(cls.id, payload).subscribe({ next: (res: any) => {
+          this.isSaving = false;
           this.loadEmploiForSelectedClass();
           this.closeModal();
           this.triggerToast('Séance ajoutée.');
-        }, error: (err: any) => this.triggerToast(err?.error?.message || err?.message || 'Impossible d\'ajouter la séance') });
+        }, error: (err: any) => {
+          this.isSaving = false;
+          this.triggerToast(err?.error?.message || err?.message || 'Impossible d\'ajouter la séance');
+        } });
       }
     }});
   }

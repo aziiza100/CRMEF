@@ -69,21 +69,25 @@
   </div>
 
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <form class="modal-content" (ngSubmit)="filiereForm.valid && saveFiliere()" #filiereForm="ngForm" novalidate (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>{{ editingId ? ('admin.filieres.editFiliere' | translate) : ('admin.filieres.createFiliere' | translate) }}</h3>
-        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+        <button class="close-btn" type="button" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-group">
           <label>{{ 'admin.filieres.lblName' | translate }}</label>
-          <input type="text" class="form-control" [(ngModel)]="newFiliere.nom" required [placeholder]="'admin.filieres.plcName' | translate">
+          <input type="text" class="form-control" [(ngModel)]="newFiliere.nom" name="nom" required minlength="2" #nom="ngModel" [class.is-invalid]="nom.invalid && nom.touched" [placeholder]="'admin.filieres.plcName' | translate">
+          <div class="invalid-feedback" *ngIf="nom.invalid && nom.touched">
+            <span *ngIf="nom.errors?.['required']">Le nom de la filière est requis.</span>
+            <span *ngIf="nom.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</span>
+          </div>
         </div>
 
         <div class="form-group">
           <label>{{ 'admin.filieres.lblDesc' | translate }}</label>
-          <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" [placeholder]="'admin.filieres.plcDesc' | translate"></textarea>
+          <textarea class="form-control" rows="4" [(ngModel)]="newFiliere.description" name="description" [placeholder]="'admin.filieres.plcDesc' | translate"></textarea>
         </div>
 
         <div class="form-group mt-3">
@@ -93,6 +97,7 @@
               <input
                 class="form-check-input custom-checkbox"
                 type="checkbox"
+                name="formation-{{formation.id}}"
                 [checked]="isFormationSelected(formation.id!)"
                 (change)="toggleFormationSelection(formation.id!)"
                 [id]="'formation-' + formation.id"
@@ -109,11 +114,11 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.filieres.btnCancel' | translate }}</button>
-        <button class="btn-primary" (click)="saveFiliere()" [disabled]="!newFiliere.nom || isSaving">
+        <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.filieres.btnCancel' | translate }}</button>
+        <button class="btn-primary" type="submit" [disabled]="filiereForm.invalid || isSaving">
           {{ isSaving ? ('admin.filieres.btnSaving' | translate) : ('admin.filieres.btnSave' | translate) }}
         </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>

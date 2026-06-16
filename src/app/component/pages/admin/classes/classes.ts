@@ -281,6 +281,7 @@ export class AdminClassesComponent implements OnInit {
       return;
     }
     
+    this.isSaving = true;
     const isEdit = !!this.editingId;
     const tempId = this.editingId || Date.now();
     const selectedFiliere = this.filieres.find(f => f.id == this.newClass.filiere_id);
@@ -326,9 +327,11 @@ export class AdminClassesComponent implements OnInit {
 
     request$.subscribe({
       next: () => {
+        this.isSaving = false;
         this.loadClasses();
       },
       error: (error) => {
+        this.isSaving = false;
         this.classes = previousClasses;
         this.triggerToast(error.message || 'Erreur lors de l\'enregistrement de la classe.');
       }

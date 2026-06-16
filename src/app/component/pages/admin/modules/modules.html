@@ -80,7 +80,7 @@
   </div>
 
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <form class="modal-content" (ngSubmit)="moduleForm.valid && saveModule()" #moduleForm="ngForm" novalidate (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>{{ editingModuleId ? ('admin.modules.editModule' | translate) : ('admin.modules.createModule' | translate) }}</h3>
         <button class="close-btn" type="button" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
@@ -89,48 +89,65 @@
       <div class="modal-body">
         <div class="form-row">
           <label class="form-label">{{ 'admin.modules.lblName' | translate }}</label>
-          <input type="text" class="form-control" [(ngModel)]="newModule.nom" [placeholder]="'admin.modules.plcName' | translate" />
+          <input type="text" class="form-control" [(ngModel)]="newModule.nom" name="nom" required minlength="2" #nom="ngModel" [class.is-invalid]="nom.invalid && nom.touched" [placeholder]="'admin.modules.plcName' | translate" />
+          <div class="invalid-feedback" *ngIf="nom.invalid && nom.touched">
+            <span *ngIf="nom.errors?.['required']">Le nom du module est requis.</span>
+            <span *ngIf="nom.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</span>
+          </div>
         </div>
 
         <div class="form-row">
           <label class="form-label">{{ 'admin.modules.lblHours' | translate }}</label>
-          <input type="number" class="form-control" [(ngModel)]="newModule.masse_horraire" [placeholder]="'admin.modules.plcHours' | translate" />
+          <input type="number" class="form-control" [(ngModel)]="newModule.masse_horraire" name="masse_horraire" required min="1" #masseHorraire="ngModel" [class.is-invalid]="masseHorraire.invalid && masseHorraire.touched" [placeholder]="'admin.modules.plcHours' | translate" />
+          <div class="invalid-feedback" *ngIf="masseHorraire.invalid && masseHorraire.touched">
+            <span *ngIf="masseHorraire.errors?.['required']">La masse horaire est requise.</span>
+            <span *ngIf="masseHorraire.errors?.['min']">La masse horaire doit être supérieure à 0.</span>
+          </div>
         </div>
 
         <div class="form-row">
           <label class="form-label">{{ 'admin.modules.lblFiliere' | translate }}</label>
-          <select class="form-select" [(ngModel)]="newModule.filiere_id">
-            <option [ngValue]="null">{{ 'admin.modules.plcFiliere' | translate }}</option>
+          <select class="form-select" [(ngModel)]="newModule.filiere_id" name="filiere_id" required #filiere="ngModel" [class.is-invalid]="filiere.invalid && filiere.touched">
+            <option [ngValue]="null" disabled>{{ 'admin.modules.plcFiliere' | translate }}</option>
             <option *ngFor="let filiere of filieres" [ngValue]="filiere.id">{{ filiere.nom }}</option>
           </select>
+          <div class="invalid-feedback" *ngIf="filiere.invalid && filiere.touched">
+            La filière est requise.
+          </div>
         </div>
 
         <div class="form-row">
           <label class="form-label">{{ 'admin.modules.lblTeacher' | translate }}</label>
-          <select class="form-select" [(ngModel)]="newModule.enseignant_id">
-            <option [ngValue]="null">{{ 'admin.modules.plcTeacher' | translate }}</option>
+          <select class="form-select" [(ngModel)]="newModule.enseignant_id" name="enseignant_id" required #enseignant="ngModel" [class.is-invalid]="enseignant.invalid && enseignant.touched">
+            <option [ngValue]="null" disabled>{{ 'admin.modules.plcTeacher' | translate }}</option>
             <option *ngFor="let enseignant of enseignants" [ngValue]="enseignant.enseignant?.id_enseignant ?? enseignant.id_enseignant">
               {{ enseignant.nom }} {{ enseignant.prenom }}
             </option>
           </select>
+          <div class="invalid-feedback" *ngIf="enseignant.invalid && enseignant.touched">
+            L'enseignant est requis.
+          </div>
         </div>
 
         <div class="form-row">
           <label class="form-label">{{ 'admin.modules.lblClasse' | translate }}</label>
-          <select class="form-select" [(ngModel)]="newModule.classe_id" [disabled]="!newModule.filiere_id">
-            <option [ngValue]="null">{{ 'admin.modules.plcClasse' | translate }}</option>
+          <select class="form-select" [(ngModel)]="newModule.classe_id" name="classe_id" required #classe="ngModel" [class.is-invalid]="classe.invalid && classe.touched" [disabled]="!newModule.filiere_id">
+            <option [ngValue]="null" disabled>{{ 'admin.modules.plcClasse' | translate }}</option>
             <option *ngFor="let classe of filteredClasses" [ngValue]="classe.id">{{ classe.nom }}</option>
           </select>
+          <div class="invalid-feedback" *ngIf="classe.invalid && classe.touched">
+            La classe est requise.
+          </div>
           <small class="form-help">{{ 'admin.modules.helpClasse' | translate }}</small>
         </div>
       </div>
 
       <div class="modal-footer">
         <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.modules.btnCancel' | translate }}</button>
-        <button class="btn-primary" type="button" (click)="saveModule()" [disabled]="isSaving">
+        <button class="btn-primary" type="submit" [disabled]="moduleForm.invalid || isSaving">
           {{ isSaving ? ('admin.modules.btnSaving' | translate) : ('admin.modules.btnSave' | translate) }}
         </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>

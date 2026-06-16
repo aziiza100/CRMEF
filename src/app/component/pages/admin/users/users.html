@@ -133,42 +133,56 @@
 
   <!-- Form Modal (Overlay) -->
   <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <form class="modal-content" (ngSubmit)="userForm.valid && saveUser()" #userForm="ngForm" novalidate (click)="$event.stopPropagation()">
       
       <div class="modal-header">
         <h3>{{ editingId ? ('admin.users.editUser' | translate) : ('admin.users.addUser' | translate) }}</h3>
-        <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+        <button class="close-btn" type="button" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-group" *ngIf="!editingId">
           <label>{{ 'admin.users.lblRole' | translate }}</label>
-          <select class="form-select" [(ngModel)]="newUser.role">
+          <select class="form-select" [(ngModel)]="newUser.role" name="role" required #role="ngModel" [class.is-invalid]="role.invalid && role.touched">
             <option value="student">{{ 'admin.users.tabStudents' | translate }}</option>
             <option value="teacher">{{ 'admin.users.tabTeachers' | translate }}</option>
           </select>
+          <div class="invalid-feedback" *ngIf="role.invalid && role.touched">Le rôle est requis.</div>
         </div>
-
-        
 
         <div class="form-group">
           <label>{{ 'admin.users.lblFirstName' | translate }}</label>
-          <input type="text" class="form-control" [(ngModel)]="newUser.prenom" required>
+          <input type="text" class="form-control" [(ngModel)]="newUser.prenom" name="prenom" required minlength="2" #prenom="ngModel" [class.is-invalid]="prenom.invalid && prenom.touched">
+          <div class="invalid-feedback" *ngIf="prenom.invalid && prenom.touched">
+            <span *ngIf="prenom.errors?.['required']">Le prénom est requis.</span>
+            <span *ngIf="prenom.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères.</span>
+          </div>
         </div>
 
         <div class="form-group">
           <label>{{ 'admin.users.lblLastName' | translate }}</label>
-          <input type="text" class="form-control" [(ngModel)]="newUser.nom" required>
+          <input type="text" class="form-control" [(ngModel)]="newUser.nom" name="nom" required minlength="2" #nom="ngModel" [class.is-invalid]="nom.invalid && nom.touched">
+          <div class="invalid-feedback" *ngIf="nom.invalid && nom.touched">
+            <span *ngIf="nom.errors?.['required']">Le nom est requis.</span>
+            <span *ngIf="nom.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</span>
+          </div>
         </div>
 
         <div class="form-group">
           <label>{{ 'admin.users.lblEmail' | translate }}</label>
-          <input type="email" class="form-control" [(ngModel)]="newUser.email" required>
+          <input type="email" class="form-control" [(ngModel)]="newUser.email" name="email" required email #email="ngModel" [class.is-invalid]="email.invalid && email.touched">
+          <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+            <span *ngIf="email.errors?.['required']">L'adresse email est requise.</span>
+            <span *ngIf="email.errors?.['email']">Veuillez entrer une adresse email valide.</span>
+          </div>
         </div>
 
         <div class="form-group">
           <label>{{ 'admin.users.lblPassword' | translate }}</label>
-          <input [type]="editingId ? 'password' : 'text'" class="form-control" [(ngModel)]="newUser.password" [placeholder]="editingId ? ('admin.users.pwdHintEdit' | translate) : ('admin.users.pwdHintNew' | translate)">
+          <input [type]="editingId ? 'password' : 'text'" class="form-control" [(ngModel)]="newUser.password" name="password" minlength="8" #password="ngModel" [class.is-invalid]="password.invalid && password.touched" [placeholder]="editingId ? ('admin.users.pwdHintEdit' | translate) : ('admin.users.pwdHintNew' | translate)">
+          <div class="invalid-feedback" *ngIf="password.invalid && password.touched">
+            <span *ngIf="password.errors?.['minlength']">Le mot de passe doit contenir au moins 8 caractères.</span>
+          </div>
         </div>
 
         <!-- Champs Spécifiques Étudiant -->
@@ -189,21 +203,24 @@
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblCin' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.cin">
+            <input type="text" class="form-control" [(ngModel)]="newUser.cin" name="cin" required #cin="ngModel" [class.is-invalid]="cin.invalid && cin.touched">
+            <div class="invalid-feedback" *ngIf="cin.invalid && cin.touched">Le CIN est requis.</div>
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblPhone' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.tele">
+            <input type="text" class="form-control" [(ngModel)]="newUser.tele" name="tele">
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.colCne' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.cne">
+            <input type="text" class="form-control" [(ngModel)]="newUser.cne" name="cne" required #cne="ngModel" [class.is-invalid]="cne.invalid && cne.touched">
+            <div class="invalid-feedback" *ngIf="cne.invalid && cne.touched">Le CNE est requis.</div>
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblAssignClass' | translate }}</label>
-            <select class="form-select" [(ngModel)]="newUser.classe">
+            <select class="form-select" [(ngModel)]="newUser.classe" name="classe" required #classe="ngModel" [class.is-invalid]="classe.invalid && classe.touched">
               <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
             </select>
+            <div class="invalid-feedback" *ngIf="classe.invalid && classe.touched">L'affectation est requise.</div>
           </div>
         </ng-container>
 
@@ -225,31 +242,34 @@
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblCin' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.cin">
+            <input type="text" class="form-control" [(ngModel)]="newUser.cin" name="cin" required #cinProf="ngModel" [class.is-invalid]="cinProf.invalid && cinProf.touched">
+            <div class="invalid-feedback" *ngIf="cinProf.invalid && cinProf.touched">Le CIN est requis.</div>
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblMainSubject' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.specialite" required>
+            <input type="text" class="form-control" [(ngModel)]="newUser.specialite" name="specialite" required #specialite="ngModel" [class.is-invalid]="specialite.invalid && specialite.touched">
+            <div class="invalid-feedback" *ngIf="specialite.invalid && specialite.touched">La matière est requise.</div>
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblGrade' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.grade" required>
+            <input type="text" class="form-control" [(ngModel)]="newUser.grade" name="grade" required #grade="ngModel" [class.is-invalid]="grade.invalid && grade.touched">
+            <div class="invalid-feedback" *ngIf="grade.invalid && grade.touched">Le grade est requis.</div>
           </div>
           <div class="form-group">
             <label>{{ 'admin.users.lblPhone' | translate }}</label>
-            <input type="text" class="form-control" [(ngModel)]="newUser.tele">
+            <input type="text" class="form-control" [(ngModel)]="newUser.tele" name="tele">
           </div>
         </ng-container>
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.users.btnCancel' | translate }}</button>
-        <button class="btn-primary" (click)="saveUser()" [disabled]="!newUser.nom || !newUser.prenom || !newUser.email">
+        <button class="btn-cancel" type="button" (click)="closeModal()">{{ 'admin.users.btnCancel' | translate }}</button>
+        <button class="btn-primary" type="submit" [disabled]="userForm.invalid">
           {{ 'admin.users.btnSave' | translate }}
         </button>
       </div>
 
-    </div>
+    </form>
   </div>
 
   <!-- Import Results Modal -->
