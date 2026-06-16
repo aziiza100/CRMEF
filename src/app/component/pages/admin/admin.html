@@ -41,7 +41,7 @@
         </button>
         <div class="search-bar">
           <i class="bi bi-search"></i>
-          <input type="text" placeholder="Rechercher partout..." (input)="onSearchInput($event)">
+          <input type="text" [placeholder]="'admin.layout.searchAnywhere' | translate" (input)="onSearchInput($event)">
         </div>
       </div>
       
@@ -61,7 +61,7 @@
           </div>
           <div class="profile-info">
             <span class="name">{{ adminName }}</span>
-            <span class="role">Administrateur</span>
+            <span class="role">{{ 'admin.layout.administrator' | translate }}</span>
           </div>
         </div>
       </div>

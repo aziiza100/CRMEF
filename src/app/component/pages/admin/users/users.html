@@ -1,8 +1,8 @@
 <div class="admin-users-page">
   
   <div class="page-header">
-    <h2 class="page-title">Gestion des Utilisateurs</h2>
-    <p class="page-desc">Administrez les comptes des étudiants et des enseignants.</p>
+    <h2 class="page-title">{{ 'admin.users.title' | translate }}</h2>
+    <p class="page-desc">{{ 'admin.users.desc' | translate }}</p>
   </div>
 
   <!-- Toast Notification -->
@@ -14,36 +14,36 @@
   <div class="toolbar">
     <div class="tabs">
       <button class="tab-btn" [class.active]="activeTab === 'etudiants'" (click)="switchTab('etudiants')">
-        <i class="bi bi-mortarboard"></i> Étudiants
+        <i class="bi bi-mortarboard"></i> {{ 'admin.users.tabStudents' | translate }}
       </button>
       <button class="tab-btn" [class.active]="activeTab === 'profs'" (click)="switchTab('profs')">
-        <i class="bi bi-person-video3"></i> Enseignants
+        <i class="bi bi-person-video3"></i> {{ 'admin.users.tabTeachers' | translate }}
       </button>
     </div>
 
     <div class="toolbar-actions">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" placeholder="Rechercher par nom, email...">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1" [placeholder]="'admin.users.search' | translate">
       </div>
       
       <select class="form-select filter-select" *ngIf="activeTab === 'etudiants'" [(ngModel)]="selectedFilter" (ngModelChange)="currentPage = 1">
-        <option value="all">Toutes les classes</option>
+        <option value="all">{{ 'admin.users.allClasses' | translate }}</option>
         <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
       </select>
 
       <select class="form-select filter-select" *ngIf="activeTab === 'profs'" [(ngModel)]="selectedFilter" (ngModelChange)="currentPage = 1">
-        <option value="all">Toutes les matières</option>
+        <option value="all">{{ 'admin.users.allSubjects' | translate }}</option>
         <option *ngFor="let specialite of specialityFilters" [value]="specialite">{{ specialite }}</option>
       </select>
 
       <button class="btn-success-outline" (click)="triggerExcelUpload()">
-        <i class="bi bi-file-earmark-excel"></i> Importer Excel
+        <i class="bi bi-file-earmark-excel"></i> {{ 'admin.users.importExcel' | translate }}
       </button>
       <input #excelInput type="file" (change)="onExcelFileSelected($event)" accept=".xlsx, .xls" style="display: none;">
 
       <button class="btn-primary" (click)="openModal()">
-        <i class="bi bi-plus-lg"></i> Nouvel Utilisateur
+        <i class="bi bi-plus-lg"></i> {{ 'admin.users.newUser' | translate }}
       </button>
     </div>
   </div>
@@ -55,10 +55,10 @@
     <table class="admin-table" *ngIf="activeTab === 'etudiants'">
       <thead>
         <tr>
-          <th>Utilisateur</th>
-          <th>CNE / Massar</th>
-          <th>Classe</th>
-          <th class="text-end">Actions</th>
+          <th>{{ 'admin.users.colUser' | translate }}</th>
+          <th>{{ 'admin.users.colCne' | translate }}</th>
+          <th>{{ 'admin.users.colClass' | translate }}</th>
+          <th class="text-end">{{ 'admin.users.colActions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -87,9 +87,9 @@
     <table class="admin-table" *ngIf="activeTab === 'profs'">
       <thead>
         <tr>
-          <th>Utilisateur</th>
-          <th>Matière enseignée</th>
-          <th class="text-end">Actions</th>
+          <th>{{ 'admin.users.colUser' | translate }}</th>
+          <th>{{ 'admin.users.colSubject' | translate }}</th>
+          <th class="text-end">{{ 'admin.users.colActions' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -106,11 +106,11 @@
           <td>
             <div class="d-flex flex-column gap-1">
               <span class="text-muted" style="font-size: 12px;"><i class="bi bi-book"></i> {{ prof.specialite }}</span>
-              <span class="text-muted" style="font-size: 12px;">Grade : {{ prof.grade || 'N/A' }}</span>
-              <span class="text-muted" style="font-size: 12px;">Téléphone : {{ prof.tele || 'N/A' }}</span>
+              <span class="text-muted" style="font-size: 12px;">{{ 'admin.users.lblGrade' | translate }} : {{ prof.grade || 'N/A' }}</span>
+              <span class="text-muted" style="font-size: 12px;">{{ 'admin.users.lblPhone' | translate }} : {{ prof.tele || 'N/A' }}</span>
               <div class="d-flex flex-wrap gap-1 mt-1">
                 <span class="badge-outline-purple" *ngFor="let c of prof.classes">{{ c }}</span>
-                <span class="text-muted fst-italic" *ngIf="prof.classes.length === 0" style="font-size: 11px;">Aucune classe</span>
+                <span class="text-muted fst-italic" *ngIf="prof.classes.length === 0" style="font-size: 11px;">{{ 'admin.users.noClass' | translate }}</span>
               </div>
             </div>
           </td>
@@ -136,71 +136,71 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
       
       <div class="modal-header">
-        <h3>{{ editingId ? 'Modifier Utilisateur' : ("Ajouter un Utilisateur") }}</h3>
+        <h3>{{ editingId ? ('admin.users.editUser' | translate) : ('admin.users.addUser' | translate) }}</h3>
         <button class="close-btn" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
       </div>
 
       <div class="modal-body">
         <div class="form-group" *ngIf="!editingId">
-          <label>Rôle</label>
+          <label>{{ 'admin.users.lblRole' | translate }}</label>
           <select class="form-select" [(ngModel)]="newUser.role">
-            <option value="student">Étudiant</option>
-            <option value="teacher">Enseignant</option>
+            <option value="student">{{ 'admin.users.tabStudents' | translate }}</option>
+            <option value="teacher">{{ 'admin.users.tabTeachers' | translate }}</option>
           </select>
         </div>
 
         
 
         <div class="form-group">
-          <label>Prénom</label>
+          <label>{{ 'admin.users.lblFirstName' | translate }}</label>
           <input type="text" class="form-control" [(ngModel)]="newUser.prenom" required>
         </div>
 
         <div class="form-group">
-          <label>Nom</label>
+          <label>{{ 'admin.users.lblLastName' | translate }}</label>
           <input type="text" class="form-control" [(ngModel)]="newUser.nom" required>
         </div>
 
         <div class="form-group">
-          <label>Adresse Email</label>
+          <label>{{ 'admin.users.lblEmail' | translate }}</label>
           <input type="email" class="form-control" [(ngModel)]="newUser.email" required>
         </div>
 
         <div class="form-group">
-          <label>Mot de passe</label>
-          <input [type]="editingId ? 'password' : 'text'" class="form-control" [(ngModel)]="newUser.password" [placeholder]="editingId ? 'Laissez vide pour conserver le mot de passe actuel' : 'Laissez vide pour auto-générer'">
+          <label>{{ 'admin.users.lblPassword' | translate }}</label>
+          <input [type]="editingId ? 'password' : 'text'" class="form-control" [(ngModel)]="newUser.password" [placeholder]="editingId ? ('admin.users.pwdHintEdit' | translate) : ('admin.users.pwdHintNew' | translate)">
         </div>
 
         <!-- Champs Spécifiques Étudiant -->
         <ng-container *ngIf="newUser.role === 'student'">
           <div class="form-group avatar-upload-group">
-            <label>Photo</label>
+            <label>{{ 'admin.users.lblPhoto' | translate }}</label>
             <div class="avatar-upload" (click)="triggerImageUpload()" role="button" tabindex="0">
-              <img *ngIf="imagePreview; else placeholderAvatar" [src]="imagePreview" alt="Photo étudiant">
+              <img *ngIf="imagePreview; else placeholderAvatar" [src]="imagePreview" alt="Photo">
               <ng-template #placeholderAvatar>
                 <div class="avatar-placeholder">
                   <i class="bi bi-camera"></i>
-                  <span>Ajouter une photo</span>
+                  <span>{{ 'admin.users.addPhoto' | translate }}</span>
                 </div>
               </ng-template>
             </div>
             <input #imageInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
-            <p class="avatar-hint">Cliquez sur l'image pour charger ou changer la photo.</p>
+            <p class="avatar-hint">{{ 'admin.users.photoHint' | translate }}</p>
           </div>
           <div class="form-group">
-            <label>CIN</label>
+            <label>{{ 'admin.users.lblCin' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.cin">
           </div>
           <div class="form-group">
-            <label>Téléphone</label>
+            <label>{{ 'admin.users.lblPhone' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.tele">
           </div>
           <div class="form-group">
-            <label>CNE / Code Massar</label>
+            <label>{{ 'admin.users.colCne' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.cne">
           </div>
           <div class="form-group">
-            <label>Affectation (Classe)</label>
+            <label>{{ 'admin.users.lblAssignClass' | translate }}</label>
             <select class="form-select" [(ngModel)]="newUser.classe">
               <option *ngFor="let cls of availableClasses" [value]="cls.nom">{{ cls.nom }}</option>
             </select>
@@ -210,42 +210,42 @@
         <!-- Champs Spécifiques Professeur -->
         <ng-container *ngIf="newUser.role === 'teacher'">
           <div class="form-group avatar-upload-group">
-            <label>Photo</label>
+            <label>{{ 'admin.users.lblPhoto' | translate }}</label>
             <div class="avatar-upload" (click)="triggerImageUpload()" role="button" tabindex="0">
-              <img *ngIf="imagePreview; else placeholderAvatar" [src]="imagePreview" alt="Photo enseignant">
+              <img *ngIf="imagePreview; else placeholderAvatar" [src]="imagePreview" alt="Photo">
               <ng-template #placeholderAvatar>
                 <div class="avatar-placeholder">
                   <i class="bi bi-camera"></i>
-                  <span>Ajouter une photo</span>
+                  <span>{{ 'admin.users.addPhoto' | translate }}</span>
                 </div>
               </ng-template>
             </div>
             <input #imageInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
-            <p class="avatar-hint">Cliquez sur l'image pour charger ou changer la photo.</p>
+            <p class="avatar-hint">{{ 'admin.users.photoHint' | translate }}</p>
           </div>
           <div class="form-group">
-            <label>CIN</label>
+            <label>{{ 'admin.users.lblCin' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.cin">
           </div>
           <div class="form-group">
-            <label>Matière (Spécialité principale)</label>
+            <label>{{ 'admin.users.lblMainSubject' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.specialite" required>
           </div>
           <div class="form-group">
-            <label>Grade</label>
+            <label>{{ 'admin.users.lblGrade' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.grade" required>
           </div>
           <div class="form-group">
-            <label>Téléphone</label>
+            <label>{{ 'admin.users.lblPhone' | translate }}</label>
             <input type="text" class="form-control" [(ngModel)]="newUser.tele">
           </div>
         </ng-container>
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button class="btn-cancel" (click)="closeModal()">{{ 'admin.users.btnCancel' | translate }}</button>
         <button class="btn-primary" (click)="saveUser()" [disabled]="!newUser.nom || !newUser.prenom || !newUser.email">
-          Enregistrer
+          {{ 'admin.users.btnSave' | translate }}
         </button>
       </div>
 
@@ -258,8 +258,8 @@
       
       <div class="modal-header">
         <h3>
-          <span *ngIf="importErrors.length > 0" class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Erreurs d'importation</span>
-          <span *ngIf="importErrors.length === 0" class="text-success"><i class="bi bi-check-circle-fill"></i> Importation Réussie</span>
+          <span *ngIf="importErrors.length > 0" class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> {{ 'admin.users.importErrors' | translate }}</span>
+          <span *ngIf="importErrors.length === 0" class="text-success"><i class="bi bi-check-circle-fill"></i> {{ 'admin.users.importSuccess' | translate }}</span>
         </h3>
         <button class="close-btn" (click)="closeImportResultModal()"><i class="bi bi-x-lg"></i></button>
       </div>
@@ -268,7 +268,7 @@
         <!-- Error State -->
         <div *ngIf="importErrors.length > 0">
           <div class="alert alert-danger-custom">
-            <i class="bi bi-x-circle-fill"></i> Certains enregistrements contiennent des erreurs. L'importation a été annulée. Veuillez corriger ces lignes dans votre fichier Excel et réessayer.
+            <i class="bi bi-x-circle-fill"></i> {{ 'admin.users.importErrorMsg' | translate }}
           </div>
           <ul class="error-list">
             <li *ngFor="let error of importErrors">
@@ -284,16 +284,16 @@
           </div>
           
           <div class="info-note mb-3">
-            <i class="bi bi-info-circle-fill"></i> Les mots de passe ci-dessous ont été générés ou fournis. Vous pouvez télécharger ce récapitulatif sous forme de fichier CSV pour les distribuer.
+            <i class="bi bi-info-circle-fill"></i> {{ 'admin.users.pwdInfoMsg' | translate }}
           </div>
 
           <div class="credentials-table-container">
             <table class="credentials-table">
               <thead>
                 <tr>
-                  <th>Nom Complet</th>
-                  <th>Email</th>
-                  <th>Mot de passe</th>
+                  <th>{{ 'admin.users.colFullName' | translate }}</th>
+                  <th>{{ 'admin.users.lblEmail' | translate }}</th>
+                  <th>{{ 'admin.users.lblPassword' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -310,9 +310,9 @@
 
       <div class="modal-footer">
         <button *ngIf="importErrors.length === 0" class="btn-primary" (click)="downloadCredentialsCSV()">
-          <i class="bi bi-download"></i> Télécharger les identifiants (CSV)
+          <i class="bi bi-download"></i> {{ 'admin.users.btnDownloadCsv' | translate }}
         </button>
-        <button class="btn-cancel" (click)="closeImportResultModal()">Fermer</button>
+        <button class="btn-cancel" (click)="closeImportResultModal()">{{ 'admin.users.btnClose' | translate }}</button>
       </div>
 
     </div>

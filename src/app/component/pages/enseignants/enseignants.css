@@ -354,6 +354,17 @@
   .dashboard-sidebar.sidebar-open {
     left: 0;
   }
+
+  [dir="rtl"] .dashboard-sidebar {
+    left: auto;
+    right: -280px;
+    transition: right 0.3s ease;
+  }
+  
+  [dir="rtl"] .dashboard-sidebar.sidebar-open {
+    right: 0;
+    left: auto;
+  }
   
   .dashboard-main {
     width: 100%;

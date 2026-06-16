@@ -63,7 +63,7 @@
       <!-- S'il n'y a pas de séances -->
       <div class="empty-day" *ngIf="jourActif.seances.length === 0">
         <i class="bi bi-cup-hot"></i>
-        <p>Aucun cours prévu pour ce jour. Reposez-vous !</p>
+        <p>{{ 'etudiant.emploi.noClassToday' | translate }}</p>
       </div>
 
     </div>

@@ -42,12 +42,11 @@
         <div class="col-lg-4 col-md-12 footer-newsletter">
           <h4>{{"footer.connexion.titre" | translate}}</h4>
           <p>{{"footer.connexion.descr" | translate}}</p>
-          <form action="forms/newsletter.php" method="post" class="php-email-form">
-            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="{{'footer.connexion.button' | translate}}"></div>
-            <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-          </form>
+          <div class="mt-4">
+            <a routerLink="/login" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm" style="background-color: var(--accent-color); border: none; font-size: 16px;">
+              {{'footer.connexion.button' | translate}}
+            </a>
+          </div>
         </div>
 
       </div>
