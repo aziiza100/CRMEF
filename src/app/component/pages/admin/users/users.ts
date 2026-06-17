@@ -587,7 +587,7 @@ export class AdminUsersComponent implements OnInit {
     this.importedUsers = [];
   }
 
-  downloadCredentialsCSV() {
+ downloadCredentialsCSV() {
     if (this.importedUsers.length === 0) return;
 
     const headers = ['Email', 'Nom', 'Prenom', 'Mot de passe'];
@@ -595,8 +595,8 @@ export class AdminUsersComponent implements OnInit {
 
     const BOM = '\uFEFF';
     const csvContent = BOM + [
-      headers.join(','),
-      ...rows.map(e => e.map(val => `"${val.replace(/"/g, '""')}"`).join(','))
+      headers.join(';'), // <--- Beddelna hna b ';'
+      ...rows.map(e => e.map(val => `"${val.replace(/"/g, '""')}"`).join(';')) // <--- O hna b ';'
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -607,6 +607,6 @@ export class AdminUsersComponent implements OnInit {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
+}
 
 }

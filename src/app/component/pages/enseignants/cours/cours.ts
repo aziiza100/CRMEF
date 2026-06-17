@@ -11,7 +11,6 @@ interface Cours {
   titre: string;
   description: string;
   classes: string[]; // Tableau de chaînes pour l'affichage
-  statut: 'Publié' | 'Brouillon';
   date: string;
   fichier: string | null;
   module_id?: number;
@@ -80,7 +79,7 @@ export class CoursComponent implements OnInit {
             titre: support.titre,
             description: support.description || '',
             classes: classesNoms,
-            statut: 'Publié',
+          
             date: support.created_at ? new Date(support.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
             fichier: support.nom_fichier || support.titre,
             module_id: support.id_module
@@ -133,7 +132,7 @@ export class CoursComponent implements OnInit {
     }
   }
 
-  soumettreCours(statut: 'Publié' | 'Brouillon') {
+  soumettreCours() {
     if (!this.nouveauCours.titre) return;
 
     if (this.modeEdition) {
@@ -339,8 +338,7 @@ export class CoursComponent implements OnInit {
     this.coursFiltres = this.coursPublies.filter(cours => {
       const matchRecherche = cours.titre.toLowerCase().includes(this.recherche.toLowerCase()) || 
                              cours.description.toLowerCase().includes(this.recherche.toLowerCase());
-      const matchStatut = this.filtreStatut === 'Tous' || cours.statut === this.filtreStatut;
-      return matchRecherche && matchStatut;
+      return matchRecherche;
     });
   }
 

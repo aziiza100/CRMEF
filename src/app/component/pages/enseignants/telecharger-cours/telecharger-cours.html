@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <select class="form-select custom-select" [(ngModel)]="selectedSpecialty">
+         <select class="form-select custom-select" [(ngModel)]="selectedSpecialty" (change)="onClasseChange()">
             <option value="">Toutes les classes</option>
 
             <option *ngFor="let classe of availableClasses" [value]="classe.id">

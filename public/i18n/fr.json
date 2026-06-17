@@ -835,7 +835,7 @@
       "classesAll": "Toutes les classes",
       "btnDraft": "Brouillon",
       "btnPublish": "Publier"
-    },
+    }, 
     "list": {
       "title": "Cours publiés et brouillons",
       "cours": "cours",
@@ -872,6 +872,7 @@
   },
   "classes": {
     "pageTitle": "Gestion des Classes",
+    "listTitle": "liste des etudiants",
     "pageDesc": "Gérez les classes, les filières et l'affectation des enseignants.",
     "searchPh": "Rechercher une classe...",
     "filterFiliere": "Toutes les filières",
@@ -881,7 +882,9 @@
       "filiere": "Filière",
       "students": "Étudiants",
       "teachers": "Enseignants Affectés",
-      "actions": "Actions"
+      "actions": "Actions",
+      "cin": "CNE",      
+      "email": "Adresse Email"  
     },
     "modal": {
       "titleNew": "Créer une Classe",
@@ -891,7 +894,8 @@
       "btnCancel": "Annuler",
       "btnSave": "Enregistrer"
     }
-  },
+},
+  
   "notes": {
     "pageTitle": "Gérer les Notes",
     "pageDesc": "Déposez, consultez et supprimez les fiches de notes au format PDF pour chaque classe et module.",

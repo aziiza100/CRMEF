@@ -889,6 +889,7 @@
   },
   "classes": {
     "pageTitle": "إدارة الأقسام",
+    "listTitle": "",
     "pageDesc": "قم بإدارة الأقسام والمسالك وتعيين الأساتذة.",
     "searchPh": "البحث عن قسم...",
     "filterFiliere": "جميع المسالك",
@@ -898,6 +899,8 @@
       "filiere": "المسلك",
       "students": "الطلاب",
       "teachers": "الأساتذة المعينون",
+      "cin": "CNE",      
+      "email": "Adresse Email" ,
       "actions": "إجراءات"
     },
     "modal": {

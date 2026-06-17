@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- Empty state for no classes -->
   <div class="text-center p-5 card" *ngIf="!isLoading && classes.length === 0">
     <i class="bi bi-person-workspace text-muted" style="font-size: 3rem;"></i>
@@ -75,7 +75,7 @@
                   <span class="student-name">{{ student.nom }} {{ student.prenom }}</span>
                 </div>
               </td>
-              <td><span class="cne-badge">{{ student.cin }}</span></td>
+              <td><span class="cne-badge">{{ student.cne }}</span></td>
               <td><a href="mailto:{{ student.email }}" class="email-link">{{ student.email }}</a></td>
             </tr>
           </tbody>

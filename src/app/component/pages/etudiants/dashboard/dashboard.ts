@@ -40,16 +40,21 @@ export class EtudiantDashboardComponent implements OnInit {
   }
 
   private loadDashboardData(): void {
+    // Fetch student dashboard info directly linked to the database
     this.apiService.getStudentDashboard().subscribe({
       next: (response: any) => {
         if (response) {
           this.prochainCours = response.prochainCours || { matiere: 'Aucun cours prévu', salle: '', heure: '' };
           this.derniereNote = response.derniereNote || { matiere: 'Aucune note publiée', note: 'Aucune', date: '' };
           this.nouveauxSupports = response.nouveauxSupports ?? 0;
-          this.coursDuJour = response.coursDuJour || [];
+          this.coursDuJour = Array.isArray(response.coursDuJour) 
+            ? response.coursDuJour 
+            : Object.values(response.coursDuJour || {});
           this.derniersCoursElearning = response.derniersCoursElearning || [];
           this.messages = response.messages || [];
-        }
+          
+          console.log('Données du tableau de bord étudiant chargées avec succès depuis la base de données');
+        } 
       },
       error: (error: any) => {
         console.error('Erreur chargement tableau de bord étudiant', error);

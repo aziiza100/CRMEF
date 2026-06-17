@@ -43,7 +43,6 @@ throw new Error('Method not implemented.');
   coursPublies: CoursDoc[] = [];
   coursFiltres: CoursDoc[] = [];
 
-
   selectedSpecialty: string = '';
   //filter
    recherche = '';
@@ -153,6 +152,44 @@ downloadSupport(support: any) {
   });
 }
 
+  chargerSupportsParClasse(classeId: string | number) {
+    this.isLoading = true;
+    this.apiService.getEnseignantSupportsByClasse(classeId).subscribe({
+      next: (supports: any[]) => {
+        this.coursPublies = supports.map((support: any) => ({
+          id: support.id,
+          titre: support.titre,
+          description: support.description || '',
+          date: support.created_at ? support.created_at : '',
+          fichier: support.nom_fichier || '',
+          format: support.nom_fichier ? support.nom_fichier.split('.').pop() || 'pdf' : 'pdf',
+          enseignant: support.enseignant || 'Enseignant',
+          nom_fichier: support.nom_fichier,
+          module_id: support.id_module,
+          module: support.module_nom,
+          created_at: support.created_at ? support.created_at : '',
+          classe_id: support.classes && support.classes.length > 0 ? support.classes[0].id : null,
+        }));
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des supports par classe', err);
+        this.coursPublies = [];
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // L-handler dyal change event f HTML
+  onClasseChange() {
+    if (this.selectedSpecialty && this.selectedSpecialty !== '') {
+      // Ila khtar classe, kankhdmou b l-appel jdid lil back-end
+      this.chargerSupportsParClasse(this.selectedSpecialty);
+    } else {
+      // Ila rje3 l "Toutes les classes", kankhdmou b l-fonction dyalk l-qdima nfs l-7aja
+      this.chargerSupportsEnseignant();
+    }
+  }
   getFormatIcon(format: string): string {
     switch(format) {
       case 'pdf': return 'bi-file-earmark-pdf-fill text-danger';

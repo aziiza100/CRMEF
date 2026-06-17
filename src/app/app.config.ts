@@ -1,4 +1,4 @@
-import { provideHttpClient, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, HttpClient, HTTP_INTERCEPTORS, withInterceptorsFromDi } from '@angular/common/http';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -11,7 +11,7 @@ import { AuthInterceptor } from './core/services/auth.interceptor';
 export const appConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
      provideBrowserGlobalErrorListeners(),
     provideRouter(routes,
       withInMemoryScrolling({

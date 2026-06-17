@@ -79,9 +79,9 @@
 
            <div class="form-actions">
               
-              <button type="button" class="btn-publish" (click)="soumettreCours('Publié')" [disabled]="!nouveauCours.titre">
-                <i class="bi bi-send-check"></i> {{ (modeEdition ? 'cours.editTitle' : 'cours.form.btnPublish') | translate }}
-              </button>
+              <button type="button" class="btn btn-primary" (click)="soumettreCours()" [disabled]="!coursForm.form.valid || !nouveauCours.classesSelectionnees.length">
+                  <i class="bi bi-save"></i> {{ modeEdition ? ('cours.editTitle' | translate) : ('cours.addTitle' | translate) }}
+              </button> 
             </div>
 
           </form>
@@ -104,11 +104,7 @@
               <i class="bi bi-search"></i>
               <input type="text" [(ngModel)]="recherche" (ngModelChange)="appliquerFiltres()" [placeholder]="'cours.list.searchPh' | translate">
             </div>
-            <select class="filter-select" [(ngModel)]="filtreStatut" (ngModelChange)="appliquerFiltres()">
-              <option value="Tous">{{ 'cours.list.filterAll' | translate }}</option>
-              <option value="Publié">{{ 'cours.list.filterPub' | translate }}</option>
-              <option value="Brouillon">{{ 'cours.list.filterDraft' | translate }}</option>
-            </select>
+            
           </div>
 
           <!-- Liste -->
@@ -119,15 +115,13 @@
             </div>
 
             <div class="cours-item" *ngFor="let cours of coursFiltres">
-              <div class="cours-item-icon" [ngClass]="cours.statut === 'Publié' ? 'bg-success-light' : 'bg-warning-light'">
+              <div class="cours-item-icon bg-success-light">
                 <i class="bi" [ngClass]="cours.fichier ? 'bi-file-earmark-text' : 'bi-file-earmark'"></i>
               </div>
               <div class="cours-item-content">
                 <div class="cours-item-header">
                   <h4>{{ cours.titre }}</h4>
-                  <span class="status-badge" [ngClass]="cours.statut === 'Publié' ? 'status-pub' : 'status-draft'">
-                    {{ cours.statut === 'Publié' ? ('cours.list.filterPub' | translate) : ('cours.list.filterDraft' | translate) }}
-                  </span>
+                  
                 </div>
                 <p class="cours-item-desc">{{ cours.description || 'Aucune description.' }}</p>
                 <div class="cours-item-meta">

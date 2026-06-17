@@ -40,7 +40,7 @@
       </div>
       <div class="widget-body p-0">
         <ul class="schedule-list" *ngIf="coursDuJour.length > 0">
-          <li *ngFor="let cours of coursDuJour">
+            <li *ngFor="let cours of coursDuJour">
             <div class="schedule-time">{{ cours.heure }}</div>
             <div class="schedule-details">
               <span class="type-badge" [ngClass]="cours.type">{{ cours.type | uppercase }}</span>
@@ -75,6 +75,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

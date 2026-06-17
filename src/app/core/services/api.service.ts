@@ -649,7 +649,14 @@ getEnseignantClasses(): Observable<any[]> {
     catchError(this.handleError)
   );
 }
-  
+  /**
+   * Récupérer les supports d'un enseignant filtrés par classe
+   */
+  getEnseignantSupportsByClasse(classeId: number | string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/enseignant/supports/classe/${classeId}`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(this.handleError));
+  }
 
   getEnseignantClass(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/enseignant/classes/${id}`, {

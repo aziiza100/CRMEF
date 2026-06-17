@@ -9,7 +9,7 @@ interface Student {
   id: number;
   nom: string;
   prenom: string;
-  cin: string;
+  cne: string;
   email: string;
   avatar: string;
 }
@@ -76,7 +76,7 @@ export class ClassesComponent implements OnInit {
     return this.selectedClasse.etudiants.filter(student => 
       student.nom.toLowerCase().includes(term) ||
       student.prenom.toLowerCase().includes(term) ||
-      (student.cin && student.cin.toLowerCase().includes(term)) ||
+      (student.cne && student.cne.toLowerCase().includes(term)) ||
       (student.email && student.email.toLowerCase().includes(term))
     );
   }
