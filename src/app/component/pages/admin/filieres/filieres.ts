@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { ApiService, Filiere, Formation } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
+
+declare var XLSX: any;
 
 @Component({
   selector: 'app-admin-filieres',
@@ -19,13 +22,18 @@ export class AdminFilieresComponent implements OnInit {
   searchTerm = '';
   showModal = false;
   editingId: number | null = null;
-  toastMessage = '';
-  showToast = false;
   isLoading = false;
   isSaving = false;
 
   currentPage = 1;
   pageSize = 10;
+
+  @ViewChild('excelInput') excelInput?: ElementRef<HTMLInputElement>;
+
+  // Excel bulk import properties
+  showImportResultModal = false;
+  importErrors: string[] = [];
+  importSuccessMessage = '';
 
   newFiliere: Partial<Filiere> & { formation_ids?: number[] } = {
     nom: '',
@@ -36,7 +44,12 @@ export class AdminFilieresComponent implements OnInit {
   filieres: Filiere[] = [];
   formations: Formation[] = [];
 
-  constructor(private api: ApiService, private router: Router, private searchService: SearchService) {}
+  constructor(
+    private api: ApiService, 
+    private router: Router, 
+    private searchService: SearchService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.searchService.currentSearch$.subscribe((term: string) => {
@@ -77,7 +90,7 @@ export class AdminFilieresComponent implements OnInit {
           this.router.navigate(['/login']);
           return;
         }
-        this.triggerToast(error?.message || 'Impossible de charger les filières.');
+        this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les filières.'));
       }
     });
   }
@@ -85,7 +98,7 @@ export class AdminFilieresComponent implements OnInit {
   loadFormations(): void {
     this.api.getFormations().subscribe({
       next: (formations) => this.formations = formations,
-      error: (error) => this.triggerToast(error.message || 'Impossible de charger les formations.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les formations.'))
     });
   }
 
@@ -138,11 +151,11 @@ export class AdminFilieresComponent implements OnInit {
           this.filieres.unshift(filiere);
         }
         this.closeModal();
-        this.triggerToast(wasEditing ? 'Filière mise à jour avec succès.' : 'Filière créée avec succès.');
+        this.toast.success(wasEditing ? 'La filière a été mise à jour avec succès.' : 'La filière a été créée avec succès.');
       },
       error: (error) => {
         this.isSaving = false;
-        this.triggerToast(error.message || `Impossible de ${wasEditing ? 'mettre à jour' : 'créer'} la filière.`);
+        this.toast.error(this.toast.getErrorMessage(error, `Impossible de ${wasEditing ? 'mettre à jour' : 'créer'} la filière.`));
       }
     });
   }
@@ -170,10 +183,10 @@ export class AdminFilieresComponent implements OnInit {
       this.api.deleteFiliere(idToRemove).subscribe({
         next: () => {
           this.filieres = this.filieres.filter(f => Number(f.id) !== idToRemove);
-          this.triggerToast('Filière supprimée avec succès.');
+          this.toast.success('La filière a été supprimée avec succès.');
           this.loadFilieres();
         },
-        error: (error) => this.triggerToast(error.message || 'Impossible de supprimer la filière.')
+        error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de supprimer la filière.'))
       });
     }
   }
@@ -182,11 +195,111 @@ export class AdminFilieresComponent implements OnInit {
     return filiere.id;
   }
 
-  triggerToast(message: string) {
-    this.toastMessage = message;
-    this.showToast = true;
-    setTimeout(() => {
-      this.showToast = false;
-    }, 3000);
+  triggerExcelUpload() {
+    if (this.excelInput?.nativeElement) {
+      this.excelInput.nativeElement.value = '';
+      this.excelInput.nativeElement.click();
+    }
+  }
+
+  onExcelFileSelected(event: any) {
+    const file = event.target.files?.[0] as File | undefined;
+    if (!file) {
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      alert("Erreur : La bibliothèque d'importation SheetJS n'est pas chargée. Veuillez patienter ou vérifier votre connexion Internet.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawRows = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+        if (rawRows.length === 0) {
+          alert("Le fichier Excel est vide.");
+          return;
+        }
+
+        const normalizeKey = (key: string): string => {
+          return key
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+        };
+
+        const mapExcelRow = (row: any) => {
+          const mapped: any = {};
+          for (const key of Object.keys(row)) {
+            const norm = normalizeKey(key);
+            if (norm === 'nom' || norm === 'nom filiere' || norm === 'filiere') mapped.nom = String(row[key]);
+            else if (norm === 'niveau') mapped.niveau = String(row[key]);
+            else if (norm === 'description' || norm === 'desc') mapped.description = String(row[key]);
+            else if (norm === 'formations' || norm === 'formation') mapped.formations = String(row[key]);
+          }
+          return mapped;
+        };
+
+        const mappedRows = rawRows.map((row, idx) => {
+          const mapped = mapExcelRow(row);
+          mapped._rowIndex = idx + 2;
+          return mapped;
+        });
+
+        // Client side validation
+        const clientErrors: string[] = [];
+        for (const row of mappedRows) {
+          const line = row._rowIndex;
+          if (!row.nom) clientErrors.push(`Ligne ${line} : Le nom de la filière est manquant.`);
+        }
+
+        if (clientErrors.length > 0) {
+          this.importErrors = clientErrors;
+          this.importSuccessMessage = '';
+          this.showImportResultModal = true;
+          if (this.excelInput?.nativeElement) {
+            this.excelInput.nativeElement.value = '';
+          }
+          return;
+        }
+
+        const payload = mappedRows.map(row => {
+          const { _rowIndex, ...rest } = row;
+          return rest;
+        });
+
+        this.api.importAdminFilieres(payload).subscribe({
+          next: (res) => {
+            this.importErrors = [];
+            this.importSuccessMessage = res.message || 'Importation réussie.';
+            this.showImportResultModal = true;
+            this.loadFilieres();
+            if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+          },
+          error: (err) => {
+            this.importErrors = err.error?.errors || [err.message || 'Erreur lors de l\'importation.'];
+            this.importSuccessMessage = '';
+            this.showImportResultModal = true;
+            if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+          }
+        });
+      } catch (err) {
+        alert("Erreur lors de la lecture du fichier Excel. Assurez-vous que le format est valide.");
+        if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  closeImportResultModal() {
+    this.showImportResultModal = false;
+    this.importErrors = [];
   }
 }

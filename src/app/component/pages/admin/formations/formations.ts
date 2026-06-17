@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApiService, Formation, Filiere } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-admin-formations',
@@ -16,11 +17,6 @@ import { SearchService } from '../../../../core/services/search.service';
       <div class="page-header">
         <h1 class="page-title">{{ 'admin.formations.title' | translate }}</h1>
         <p class="page-desc">{{ 'admin.formations.desc' | translate }}</p>
-      </div>
-
-      <div class="toast-notification success-toast" [class.show]="showToast">
-        <i class="bi bi-check-circle"></i>
-        <span>{{ toastMessage }}</span>
       </div>
 
       <div class="toolbar">
@@ -155,27 +151,6 @@ import { SearchService } from '../../../../core/services/search.service';
         color: #64748b;
         margin: 0;
       }
-
-      .toast-notification {
-        position: fixed;
-        top: 20px;
-        right: -300px;
-        background: #fff;
-        padding: 15px 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        font-weight: 600;
-        color: #1e293b;
-        z-index: 9999;
-        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .toast-notification.show { right: 20px; }
-      .success-toast { border-left: 4px solid #10b981; }
-      .success-toast i { color: #10b981; font-size: 20px; }
 
       .toolbar {
         display: flex;
@@ -388,8 +363,6 @@ export class AdminFormationsComponent implements OnInit {
   searchTerm = '';
   showModal = false;
   editingId: number | null = null;
-  toastMessage = '';
-  showToast = false;
   isLoading = false;
   isSaving = false;
 
@@ -404,7 +377,12 @@ export class AdminFormationsComponent implements OnInit {
   formations: Formation[] = [];
   filieres: Filiere[] = [];
 
-  constructor(private api: ApiService, private router: Router, private searchService: SearchService) {}
+  constructor(
+    private api: ApiService, 
+    private router: Router, 
+    private searchService: SearchService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.searchService.currentSearch$.subscribe((term: string) => {
@@ -436,7 +414,7 @@ export class AdminFormationsComponent implements OnInit {
           this.router.navigate(['/login']);
           return;
         }
-        this.triggerToast(error?.message || 'Impossible de charger les formations.');
+        this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les formations.'));
       }
     });
   }
@@ -444,7 +422,7 @@ export class AdminFormationsComponent implements OnInit {
   loadFilieres(): void {
     this.api.getFilieres().subscribe({
       next: (filieres) => this.filieres = filieres,
-      error: (error) => this.triggerToast(error.message || 'Impossible de charger les filières.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les filières.'))
     });
   }
 
@@ -500,11 +478,11 @@ export class AdminFormationsComponent implements OnInit {
           this.formations.unshift(formation);
         }
         this.closeModal();
-        this.triggerToast(wasEditing ? 'Formation mise à jour avec succès.' : 'Formation créée avec succès.');
+        this.toast.success(wasEditing ? 'La formation a été mise à jour avec succès.' : 'La formation a été créée avec succès.');
       },
       error: (error) => {
         this.isSaving = false;
-        this.triggerToast(error.message || `Impossible de ${wasEditing ? 'mettre à jour' : 'créer'} la formation.`);
+        this.toast.error(this.toast.getErrorMessage(error, `Impossible de ${wasEditing ? 'mettre à jour' : 'créer'} la formation.`));
       }
     });
   }
@@ -531,23 +509,15 @@ export class AdminFormationsComponent implements OnInit {
       this.api.deleteFormation(idToRemove).subscribe({
         next: () => {
           this.formations = this.formations.filter(f => Number(f.id) !== idToRemove);
-          this.triggerToast('Formation supprimée avec succès.');
+          this.toast.success('La formation a été supprimée avec succès.');
           this.loadFormations();
         },
-        error: (error) => this.triggerToast(error.message || 'Impossible de supprimer la formation.')
+        error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de supprimer la formation.'))
       });
     }
   }
 
   trackByFormation(index: number, formation: Formation) {
     return formation.id;
-  }
-
-  triggerToast(message: string) {
-    this.toastMessage = message;
-    this.showToast = true;
-    setTimeout(() => {
-      this.showToast = false;
-    }, 3000);
   }
 }

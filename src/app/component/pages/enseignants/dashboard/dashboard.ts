@@ -58,9 +58,6 @@ export class EnseignantDashboard implements OnInit {
     }
   ];
 
-  // Activities dynamiques
-  recentActivities: any[] = [];
-
   constructor(private api: ApiService) {}
 
   ngOnInit() {
@@ -87,22 +84,6 @@ export class EnseignantDashboard implements OnInit {
           hoursSum += Number(mod.masse_horraire || mod.masse_horaire || 0);
         });
         this.totalHours = hoursSum > 0 ? hoursSum : (response.heures_count ?? 18);
-
-        // 2. Activités Récentes Dynamiques (Mapping)
-        if (response.activities && response.activities.length > 0) {
-          this.recentActivities = response.activities.map((act: any) => ({
-            text: act.description || act.text || 'Activité enregistrée',
-            time: act.time || act.created_at_formatted || 'Récemment',
-            icon: act.icon || 'bi-file-earmark-text',
-            color: act.color || 'text-primary'
-          }));
-        } else {
-          // Fallback au cas ou l'historique est vide
-          this.recentActivities = [
-            { text: `Vous êtes affecté à ${this.coursesCount} modules de formation.`, time: 'Actualisé à l\'instant', icon: 'bi-info-circle', color: 'text-info' },
-            { text: 'Saisie des notes disponible pour vos classes.', time: 'Actif', icon: 'bi-check-circle', color: 'text-success' }
-          ];
-        }
 
         // 3. Prochain Cours Dynamique
         if (response.next_class || response.prochain_cours) {

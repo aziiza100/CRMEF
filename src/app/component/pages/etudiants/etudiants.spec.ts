@@ -1,19 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EtudiantsComponent } from './etudiants';
+import { ApiService } from '../../../core/services/api.service';
+import { of } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { Etudiants } from './etudiants';
-
-describe('Etudiants', () => {
-  let component: Etudiants;
-  let fixture: ComponentFixture<Etudiants>;
+describe('EtudiantsComponent', () => {
+  let component: EtudiantsComponent;
+  let fixture: ComponentFixture<EtudiantsComponent>;
+  let apiServiceMock: any;
 
   beforeEach(async () => {
+    apiServiceMock = {
+      logout: () => of({})
+    };
+
     await TestBed.configureTestingModule({
-      imports: [Etudiants],
+      imports: [
+        EtudiantsComponent,
+        RouterModule.forRoot([]),
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        { provide: ApiService, useValue: apiServiceMock }
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Etudiants);
+    fixture = TestBed.createComponent(EtudiantsComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

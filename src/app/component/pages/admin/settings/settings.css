@@ -5,17 +5,6 @@
 .page-title { font-size: 28px; font-weight: 800; color: #0f172a; margin: 0 0 5px 0; }
 .page-desc { font-size: 15px; color: #64748b; margin: 0; }
 
-/* Toast */
-.toast-notification {
-  position: fixed; top: 20px; right: -300px;
-  background: #fff; padding: 15px 25px; border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 15px;
-  font-weight: 600; color: #1e293b; z-index: 9999; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.toast-notification.show { right: 20px; }
-.success-toast { border-left: 4px solid #10b981; }
-.success-toast i { color: #10b981; font-size: 20px; }
-
 /* Layout */
 .settings-container { display: flex; gap: 30px; align-items: flex-start; }
 

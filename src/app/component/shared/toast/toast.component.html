@@ -1,0 +1,21 @@
+<div class="toast-container">
+  <div *ngFor="let toast of toastService.toasts(); trackBy: trackById" 
+       class="toast-card" 
+       [class]="toast.type" 
+       role="alert" 
+       aria-live="assertive" 
+       aria-atomic="true">
+    <div class="toast-body">
+      <i class="bi toast-icon" [ngClass]="getIconClass(toast.type)"></i>
+      <div class="toast-content">
+        <p class="toast-message">{{ toast.message }}</p>
+      </div>
+      <button class="toast-close-btn" (click)="closeToast(toast.id)" aria-label="Fermer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div *ngIf="toast.duration > 0" 
+         class="toast-progress" 
+         [style.animation-duration]="toast.duration + 'ms'"></div>
+  </div>
+</div>

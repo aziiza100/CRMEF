@@ -74,22 +74,9 @@ export class AdminComponent {
       route: '/espace-admin/emploi',
       labelFr: 'Emploi du temps',
       labelAr: 'الجدول الزمني'
-    },
-    {
-      id: 'messages',
-      icon: 'bi-envelope',
-      route: '/espace-admin/messages',
-      labelFr: 'Messages',
-      labelAr: 'الرسائل'
-    },
-    {
-      id: 'settings',
-      icon: 'bi-gear-fill',
-      route: '/espace-admin/settings',
-      labelFr: 'Paramètres',
-      labelAr: 'الإعدادات'
     }
   ];
+  
 
   constructor(public router: Router, private translate: TranslateService, private api: ApiService, private searchService: SearchService) {
     const savedLang = localStorage.getItem('lang') || 'fr';

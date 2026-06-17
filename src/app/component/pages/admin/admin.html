@@ -35,15 +35,18 @@
     
     <!-- Topbar -->
     <header class="topbar">
-      <div class="topbar-left">
-        <button class="toggle-btn" (click)="toggleSidebar()">
-          <i class="bi bi-list"></i>
-        </button>
-        <div class="search-bar">
-          <i class="bi bi-search"></i>
-          <input type="text" [placeholder]="'admin.layout.searchAnywhere' | translate" (input)="onSearchInput($event)">
+      
+      @if (router.url !== '/espace-admin/dashboard') {
+        <div class="topbar-left">
+          <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" [placeholder]="'admin.layout.searchAnywhere' | translate" (input)="onSearchInput($event)">
+          </div>
         </div>
-      </div>
+      }
       
       <div class="topbar-right">
         <!-- Language Switcher -->
@@ -71,7 +74,7 @@
     <div class="content-wrapper">
       <router-outlet></router-outlet>
     </div>
-    
+     
   </main>
 
 </div>

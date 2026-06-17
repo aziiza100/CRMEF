@@ -1,13 +1,25 @@
 <main class="main">
 
-  <!-- Hero Section -->
-  <section class="hero section dark-background">
-    <div class="container">
-      <h2>{{ 'formations.hero.title' | translate }}</h2>
-      <p>{{ 'formations.hero.subtitle' | translate }}</p>
+  <div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>{{ 'formations.hero.title' | translate }}</h1>
+            <p class="mb-0">{{ 'formations.hero.subtitle' | translate }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
-  <!-- /Hero Section -->
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a routerLink="/home">{{ 'nav.home' | translate }}</a></li>
+          <li class="current">{{ 'formations.breadcrumb' | translate }}</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
 
   <!-- Filières Section -->
   <section id="filieres" class="filieres section">

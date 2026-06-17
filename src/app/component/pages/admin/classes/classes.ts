@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Filiere } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
+
+declare var XLSX: any;
 
 @Component({
   selector: 'app-admin-classes',
@@ -19,13 +22,18 @@ export class AdminClassesComponent implements OnInit {
   selectedFilter = 'all';
   showModal = false;
   editingId: number | null = null;
-  toastMessage = '';
-  showToast = false;
   isLoading = false;
   isSaving = false;
 
   currentPage = 1;
   pageSize = 10;
+
+  @ViewChild('excelInput') excelInput?: ElementRef<HTMLInputElement>;
+
+  // Excel bulk import properties
+  showImportResultModal = false;
+  importErrors: string[] = [];
+  importSuccessMessage = '';
 
   // Modèle de classe
   newClass = {
@@ -45,7 +53,11 @@ export class AdminClassesComponent implements OnInit {
   showStudentDetail = false;
   studentFilter = '';
 
-  constructor(private api: ApiService, private searchService: SearchService) {}
+  constructor(
+    private api: ApiService, 
+    private searchService: SearchService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit() {
     this.searchService.currentSearch$.subscribe((term: string) => {
@@ -74,7 +86,7 @@ export class AdminClassesComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.triggerToast(error.message || 'Impossible de charger les classes.');
+        this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les classes.'));
       }
     });
   }
@@ -85,7 +97,7 @@ export class AdminClassesComponent implements OnInit {
         this.filieres = filieres;
       },
       error: (error) => {
-        this.triggerToast(error.message || 'Impossible de charger les filières.');
+        this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les filières.'));
       }
     });
   }
@@ -251,12 +263,12 @@ export class AdminClassesComponent implements OnInit {
 
   viewStudent(s: any) {
     // placeholder: could open a detailed student view
-    this.triggerToast(`Ouvrir profil: ${s.prenom || ''} ${s.nom || ''}`);
+    this.toast.info(`Ouvrir profil : ${s.prenom || ''} ${s.nom || ''}`);
   }
 
   editStudent(s: any) {
     // placeholder: could navigate to student edit form
-    this.triggerToast(`Modifier étudiant: ${s.prenom || ''} ${s.nom || ''}`);
+    this.toast.info(`Modifier étudiant : ${s.prenom || ''} ${s.nom || ''}`);
   }
 
   closeModal() {
@@ -313,7 +325,7 @@ export class AdminClassesComponent implements OnInit {
     }
 
     this.closeModal();
-    this.triggerToast(isEdit ? 'Classe mise à jour.' : 'Nouvelle classe créée.');
+    this.toast.success(isEdit ? 'La classe a été mise à jour avec succès.' : 'La classe a été créée avec succès.');
 
     const payload = {
       nom: this.newClass.nom,
@@ -333,7 +345,7 @@ export class AdminClassesComponent implements OnInit {
       error: (error) => {
         this.isSaving = false;
         this.classes = previousClasses;
-        this.triggerToast(error.message || 'Erreur lors de l\'enregistrement de la classe.');
+        this.toast.error(this.toast.getErrorMessage(error, 'Erreur lors de l\'enregistrement de la classe.'));
       }
     });
   }
@@ -345,23 +357,121 @@ export class AdminClassesComponent implements OnInit {
 
       this.api.deleteAdminClass(id).subscribe({
         next: () => {
-          this.triggerToast('Classe supprimée.');
+          this.toast.success('La classe a été supprimée avec succès.');
           this.loadClasses();
         },
         error: (error) => {
           this.classes = previousClasses;
-          this.triggerToast(error.message || 'Erreur lors de la suppression de la classe.');
+          this.toast.error(this.toast.getErrorMessage(error, 'Erreur lors de la suppression de la classe.'));
         }
       });
     }
   }
 
-  triggerToast(msg: string) {
-    this.toastMessage = msg;
-    this.showToast = true;
-    setTimeout(() => {
-      this.showToast = false;
-    }, 3000);
+  triggerExcelUpload() {
+    if (this.excelInput?.nativeElement) {
+      this.excelInput.nativeElement.value = '';
+      this.excelInput.nativeElement.click();
+    }
   }
 
+  onExcelFileSelected(event: any) {
+    const file = event.target.files?.[0] as File | undefined;
+    if (!file) {
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      alert("Erreur : La bibliothèque d'importation SheetJS n'est pas chargée. Veuillez patienter ou vérifier votre connexion Internet.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawRows = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+        if (rawRows.length === 0) {
+          alert("Le fichier Excel est vide.");
+          return;
+        }
+
+        const normalizeKey = (key: string): string => {
+          return key
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+        };
+
+        const mapExcelRow = (row: any) => {
+          const mapped: any = {};
+          for (const key of Object.keys(row)) {
+            const norm = normalizeKey(key);
+            if (norm === 'nom' || norm === 'nom classe' || norm === 'classe') mapped.nom = String(row[key]);
+            else if (norm === 'filiere' || norm === 'nom filiere' || norm === 'filiere associee') mapped.filiere = String(row[key]);
+          }
+          return mapped;
+        };
+
+        const mappedRows = rawRows.map((row, idx) => {
+          const mapped = mapExcelRow(row);
+          mapped._rowIndex = idx + 2;
+          return mapped;
+        });
+
+        // Client side validation
+        const clientErrors: string[] = [];
+        for (const row of mappedRows) {
+          const line = row._rowIndex;
+          if (!row.nom) clientErrors.push(`Ligne ${line} : Le nom de la classe est manquant.`);
+          if (!row.filiere) clientErrors.push(`Ligne ${line} : La filière associée est manquante.`);
+        }
+
+        if (clientErrors.length > 0) {
+          this.importErrors = clientErrors;
+          this.importSuccessMessage = '';
+          this.showImportResultModal = true;
+          if (this.excelInput?.nativeElement) {
+            this.excelInput.nativeElement.value = '';
+          }
+          return;
+        }
+
+        const payload = mappedRows.map(row => {
+          const { _rowIndex, ...rest } = row;
+          return rest;
+        });
+
+        this.api.importAdminClasses(payload).subscribe({
+          next: (res) => {
+            this.importErrors = [];
+            this.importSuccessMessage = res.message || 'Importation réussie.';
+            this.showImportResultModal = true;
+            this.loadClasses();
+            if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+          },
+          error: (err) => {
+            this.importErrors = err.error?.errors || [err.message || 'Erreur lors de l\'importation.'];
+            this.importSuccessMessage = '';
+            this.showImportResultModal = true;
+            if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+          }
+        });
+      } catch (err) {
+        alert("Erreur lors de la lecture du fichier Excel. Assurez-vous que le format est valide.");
+        if (this.excelInput?.nativeElement) this.excelInput.nativeElement.value = '';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  closeImportResultModal() {
+    this.showImportResultModal = false;
+    this.importErrors = [];
+  }
 }

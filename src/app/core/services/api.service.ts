@@ -358,6 +358,24 @@ export class ApiService {
     );
   }
 
+  importAdminClasses(classes: any[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/classes/import`, { classes }, {
+      headers: this.getHeaders()
+    }).pipe(
+      tap(() => { this.adminClassesCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
+  }
+
+  importAdminFilieres(filieres: any[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/admin/filieres/import`, { filieres }, {
+      headers: this.getHeaders()
+    }).pipe(
+      tap(() => { this.filieresCache$ = null; this.dashboardCache$ = null; }),
+      catchError(this.handleError)
+    );
+  }
+
   updateAdminStudent(id: number, data: any): Observable<any> {
     if (data instanceof FormData) {
       data.append('_method', 'PUT');

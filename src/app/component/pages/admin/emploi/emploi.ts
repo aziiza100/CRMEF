@@ -21,6 +21,8 @@ interface JourEmploi {
   seances: Seance[];
 }
 
+import { ToastService } from '../../../../core/services/toast.service';
+
 @Component({
   selector: 'app-admin-emploi',
   standalone: true,
@@ -46,8 +48,6 @@ export class AdminEmploiComponent {
 
   showModal = false;
   editingId: number | null = null;
-  toastMessage = '';
-  showToast = false;
   isSaving = false;
 
   newSeance: Omit<Seance, 'id'> & { moduleId?: number } = {
@@ -65,7 +65,10 @@ export class AdminEmploiComponent {
   professeurs: string[] = [];
   enseignantsMap: { [id: number]: string } = {};
 
-  constructor(private api: ApiService) {
+  constructor(
+    private api: ApiService,
+    private toast: ToastService
+  ) {
     // load classes from API
     this.api.getAdminClasses().subscribe({
       next: (classes: any[]) => {
@@ -116,7 +119,7 @@ export class AdminEmploiComponent {
         });
         this.jours.forEach(d => d.seances.sort((a,b) => a.heureDebut.localeCompare(b.heureDebut)));
         this.jourActif = this.jours[0];
-      }, error: (err: any) => this.triggerToast(err?.message || 'Impossible de charger l\'emploi du temps') });
+      }, error: (err: any) => this.toast.error(this.toast.getErrorMessage(err, 'Impossible de charger l\'emploi du temps.')) });
     }});
   }
 
@@ -188,7 +191,7 @@ export class AdminEmploiComponent {
     // find class id
     this.api.getAdminClasses().subscribe({ next: (classes: any[]) => {
       const cls = classes.find((c:any) => c.nom === this.selectedClass);
-      if (!cls) return this.triggerToast('Classe introuvable');
+      if (!cls) return this.toast.error('Classe introuvable.');
 
       const payload: any = {
         jour: this.jourActif.id,
@@ -206,20 +209,20 @@ export class AdminEmploiComponent {
           this.isSaving = false;
           this.loadEmploiForSelectedClass();
           this.closeModal();
-          this.triggerToast('Séance mise à jour.');
+          this.toast.success('Séance mise à jour avec succès.');
         }, error: (err: any) => {
           this.isSaving = false;
-          this.triggerToast(err?.error?.message || err?.message || 'Impossible de mettre à jour la séance');
+          this.toast.error(this.toast.getErrorMessage(err, 'Impossible de mettre à jour la séance.'));
         } });
       } else {
         this.api.createSeance(cls.id, payload).subscribe({ next: (res: any) => {
           this.isSaving = false;
           this.loadEmploiForSelectedClass();
           this.closeModal();
-          this.triggerToast('Séance ajoutée.');
+          this.toast.success('Séance ajoutée avec succès.');
         }, error: (err: any) => {
           this.isSaving = false;
-          this.triggerToast(err?.error?.message || err?.message || 'Impossible d\'ajouter la séance');
+          this.toast.error(this.toast.getErrorMessage(err, 'Impossible d\'ajouter la séance.'));
         } });
       }
     }});
@@ -229,15 +232,7 @@ export class AdminEmploiComponent {
     if (!confirm("Supprimer cette séance ?")) return;
     this.api.deleteSeance(id).subscribe({ next: () => {
       this.loadEmploiForSelectedClass();
-      this.triggerToast('Séance supprimée.');
-    }, error: (err) => this.triggerToast(err?.message || 'Impossible de supprimer la séance') });
-  }
-
-  triggerToast(msg: string) {
-    this.toastMessage = msg;
-    this.showToast = true;
-    setTimeout(() => {
-      this.showToast = false;
-    }, 3000);
+      this.toast.success('Séance supprimée avec succès.');
+    }, error: (err) => this.toast.error(this.toast.getErrorMessage(err, 'Impossible de supprimer la séance.')) });
   }
 }

@@ -5,11 +5,6 @@
     <p class="page-desc">{{ 'admin.classes.desc' | translate }}</p>
   </div>
 
-  <!-- Toast Notification -->
-  <div class="toast-notification success-toast" [class.show]="showToast">
-    <i class="bi bi-check-circle-fill"></i> {{ toastMessage }}
-  </div>
-
   <!-- Toolbar -->
   <div class="toolbar">
     <div class="toolbar-actions">
@@ -24,10 +19,17 @@
       </select>
     </div>
 
-    <button class="btn-primary" (click)="openModal()">
-      <i class="bi bi-plus-lg"></i> {{ 'admin.classes.newClass' | translate }}
-    </button>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn-success-outline" (click)="triggerExcelUpload()">
+        <i class="bi bi-file-earmark-excel"></i> {{ 'admin.classes.importExcel' | translate }}
+      </button>
+      <button class="btn-primary" (click)="openModal()">
+        <i class="bi bi-plus-lg"></i> {{ 'admin.classes.newClass' | translate }}
+      </button>
+    </div>
   </div>
+
+  <input type="file" #excelInput style="display: none;" (change)="onExcelFileSelected($event)" accept=".xlsx, .xls">
 
   <!-- Table View -->
   <div class="table-container">
@@ -230,5 +232,45 @@
       <div class="modal-footer">
         <button class="btn-cancel" (click)="closeStudentsModal()">{{ 'admin.classes.btnClose' | translate }}</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Import Results Modal -->
+  <div class="modal-overlay" *ngIf="showImportResultModal" (click)="closeImportResultModal()">
+    <div class="modal-content import-modal-content" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>
+          <span *ngIf="importErrors.length > 0" class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> {{ 'admin.users.importErrors' | translate }}</span>
+          <span *ngIf="importErrors.length === 0" class="text-success"><i class="bi bi-check-circle-fill"></i> {{ 'admin.users.importSuccess' | translate }}</span>
+        </h3>
+        <button class="close-btn" (click)="closeImportResultModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Error State -->
+        <div *ngIf="importErrors.length > 0">
+          <div class="alert alert-danger-custom">
+            <i class="bi bi-x-circle-fill"></i> {{ 'admin.users.importErrorMsg' | translate }}
+          </div>
+          <ul class="error-list">
+            <li *ngFor="let error of importErrors">
+              <i class="bi bi-arrow-right-short"></i> {{ error }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Success State -->
+        <div *ngIf="importErrors.length === 0">
+          <div class="alert alert-success-custom">
+            <i class="bi bi-check-circle-fill"></i> {{ importSuccessMessage }}
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeImportResultModal()">{{ 'admin.users.btnClose' | translate }}</button>
+      </div>
+
     </div>
   </div>

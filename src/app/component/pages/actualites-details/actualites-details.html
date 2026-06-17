@@ -1,21 +1,27 @@
 <div class="actualite-details-page">
-  <!-- Hero / Header Section -->
-  <div class="details-header" data-aos="fade-in">
-    <div class="container">
-      <div class="breadcrumbs">
+  <div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>{{ title }}</h1>
+            <div class="meta-info justify-content-center mt-3">
+              <span class="category-badge">{{ category }}</span>
+              <span class="date"><i class="bi bi-calendar3"></i> {{ formattedDate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
         <ol>
           <li><a routerLink="/home">{{ 'nav.home' | translate }}</a></li>
           <li><a routerLink="/actualites">{{ 'nav.actualites' | translate }}</a></li>
           <li class="current">{{ category }}</li>
         </ol>
       </div>
-      
-      <div class="meta-info">
-        <span class="category-badge">{{ category }}</span>
-        <span class="date"><i class="bi bi-calendar3"></i> {{ formattedDate }}</span>
-      </div>
-      <h1 class="title">{{ title }}</h1>
-    </div>
+    </nav>
   </div>
 
   <!-- Content Section -->

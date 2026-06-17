@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { ApiService, Filiere, Module } from '../../../../core/services/api.service';
 import { SearchService } from '../../../../core/services/search.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-admin-modules',
@@ -22,8 +23,6 @@ export class AdminModulesComponent implements OnInit {
 
   searchTerm = '';
   selectedClasseId: number | null = null;
-  showToast = false;
-  toastMessage = '';
   isLoading = false;
   isSaving = false;
   showModal = false;
@@ -40,7 +39,11 @@ export class AdminModulesComponent implements OnInit {
     enseignant_id: null as number | null,
   };
 
-  constructor(private api: ApiService, private searchService: SearchService) {}
+  constructor(
+    private api: ApiService, 
+    private searchService: SearchService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.searchService.currentSearch$.subscribe((term: string) => {
@@ -99,28 +102,28 @@ export class AdminModulesComponent implements OnInit {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: (modules) => this.modules = modules,
-      error: (error) => this.triggerToast(error?.message || 'Impossible de charger les modules.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les modules.'))
     });
   }
 
   loadFilieres(): void {
     this.api.getFilieres().subscribe({
       next: (filieres) => this.filieres = filieres,
-      error: (error) => this.triggerToast(error?.message || 'Impossible de charger les fili�res.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les filières.'))
     });
   }
 
   loadEnseignants(): void {
     this.api.getAdminEnseignants().subscribe({
       next: (enseignants) => this.enseignants = enseignants,
-      error: (error) => this.triggerToast(error?.message || 'Impossible de charger les enseignants.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les enseignants.'))
     });
   }
 
   loadClasses(): void {
     this.api.getAdminClasses().subscribe({
       next: (classes) => this.classes = classes,
-      error: (error) => this.triggerToast(error?.message || 'Impossible de charger les classes.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de charger les classes.'))
     });
   }
 
@@ -148,10 +151,9 @@ export class AdminModulesComponent implements OnInit {
   resetForm(): void {
     this.newModule = { nom: '', masse_horraire: 0, filiere_id: null, classe_id: null, enseignant_id: null };
   }
-
   saveModule(): void {
     if (!this.newModule.nom || !this.newModule.masse_horraire || !this.newModule.filiere_id || !this.newModule.enseignant_id || !this.newModule.classe_id) {
-      this.triggerToast('Veuillez remplir tous les champs requis.');
+      this.toast.warning('Veuillez remplir tous les champs requis.');
       return;
     }
     this.isSaving = true;
@@ -169,9 +171,9 @@ export class AdminModulesComponent implements OnInit {
         next: () => {
           this.loadModules();
           this.closeModal();
-          this.triggerToast('Module mis à jour.');
+          this.toast.success('Le module a été mis à jour avec succès.');
         },
-        error: (err) => this.triggerToast(err?.message || 'Impossible de mettre à jour le module.')
+        error: (err) => this.toast.error(this.toast.getErrorMessage(err, 'Impossible de mettre à jour le module.'))
       });
       return;
     }
@@ -192,9 +194,9 @@ export class AdminModulesComponent implements OnInit {
       next: (response) => {
         this.loadModules();
         this.closeModal();
-        this.triggerToast('Module créé avec succès.');
+        this.toast.success('Le module a été créé avec succès.');
       },
-      error: (error) => this.triggerToast(error?.message || 'Impossible de créer le module.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de créer le module.'))
     });
   }
 
@@ -206,9 +208,9 @@ export class AdminModulesComponent implements OnInit {
     this.api.deleteModule(id).subscribe({
       next: () => {
         this.modules = this.modules.filter(module => module.id !== id);
-        this.triggerToast('Module supprim� avec succ�s.');
+        this.toast.success('Le module a été supprimé avec succès.');
       },
-      error: (error) => this.triggerToast(error?.message || 'Impossible de supprimer le module.')
+      error: (error) => this.toast.error(this.toast.getErrorMessage(error, 'Impossible de supprimer le module.'))
     });
   }
 
@@ -226,11 +228,5 @@ export class AdminModulesComponent implements OnInit {
       return '-';
     }
     return [enseignant.nom, enseignant.prenom].filter(Boolean).join(' ');
-  }
-
-  triggerToast(message: string): void {
-    this.toastMessage = message;
-    this.showToast = true;
-    setTimeout(() => this.showToast = false, 3000);
   }
 }

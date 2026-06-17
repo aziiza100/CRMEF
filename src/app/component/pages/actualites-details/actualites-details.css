@@ -3,66 +3,82 @@
   min-height: 100vh;
 }
 
-.details-header {
-  background-color: #ffffff;
-  padding: 40px 0;
-  border-bottom: 1px solid #eee;
+/* Page Title (Hero) Section */
+.page-title {
+  --default-color: var(--contrast-color);
+  --background-color: #46707D;
+  --heading-color: var(--contrast-color);
+  color: var(--default-color);
+  background-color: var(--background-color);
+  position: relative;
   margin-bottom: 40px;
 }
 
-.breadcrumbs {
-  margin-bottom: 20px;
+.page-title .heading {
+  padding: 48px 0 40px;
 }
 
-.breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0;
+.page-title .heading h1 {
+  font-family: var(--heading-font);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 0;
-  font-size: 14px;
 }
 
-.breadcrumbs ol li + li {
-  padding-left: 10px;
+.page-title nav {
+  background-color: color-mix(in srgb, var(--background-color) 88%, var(--accent-color) 8%);
+  padding: 18px 0;
 }
 
-.breadcrumbs ol li + li::before {
-  display: inline-block;
-  padding-right: 10px;
-  color: #6c757d;
-  content: "/";
-}
-
-:host-context([dir="rtl"]) .breadcrumbs ol li + li {
-  padding-left: 0;
-  padding-right: 10px;
-}
-
-:host-context([dir="rtl"]) .breadcrumbs ol li + li::before {
-  padding-right: 0;
-  padding-left: 10px;
-}
-
-.breadcrumbs ol li a {
-  color: var(--accent-color);
+.page-title nav a {
+  color: var(--default-color);
   text-decoration: none;
   transition: 0.3s;
 }
 
-.breadcrumbs ol li a:hover {
+.page-title nav a:hover {
   text-decoration: underline;
 }
 
-.breadcrumbs ol li.current {
-  color: #6c757d;
+.page-title nav ol {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.page-title nav ol li+li {
+  padding-left: 10px;
+}
+
+.page-title nav ol li+li::before {
+  content: "/";
+  display: inline-block;
+  padding-right: 10px;
+  opacity: 0.6;
+}
+
+:host-context([dir="rtl"]) .page-title nav ol li+li {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+:host-context([dir="rtl"]) .page-title nav ol li+li::before {
+  content: "/";
+  display: inline-block;
+  padding-right: 0;
+  padding-left: 10px;
+  opacity: 0.6;
 }
 
 .meta-info {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 20px;
 }
 
 .category-badge {
@@ -83,12 +99,8 @@
   gap: 6px;
 }
 
-.title {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--heading-color);
-  line-height: 1.4;
-  margin: 0;
+.page-title .date {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .main-image {
@@ -120,7 +132,7 @@
 }
 
 @media (max-width: 768px) {
-  .title {
+  .page-title .heading h1 {
     font-size: 28px;
   }
   

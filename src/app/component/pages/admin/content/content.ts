@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Actualite } from '../../../../core/services/api.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-admin-content',
@@ -19,8 +20,6 @@ export class AdminContentComponent implements OnInit {
   
   showModal = false;
   editingId: number | null = null;
-  toastMessage = '';
-  showToast = false;
   isLoading = false;
   isSaving = false;
 
@@ -45,7 +44,11 @@ export class AdminContentComponent implements OnInit {
 
   articles: any[] = [];
 
-  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private api: ApiService, 
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadArticles();
@@ -62,7 +65,7 @@ export class AdminContentComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.triggerToast('Erreur lors du chargement : ' + err.message);
+        this.toast.error(this.toast.getErrorMessage(err, 'Erreur lors du chargement des articles.'));
       }
     });
   }
@@ -175,10 +178,10 @@ export class AdminContentComponent implements OnInit {
     this.api.updateActualite(article.id, { publie: isPublie }).subscribe({
       next: () => {
         article.status = newStatus;
-        this.triggerToast(`Statut mis à jour : ${newStatus === 'published' ? 'Publié' : 'Brouillon'}`);
+        this.toast.success(`Statut mis à jour : ${newStatus === 'published' ? 'Publié' : 'Brouillon'}`);
       },
       error: (err) => {
-        this.triggerToast('Erreur lors de la modification du statut : ' + err.message);
+        this.toast.error(this.toast.getErrorMessage(err, 'Erreur lors de la modification du statut.'));
       }
     });
   }
@@ -226,7 +229,7 @@ export class AdminContentComponent implements OnInit {
 
     // Close the modal window immediately
     this.showModal = false;
-    this.triggerToast(wasEditing ? 'Modification en cours...' : 'Publication en cours...');
+    this.toast.info(wasEditing ? 'Modification en cours...' : 'Publication en cours...');
 
     request$.subscribe({
       next: (res) => {
@@ -248,7 +251,7 @@ export class AdminContentComponent implements OnInit {
           }
         }
 
-        this.triggerToast(wasEditing ? 'Modification sauvegardée.' : 'Publication réussie.');
+        this.toast.success(wasEditing ? 'La modification a été sauvegardée avec succès.' : 'La publication a été réussie.');
         this.loadArticles(); // Silently sync background state
       },
       error: (err) => {
@@ -269,7 +272,7 @@ export class AdminContentComponent implements OnInit {
         this.imagePreview = prevImagePreview;
         this.showModal = true;
 
-        this.triggerToast('Erreur d\'enregistrement : ' + err.message);
+        this.toast.error(this.toast.getErrorMessage(err, 'Erreur lors de l\'enregistrement de la publication.'));
       }
     });
   }
@@ -283,7 +286,7 @@ export class AdminContentComponent implements OnInit {
       
       // Remove instantly from frontend list
       this.articles.splice(index, 1);
-      this.triggerToast('Article supprimé.');
+      this.toast.success('L\'article a été supprimé avec succès.');
 
       this.api.deleteActualite(id).subscribe({
         next: () => {
@@ -292,17 +295,9 @@ export class AdminContentComponent implements OnInit {
         error: (err) => {
           // Restore if backend fails
           this.articles.splice(index, 0, deletedArticle);
-          this.triggerToast('Erreur lors de la suppression : ' + err.message);
+          this.toast.error(this.toast.getErrorMessage(err, 'Erreur lors de la suppression de l\'article.'));
         }
       });
     }
-  }
-
-  triggerToast(msg: string) {
-    this.toastMessage = msg;
-    this.showToast = true;
-    setTimeout(() => {
-      this.showToast = false;
-    }, 3000);
   }
 }

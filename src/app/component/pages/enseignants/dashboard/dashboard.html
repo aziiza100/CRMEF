@@ -42,26 +42,8 @@
     </div>
   </div> 
 
- <div class="activity-section">
-    <div class="activity-card">
-      <h3 class="card-title">{{ 'enseignant.activityTitle' | translate }}</h3>
-      <ul class="activity-list">
-        <li *ngFor="let act of recentActivities">
-          <div class="activity-icon">
-            <i class="bi {{ act.icon }} {{ act.color }}"></i>
-          </div>
-          <div class="activity-details">
-            <p>{{ act.text }}</p>
-            <!-- <span>{{ act.time }}</span> -->
-          </div>
-        </li>
-      </ul>
-      <button class="btn-outline-primary w-100 mt-3" [routerLink]="['/espace-enseignant/classes']">
-        {{ 'enseignant.viewAll' | translate }}
-      </button>
-    </div>
-
-    <div class="planning-card mt-4">
+  <div class="activity-section">
+    <div class="planning-card">
       <h3 class="card-title">{{ 'enseignant.nextClassTitle' | translate }}</h3>
       
       <div class="next-class" *ngIf="nextClass">
